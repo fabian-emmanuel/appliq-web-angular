@@ -1,0 +1,118 @@
+<div class="bg-appliq d-flex align-items-center align-content-center vh-100 vw-100 overflow-hidden">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 col-lg-5">
+
+
+        <!-- Logo/Brand Section -->
+        <div class="d-flex align-items-center justify-content-center mb-5 gap-2">
+          <div class="d-flex align-items-center justify-content-center bg-white rounded-3 p-2"
+               style="width: 60px; height: 60px;">
+            <span class="fw-bold text-dark fs-5">AQ</span>
+          </div>
+          <h4 class="text-white fw-bold mb-0">AppliQ</h4>
+        </div>
+
+
+        <!-- Sign In Header -->
+        <div class="text-center mb-4">
+          <h2 class="text-white fw-light mb-2">Sign Up</h2>
+          <p class="text-white-50 mb-0">Enter your details tp onboard on AppliQ</p>
+        </div>
+
+        <!--Login Form-->
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+
+          <app-input-with-icon
+            label="First Name"
+            placeholder="John"
+            icon="bi bi-person"
+            [control]="firstName"
+            type="text"
+          />
+
+          <app-input-with-icon
+            label="Last Name"
+            placeholder="Doe"
+            icon="bi bi-person"
+            [control]="lastName"
+            type="text"
+          />
+
+
+          <app-input-with-icon
+            label="Email"
+            placeholder="john.doe@example.com"
+            icon="bi bi-envelope-at"
+            [control]="email"
+            type="email"
+          />
+
+          <app-input-with-icon
+            label="Password"
+            placeholder="********"
+            icon="bi bi-key"
+            [control]="password"
+            type="password"
+          />
+
+          <app-input-with-icon
+            label="Confirm Password"
+            placeholder="********"
+            icon="bi bi-key"
+            [control]="confirmPassword"
+            type="password"
+          />
+
+
+                    <div class="mb-3">
+                      <label class="custom-checkbox text-white">
+                        <input
+                          type="checkbox"
+                          [formControl]="acceptTerms"
+                          (change)="onCheckboxChange($event)"
+                          (click)="$event.stopPropagation()">
+                        <span class="checkbox-icon"><i class="bi bi-plugin"></i></span>
+                        I accept the <a [routerLink]="['/terms-of-service']" class="text-grey text-decoration-none">&nbsp; Terms of Service &nbsp;</a>
+                        and  <a [routerLink]="['/privacy-policy']" class="text-grey text-decoration-none "> &nbsp;Privacy Policy &nbsp;</a>
+                      </label>
+                    </div>
+
+          <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="signupForm.invalid">Create Account
+          </button>
+        </form>
+
+
+        <!-- Social Login Section -->
+        <div class="text-center">
+          <!--          <p class="text-white-50 small mb-3">OR CONTINUE WITH</p>-->
+          <!--          <div class="d-flex gap-5 align-content-between justify-content-center mb-3">-->
+
+          <!--            <button-->
+          <!--              class="btn btn-outline-secondary d-flex align-items-center gap-4 px-3 py-2 text-white border-secondary bg-dark">-->
+          <!--              <i class="bi bi-github"></i>-->
+          <!--              <span class="small">GitHub</span>-->
+          <!--            </button>-->
+          <!--            <button-->
+          <!--              class="btn btn-outline-secondary d-flex align-items-center gap-4 px-3 py-2 text-white border-secondary bg-dark">-->
+          <!--              <i class="bi bi-google"></i>-->
+          <!--              <span class="small">Google</span>-->
+          <!--            </button>-->
+          <!--            <button-->
+          <!--              class="btn btn-outline-secondary d-flex align-items-center gap-4 px-3 py-2 text-white border-secondary bg-dark">-->
+          <!--              <i class="bi bi-linkedin"></i>-->
+          <!--              <span class="small">LinkedIn</span>-->
+          <!--            </button>-->
+
+          <!--          </div>-->
+
+          <div class="text-center text-grey">
+            <p class="mt-1">Already have an account? <a [routerLink]="['/login']"
+                                                        class="text-white text-decoration-none">Sign In</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet/>

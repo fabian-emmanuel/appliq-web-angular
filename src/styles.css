@@ -1,0 +1,103 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+
+html, body {
+  height: 100%;
+}
+
+div {
+  margin: 0;
+  font-family: itim, cursive;
+}
+
+.bg-appliq {
+  background: #0F172A;
+}
+
+input.text-field-appliq {
+  background-color: #FFFFFF;
+  color: #0F172A !important;
+}
+
+input.bg-dark::placeholder {
+  color: #a8a8a8;
+  font-weight: lighter;
+}
+
+.text-grey {
+  color: #a8a8a8 !important;
+}
+.ph-icon {
+  color: #a8a8a8;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Hide the default checkbox */
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create custom checkbox container */
+.custom-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Custom checkbox circle */
+.custom-checkbox .checkbox-icon {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #6c757d;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+/* Hide the plugin icon by default */
+.custom-checkbox .checkbox-icon i {
+  opacity: 0;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+/* When checkbox is checked */
+.custom-checkbox input[type="checkbox"]:checked + .checkbox-icon {
+  border-color: white;
+}
+
+/* Show and animate the plugin icon when checked */
+.custom-checkbox input[type="checkbox"]:checked + .checkbox-icon i {
+  opacity: 1;
+  transform: scale(1);
+}
+

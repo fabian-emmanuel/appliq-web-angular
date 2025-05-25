@@ -1,0 +1,45 @@
+<div class="mb-3">
+  @if (isPasswordField) {
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <label class="text-white mb-1">{{label}}</label>
+      @if (isLoginForm === 'true') {
+        <a [routerLink]="['/forgot-password']" class="text-grey text-decoration-none align-content-end">Forgot Password?</a>
+      }
+    </div>
+  } @else {
+    <label class="form-label text-white mb-1">{{ label }}</label>
+  }
+
+  <div class="input-group">
+    <span class="input-group-text bg-dark border-secondary">
+      <i class="{{icon}} ph-icon"></i>
+    </span>
+    <input
+      [type]="currentInputType"
+      [formControl]="control"
+      class="{{inputClasses}}"
+      placeholder="{{placeholder}}"
+      style="border-left: none;  box-shadow: none;"
+    />
+    @if (isPasswordField) {
+      <span class="input-group-text bg-dark border-secondary">
+        <i [class]="showPassword ? 'bi bi-eye-slash ph-icon' : 'bi bi-eye-slash ph-icon'" class="cursor-pointer" (click)="togglePasswordVisibility()"></i>
+      </span>
+    }
+  </div>
+
+  <div *ngIf="isInvalid" class="text-danger small mt-1">
+    <div *ngIf="control?.errors?.['required']">{{ label }} is required</div>
+    <div *ngIf="control?.errors?.['minlength']">
+      {{ label }} must be at least {{ control.errors?.['minlength']?.requiredLength }} characters
+    </div>
+    <div *ngIf="control?.errors?.['maxlength']">
+      {{ label }} must be no more than {{ control.errors?.['maxlength']?.requiredLength }} characters
+    </div>
+    <div *ngIf="control?.errors?.['email']">Please enter a valid email address</div>
+    <div *ngIf="control?.errors?.['weakPassword']">
+      Password must contain uppercase, lowercase, number, and special character
+    </div>
+    <div *ngIf="control?.errors?.['whitespace']">{{ label }} cannot be empty or whitespace only</div>
+  </div>
+</div>

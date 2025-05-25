@@ -1,0 +1,65 @@
+<div class="bg-appliq d-flex align-items-center align-content-center vh-100 vw-100 overflow-hidden">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-4 col-lg-5">
+
+
+        <!-- Logo/Brand Section -->
+        <div class="d-flex align-items-center justify-content-center mb-5 gap-2">
+          <div class="d-flex align-items-center justify-content-center bg-white rounded-3 p-2"
+               style="width: 60px; height: 60px;">
+            <span class="fw-bold text-dark fs-5">AQ</span>
+          </div>
+          <h4 class="text-white fw-bold mb-0">AppliQ</h4>
+        </div>
+
+
+        <!-- Sign In Header -->
+        <div class="text-center mb-4">
+          <h2 class="text-white fw-light mb-2">Sign In</h2>
+          <p class="text-white-50 mb-0">Enter your email and password to access your dashboard</p>
+        </div>
+
+        <!--Login Form-->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+          <app-input-with-icon
+            label="Email"
+            placeholder="john.doe@example.com"
+            icon="bi bi-envelope-at"
+            [control]="email"
+            type="text"
+          />
+
+          <app-input-with-icon
+            label="Password"
+            placeholder="********"
+            icon="bi bi-key"
+            [control]="password"
+            type="password"
+            isLoginForm="true"
+          />
+
+
+          <div class="mb-3">
+            <label class="custom-checkbox text-white">
+              <input type="checkbox" [formControl]="rememberMe" (change)="onCheckboxChange($event)" (click)="$event.stopPropagation()">
+              <span class="checkbox-icon"><i class="bi bi-plugin"></i></span>
+              Remember Me for 30 days
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 mb-3" [disabled]="loginForm.invalid">Sign In</button>
+        </form>
+
+
+        <div class="text-center text-white">
+          <p class="mt-1">Don't have an account? <a [routerLink]="['/signup']" class="text-grey text-decoration-none">Sign
+            Up</a></p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet/>
