@@ -1,6 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import {InputWithIconComponent} from '@shared/components/input-with-icon/input-with-icon.component';
 import {LoginRequest} from '@core/models/auth';
 
@@ -55,8 +63,8 @@ export class LoginComponent {
   private createForm(): FormGroup {
     return this.fb.group({
       email: ['', [
-        Validators.required,
-        Validators.email,
+        Validators.required, Validators.email,
+        this.customEmailValidator,
         Validators.maxLength(254)
       ]],
       password: ['', [
@@ -64,11 +72,17 @@ export class LoginComponent {
       ]],
       rememberMe: [false],
     }, {
-      updateOn: 'blur' // or 'blur' for better performance
+      updateOn: 'blur'
     });
   }
 
-  private markAllFieldsAsTouched(): void {
+  customEmailValidator(control: AbstractControl): ValidationErrors | null {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Requires a top-level domain
+    const valid = emailRegex.test(control.value);
+    return valid ? null : { email: true };
+  }
+
+  markAllFieldsAsTouched(): void {
     Object.keys(this.loginForm.controls).forEach(key => {
       const control = this.loginForm.get(key);
       control?.markAsTouched();

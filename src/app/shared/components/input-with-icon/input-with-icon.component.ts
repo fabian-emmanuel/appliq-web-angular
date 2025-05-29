@@ -6,6 +6,9 @@ import {
 } from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {CommonModule} from '@angular/common';
+import {passwordRequirements,
+  getPasswordStrengthLabel,
+  getPasswordStrength} from '@shared/utils/PasswordUtil';
 
 @Component({
   selector: 'app-input-with-icon',
@@ -36,6 +39,9 @@ export class InputWithIconComponent implements ControlValueAccessor{
   value: string = '';
   disabled: boolean = false;
   showPassword: boolean = false;
+  currentPassword: string = '';
+  passwordStrength: number = 0;
+  passwordRequirements = passwordRequirements
 
   get inputClasses(): string {
     return `form-control bg-dark border-secondary text-white ${this.additionalClasses.join(' ')}`;
@@ -50,11 +56,56 @@ export class InputWithIconComponent implements ControlValueAccessor{
     return this.type === 'password';
   }
 
+  get isLogin(): boolean {
+    return this.isLoginForm === 'true';
+  }
+
   onChange = (value: any) => {};
   onTouched = () => {};
 
   writeValue(value: any): void {
     this.value = value || '';
+    this.currentPassword = value || '';
+    if (this.isPasswordField) {
+      this.updatePasswordStrength(this.currentPassword);
+    }
+  }
+
+  onInputChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.currentPassword = target.value;
+    this.value = target.value;
+
+    if (this.isPasswordField) {
+      this.updatePasswordStrength(target.value);
+    }
+
+    this.onChange(target.value);
+    this.onTouched();
+  }
+
+  private updatePasswordStrength(password: string) {
+    this.passwordStrength = getPasswordStrength(password);
+  }
+
+  get passwordStrengthLabel(): string {
+    return getPasswordStrengthLabel(this.currentPassword);
+  }
+
+  get passwordStrengthTextClass(): string {
+    const strength = this.passwordStrength;
+    if (strength < 40) return 'text-danger';
+    if (strength < 70) return 'text-warning';
+    if (strength < 90) return 'text-info';
+    return 'text-success';
+  }
+
+  get passwordStrengthBarClass(): string {
+    const strength = this.passwordStrength;
+    if (strength < 40) return 'bg-danger';
+    if (strength < 70) return 'bg-warning';
+    if (strength < 90) return 'bg-info';
+    return 'bg-success';
   }
 
   registerOnChange(fn: any): void {

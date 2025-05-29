@@ -1,2 +1,29 @@
+<div class="app-container">
+  <app-side-nav
+    [title]="appTitle"
+    [userName]="currentUser"
+    [userRole]="currentUserRole"
+    [navItems]="navigationItems"
+    [isCollapsed]="sideNavCollapsed"
+    [isMobileOpen]="mobileNavOpen"
+    (collapseToggle)="onNavCollapseToggle($event)"
+    (mobileToggle)="onMobileNavToggle($event)"
+  ></app-side-nav>
 
+  <main class="main-content" [class.nav-collapsed]="sideNavCollapsed">
+    <header class="top-bar">
+      <button
+        class="mobile-menu-btn"
+        (click)="toggleMobileNav()"
+      >
+        ☰
+      </button>
+      <h1>Welcome to Dashboard</h1>
+    </header>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>
 <router-outlet/>
