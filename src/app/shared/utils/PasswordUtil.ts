@@ -30,20 +30,6 @@ export const getPasswordStrengthLabel = (password: string) => {
   return "Strong";
 };
 
-export const getPasswordStrengthTextClass = (strength: any)  => {
-  if (strength < 40) return 'text-danger';
-  if (strength < 70) return 'text-warning';
-  if (strength < 90) return 'text-info';
-  return 'text-success';
-}
-
-export const getPasswordStrengthBarClass = (strength: any) => {
-  if (strength < 40) return 'bg-danger';
-  if (strength < 70) return 'bg-warning';
-  if (strength < 90) return 'bg-info';
-  return 'bg-success';
-}
-
 
 export const passwordRequirements = [
   {
