@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Page404Component } from './page404.component';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
 describe('Page404Component', () => {
   let component: Page404Component;
@@ -8,7 +10,21 @@ describe('Page404Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Page404Component]
+      imports: [Page404Component],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({}),
+            queryParams: of({}),
+            snapshot: {
+              params: {},
+              queryParams: {},
+              data: {}
+            }
+          }
+        }
+      ]
     })
     .compileComponents();
 
