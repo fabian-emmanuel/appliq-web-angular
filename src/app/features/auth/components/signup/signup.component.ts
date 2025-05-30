@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {SignupFormData} from '@core/models/auth';
+import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
 
 @Component({
   selector: 'app-signup',
@@ -85,7 +86,7 @@ export class SignupComponent {
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(128),
-        this.strongPasswordValidator
+        strongPasswordValidator
       ]],
       confirmPassword: ['', [
         Validators.required
@@ -108,23 +109,6 @@ export class SignupComponent {
     return password.value === confirmPassword.value
       ? null
       : { passwordMismatch: true };
-  };
-
-  private strongPasswordValidator = (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-
-    if (!value) {
-      return null;
-    }
-
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumeric = /[0-9]/.test(value);
-    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value);
-
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar;
-
-    return passwordValid ? null : { weakPassword: true };
   };
 
   private noWhitespaceValidator = (control: AbstractControl): ValidationErrors | null => {
