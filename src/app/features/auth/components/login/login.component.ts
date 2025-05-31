@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {
   AbstractControl,
   FormBuilder,
@@ -19,7 +19,7 @@ import {getFormErrors} from '@core/models/errors';
     RouterOutlet,
     ReactiveFormsModule,
     RouterLink,
-    InputWithIconComponent,
+    InputWithIconComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -28,7 +28,7 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.createForm();
   }
 
@@ -42,6 +42,7 @@ export class LoginComponent {
     if (!this.loginForm.valid) {
       this.markAllFieldsAsTouched();
       console.log('Form is not valid', getFormErrors(this.loginForm));
+      this.router.navigate(['/dashboard']);
       return;
     }
 

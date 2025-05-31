@@ -1,0 +1,81 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #0f172a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  /* z-index: 200; */
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  font-size: large;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 1rem;
+  margin-bottom: auto;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding-left: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+    background-color: #1e293b;
+    cursor: pointer;
+    border: #1e293b 1px solid;
+    border-radius: 10px;
+    padding: 1rem;
+    border: none;
+}
+
+.user-section {
+  display: flex;
+  /* align-items: center; */
+  flex-direction: row;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1rem;
+  font-size: 0.875rem;
+  opacity: 0.8;
+  margin-top: 2rem;
+}
+.avatar i{
+  font-size: large;
+}
+.logout-btn i{
+  font-size: large;
+}
+/* .avatar .material-icons {
+  font-size: 50px;
+} */
+
+.user-info .name {
+  font-weight: 600;
+}
+
+.user-info .email {
+  font-size: 0.75rem;
+}

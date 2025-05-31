@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import {NavItem, SideNavComponent} from '@layout/side-nav/side-nav.component';
 import {RouterOutlet} from '@angular/router';
+import { DashboardComponent } from '@features/dashboard/dashboard.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TopbarComponent } from './components/topbar/topbar.component';
+import { ThemeSwitchComponent } from './components/theme-switch/theme-switch.component';
 
 @Component({
   selector: 'app-root',
-  imports: [SideNavComponent, RouterOutlet],
+  imports: [SideNavComponent, RouterOutlet, DashboardComponent, SidebarComponent, TopbarComponent, ThemeSwitchComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
