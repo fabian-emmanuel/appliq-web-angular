@@ -1,0 +1,262 @@
+.application-card {
+  background: #23243a;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.application-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  transform: scale(1.01);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #343650;
+  background: #23243a;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border: none;
+}
+
+.last-updated {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #b0b3c6;
+  gap: 0.4rem;
+}
+
+.company-position {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+}
+
+.company-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background: #1e1f2f;
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+.position-details h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.company-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+  font-size: 0.97rem;
+  color: #b0b3c6;
+}
+
+.company-link a {
+  color: #b0b3c6;
+  transition: color 0.2s;
+}
+.company-link a:hover {
+  color: #4f8cff;
+}
+
+.progress-indicator {
+  padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.92rem;
+  margin-bottom: 0.3rem;
+  color: #b0b3c6;
+}
+
+.progress-bar-bg {
+  background: #343650;
+  border-radius: 8px;
+  height: 7px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s;
+}
+
+.status-history {
+  padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+}
+
+.status-history h4 {
+  font-size: 0.98rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #b0b3c6;
+}
+
+.status-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 70px;
+  overflow-y: auto;
+}
+
+.status-history li {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin-bottom: 0.4rem;
+}
+
+.timeline-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 18px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin-bottom: 2px;
+}
+
+.connector {
+  width: 2px;
+  height: 18px;
+  background: #343650;
+  margin: 0 auto;
+}
+
+.status-content {
+  flex: 1;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.status-notes {
+  font-size: 0.85rem;
+  color: #b0b3c6;
+  margin-top: 0.1rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.25rem;
+  border-top: 1px solid #343650;
+  background: #23243a;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown button {
+  background: #1e1f2f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dropdown button:hover {
+  background: #343650;
+}
+
+.dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: 110%;
+  background: #23243a;
+  border: 1px solid #343650;
+  border-radius: 8px;
+  min-width: 140px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  z-index: 10;
+  padding: 0.4rem 0;
+}
+
+.dropdown-menu li {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-menu li:hover {
+  background: #343650;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  color: #b0b3c6;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 0.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.actions button:hover {
+  background: #343650;
+  color: #fff;
+}
+
+.actions .text-danger {
+  color: #ff5c5c;
+}
