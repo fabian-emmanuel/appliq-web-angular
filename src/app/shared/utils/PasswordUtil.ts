@@ -1,6 +1,6 @@
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
-// Password strength checker
-export const getPasswordStrength = (password: string) => {
+export function getPasswordStrength(password: string){
   let score = 0;
 
   if (!password) {
@@ -21,7 +21,7 @@ export const getPasswordStrength = (password: string) => {
 };
 
 
-export const getPasswordStrengthLabel = (password: string) => {
+export function getPasswordStrengthLabel(password: string)  {
   const passwordStrength = getPasswordStrength(password);
   if (passwordStrength === 0) return "";
   if (passwordStrength < 40) return "Weak";
@@ -49,3 +49,23 @@ export const passwordRequirements = [
     text: "Contains special character"
   }
 ];
+
+
+export function strongPasswordValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumeric = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value);
+
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar;
+
+    return passwordValid ? null : { weakPassword: true };
+  };
+}
