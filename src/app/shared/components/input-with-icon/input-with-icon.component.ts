@@ -4,7 +4,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule
 } from '@angular/forms';
-import {RouterLink} from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {passwordRequirements,
   getPasswordStrengthLabel,
@@ -14,7 +14,7 @@ import {passwordRequirements,
   selector: 'app-input-with-icon',
   imports: [
     ReactiveFormsModule,
-    RouterLink, CommonModule
+    RouterLink, CommonModule, RouterOutlet
   ],
   templateUrl: './input-with-icon.component.html',
   styleUrl: './input-with-icon.component.css',

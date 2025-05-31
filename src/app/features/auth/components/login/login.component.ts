@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import {InputWithIconComponent} from '@shared/components/input-with-icon/input-with-icon.component';
 import {LoginRequest} from '@core/models/auth';
+import {getFormErrors} from '@core/models/errors';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent {
   onSubmit(): void {
     if (!this.loginForm.valid) {
       this.markAllFieldsAsTouched();
-      console.log('Form is not valid', this.getFormErrors());
+      console.log('Form is not valid', getFormErrors(this.loginForm));
       return;
     }
 
@@ -88,23 +89,4 @@ export class LoginComponent {
       control?.markAsTouched();
     });
   }
-
-  private getFormErrors(): any {
-    const errors: any = {};
-
-    Object.keys(this.loginForm.controls).forEach(key => {
-      const control = this.loginForm.get(key);
-      if (control && control.errors) {
-        errors[key] = control.errors;
-      }
-    });
-
-    if (this.loginForm.errors) {
-      errors.form = this.loginForm.errors;
-    }
-
-    return errors;
-  }
-
-
 }
