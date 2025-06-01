@@ -1,0 +1,90 @@
+<div class="application-card">
+  <div class="card-header">
+    <span class="badge" [ngClass]="currentStatusDetails.colorClass">
+      <i [ngClass]="currentStatusDetails.iconClass"></i>
+      {{ application.status }}
+    </span>
+    <div class="last-updated">
+      <i class="bi bi-clock"></i>
+      <time>{{ lastUpdateTimestamp | date:'short' }}</time>
+    </div>
+  </div>
+
+  <div class="company-position">
+    <div class="company-avatar" [ngClass]="currentStatusDetails.colorClass">
+      {{ getInitials(application.company) }}
+    </div>
+    <div class="position-details">
+      <h3>{{ application.position }}</h3>
+      <div class="company-link">
+        <span>{{ application.company }}</span>
+        @if (application.website) {
+          <a [href]="application.website" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-box-arrow-up-right"></i>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-indicator">
+    <div class="progress-labels">
+      <span>Progress</span>
+      <span>{{ currentStatusDetails.progress }}%</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar" [ngClass]="currentStatusDetails.colorClass"
+      [style.width.%]="currentStatusDetails.progress"></div>
+    </div>
+  </div>
+
+  <div class="status-history">
+    <h4>Status History</h4>
+    <ul>
+      @for (status of application.statusHistory.slice().reverse(); track status; let sIndex = $index) {
+        <li>
+          <div class="timeline-indicator">
+            <div class="dot" [ngClass]="statusDetailsMap[status.status].colorClass"></div>
+            @if (sIndex !== application.statusHistory.length - 1) {
+              <div class="connector"></div>
+            }
+          </div>
+          <div class="status-content">
+            <div class="status-row">
+              <span>{{ status.status }}</span>
+              <time>{{ status.createdAt | date:'shortDate' }}</time>
+            </div>
+            @if (status.notes) {
+              <div class="status-notes">{{ status.notes }}</div>
+            }
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div class="card-footer">
+    <div class="dropdown">
+      <button (click)="showStatusMenu = !showStatusMenu">
+        Change Status <i class="bi bi-chevron-down"></i>
+      </button>
+      @if (showStatusMenu) {
+        <ul class="dropdown-menu">
+          @for (statusOption of statuses; track statusOption) {
+            <li (click)="onRequestStatusChange(statusOption)">
+              @if (application.status === statusOption) {
+                <span>✓</span>
+              }
+              {{ statusOption }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
+    <div class="actions">
+      <button (click)="onEdit()" title="Edit"><i class="bi bi-pencil"></i></button>
+      <button (click)="onDelete()" title="Delete"><i class="bi bi-trash text-danger"></i></button>
+    </div>
+  </div>
+</div>
+
