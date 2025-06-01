@@ -5,7 +5,6 @@ import { RouterOutlet } from '@angular/router';
 import { statuses, statusDetailsMap, Application } from '@core/models/application';
 import { ApplicationCardComponent } from '@layout/card/application-card/application-card';
 import { PageLayoutComponent } from '@layout/page-layout/page-layout';
-import { stat } from 'fs';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar';
 import { TopbarComponent } from 'src/app/components/topbar/topbar';
 
