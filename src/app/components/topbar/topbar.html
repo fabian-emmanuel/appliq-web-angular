@@ -1,0 +1,25 @@
+<div class="topbar">
+  <div class="title">{{title$ | async }}</div>
+
+  <div class="theme-toggle">
+    <div class="dropdown">
+      <button class="icon-btn" (click)="toggleMenu()">
+        <i class="bi bi-moon"></i>
+      </button>
+      @if (menuOpen) {
+        <div class="menu">
+          <div class="menu-item" (click)="setTheme('light')">
+            <i class="bi bi-brightness-high"></i> Light
+          </div>
+          <div class="menu-item" (click)="setTheme('dark')">
+            <i class="bi bi-moon"></i> Dark
+          </div>
+          <div class="menu-item" (click)="setTheme('system')">
+            <i class="bi bi-display"></i> System
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
