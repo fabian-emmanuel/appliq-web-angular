@@ -1,0 +1,18 @@
+.event-detail-content {
+  color: #e0e0e0; /* Match dark theme */
+}
+.event-detail-content strong {
+  color: #ffffff;
+}
+a {
+  color: #007bff; /* Link color */
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+/* Custom styling for the dialog panel itself in global styles if needed */
+.custom-dialog-container .mat-dialog-container {
+     background-color: #363a45;
+      color: #e0e0e0;
+    }

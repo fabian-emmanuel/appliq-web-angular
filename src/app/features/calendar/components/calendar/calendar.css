@@ -1,0 +1,188 @@
+/* src/app/calendar/calendar.component.scss */
+
+.calendar-container {
+  padding: 20px;
+  background-color: #282c36;
+  color: #e0e0e0;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow header items to wrap */
+  gap: 10px;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.current-month-year {
+  margin: 0;
+  font-size: 1.5em;
+  color: #ffffff;
+}
+
+.view-toggle mat-radio-button {
+  margin-right: 15px;
+}
+
+.status-filter-calendar {
+  min-width: 180px; /* Adjust as needed */
+}
+
+.calendar-content {
+  flex-grow: 1; /* Allow calendar to take available space */
+  background-color: #363a45;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Angular Material overrides for dark theme - reuse from dashboard if needed */
+:host ::ng-deep {
+  .mat-button, .mat-icon-button {
+    color: #007bff; /* Accent color for buttons */
+  }
+  .mat-radio-button .mat-radio-inner-circle {
+    background-color: #007bff;
+  }
+  .mat-radio-button.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #007bff;
+  }
+  .mat-radio-label-content {
+    color: #e0e0e0;
+  }
+
+  .mat-form-field-outline,
+  .mat-form-field-underline {
+    color: #555 !important;
+  }
+  .mat-form-field-label {
+    color: #ccc !important;
+  }
+  .mat-input-element {
+    color: #e0e0e0 !important;
+  }
+  .mat-select-value {
+    color: #e0e0e0 !important;
+  }
+  .mat-select-arrow {
+    color: #e0e0e0 !important;
+  }
+  .mat-option {
+    background-color: #363a45 !important;
+    color: #e0e0e0 !important;
+  }
+  .mat-option.mat-selected:not(.mat-option-multiple) {
+    background: rgba(0, 123, 255, 0.2) !important;
+    color: #e0e0e0 !important;
+  }
+  .mat-option.mat-active {
+    background-color: #4a4e58 !important;
+  }
+}
+
+/* Angular Calendar overrides for dark theme */
+:host ::ng-deep {
+  .cal-header {
+    background-color: #363a45;
+    color: #ffffff;
+  }
+
+  .cal-cell-row {
+    .cal-cell {
+      background-color: #2f333d;
+      border: 1px solid #444;
+      color: #e0e0e0;
+    }
+    .cal-weekend {
+      background-color: #2b2f38;
+    }
+    .cal-today {
+      background-color: #3f4453;
+    }
+    .cal-day-number {
+      color: #e0e0e0;
+    }
+    .cal-out-month .cal-day-number {
+      color: #777; /* Lighter color for out-of-month days */
+    }
+  }
+
+  .cal-event-action, .cal-day-number, .cal-week-view .cal-header .cal-day-number, .cal-month-view .cal-day-cell .cal-cell-top .cal-day-number {
+    color: #e0e0e0;
+  }
+
+  .cal-event {
+    color: #e0e0e0; /* Text color inside events */
+    font-size: 0.8em;
+    padding: 2px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cal-tooltip {
+    color: #fff;
+    background-color: #363a45;
+    border: 1px solid #555;
+  }
+
+  .cal-week-view, .cal-day-view {
+    .cal-time-label-column {
+      background-color: #2f333d;
+      border-right: 1px solid #444;
+      color: #e0e0e0;
+    }
+    .cal-hour-segment {
+      border-bottom: 1px dashed #444;
+    }
+    .cal-drag-over {
+      background-color: rgba(0, 123, 255, 0.1);
+    }
+  }
+
+  .event-bubble { /* Custom styling for small bubbles in month view */
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 1px;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  .cal-day-badge {
+    background-color: #007bff; /* Color for event count badge */
+    color: white;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .calendar-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-right {
+    width: 100%;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .view-toggle {
+    margin-bottom: 10px;
+  }
+  .status-filter-calendar {
+    width: 100%;
+  }
+}

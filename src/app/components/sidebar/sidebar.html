@@ -1,0 +1,37 @@
+<div class="sidebar">
+  <div class="logo-section">
+    <div class="logo">AQ</div>
+    <div class="brand">AppliQ</div>
+  </div>
+
+  <nav class="nav-links">
+    <a [routerLink]="['/dashboard']" routerLinkActive="active" (click)="setTitle('Dashboard')">
+      <i class="bi bi-columns-gap"></i> Dashboard
+    </a>
+    <a [routerLink]="['/applications']" routerLinkActive="active" (click)="setTitle('Applications')">
+      <i class="bi bi-window-plus"></i> Applications
+    </a>
+    <a [routerLink]="['/calendar']" routerLinkActive="active" (click)="setTitle('Calendar')">
+      <i class="bi bi-calendar4-event"></i> Calendar
+    </a>
+    <a [routerLink]="['/settings']" routerLinkActive="active" (click)="setTitle('Settings')">
+      <i class="bi bi-gear-fill"></i> Settings
+    </a>
+  </nav>
+
+  <div class="user-section">
+    <div class="avatar">
+      <i class="bi bi-person-circle"></i>
+    </div>
+    <div class="user-info">
+      <div class="name">John Doe</div>
+      <div class="email"> johndoe&#64;email.com </div>
+    </div>
+    <div class="logout">
+      <button class="logout-btn">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+  <!-- <div class="overlay" (click)="closeSidebar()"></div> -->

@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>{{ data.application.company }} - {{ data.application.position }}</h2>
+
+<mat-dialog-content class="mat-typography event-detail-content">
+  <p><strong>Status:</strong> {{ data.statusHistory.status }}</p>
+  <p><strong>Date:</strong> {{ data.statusHistory.createdAt | date:'medium' }}</p>
+
+  @if (data.statusHistory.testType) {
+    <p><strong>Test Type:</strong> {{ data.statusHistory.testType }}</p>
+  }
+
+  @if (data.statusHistory.interviewType) {
+    <p><strong>Interview Type:</strong> {{ getInterviewType(data.statusHistory.interviewType!) }}</p>
+  }
+
+  @if (data.statusHistory.notes) {
+    <p><strong>Notes:</strong> {{ data.statusHistory.notes }}</p>
+  }
+
+  @if (data.application.website) {
+    <p><strong>Website:</strong>
+      <a [href]="data.application.website" target="_blank">{{ data.application.website }}</a>
+    </p>
+  }
+
+  @if (data.application.applicationType) {
+    <p><strong>Application Type:</strong> {{ data.application.applicationType }}</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="dialogRef.close()">Close</button>
+  <button mat-button color="primary" [routerLink]="['/applications', data.application.id]">View Application</button>
+</mat-dialog-actions>
