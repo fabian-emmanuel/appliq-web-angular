@@ -1,79 +1,99 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  PLATFORM_ID,
+  Inject,
+} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {Application, Status} from '../../core/models/application';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatIcon} from '@angular/material/icon';
+import {
+  Application,
+  Status, statusDetailsMap,
+  statuses,
+} from '../../core/models/application';
+import {MatFormField, MatLabel} from '@angular/material/input';
 import {applicationList} from '../../core/models/store';
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
+import {
+  MatDatepickerModule,
+  MatDatepickerToggle,
+  MatDateRangeInput
+} from '@angular/material/datepicker';
 import {DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {MatOption, MatSelect} from '@angular/material/select';
+import {NgxChartsModule, ScaleType, Color} from '@swimlane/ngx-charts';
+import {MatOption, MatSelect, MatSelectTrigger} from '@angular/material/select';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
-
-
-// Interface for Bar Chart data
-interface BarChartData {
-  name: string;
-  value: number;
-}
-
-// Interface for Line Chart data series
-interface LineChartSeries {
-  name: string;
-  series: { name: string; value: number }[];
-}
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {isPlatformBrowser} from '@angular/common';
+import {MatIcon} from '@angular/material/icon';
+import {BarChartData, DashboardCount, LineChartSeries} from '../../core/models/dashboard';
 
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, MatFormField, MatIcon, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, MatSelect, DatePipe, MatInput, FormsModule, MatSelect, MatSelect, MatOption, NgxChartsModule, MatSelect, MatSelect, MatOption, MatLabel, MatRadioGroup, MatRadioButton],
+  imports: [RouterOutlet, MatFormField, MatDatepickerToggle, MatSelect, DatePipe, FormsModule, MatSelect, MatSelect, MatOption, NgxChartsModule, MatSelect, MatSelect, MatOption, MatLabel, MatRadioGroup, MatRadioButton, MatDateRangeInput, MatFormFieldModule, MatSelectTrigger, MatDatepickerModule, MatIcon],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrl: './dashboard.css',
+  providers: [provideNativeDateAdapter()],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard implements OnInit {
-  cards = Array(4);
+
+  appliqScheme: Color = {
+    name: 'appliq',
+    selectable: true,
+    group: ScaleType.Quantile,
+    domain: [
+      '#3B82F6',
+      '#8B5CF6',
+      '#22C55E',
+      '#EF4444',
+      '#EAB308',
+      '#6B7280',
+    ],
+  }
+
+  isBrowser: boolean;
   totalApplicationsCount: number = 0;
   interviewsCount: number = 0;
+  testsCount: number = 0;
   offersCount: number = 0;
+  withdrawalsCount: number = 0;
   rejectedCount: number = 0;
-
+  items: DashboardCount[] = [];
   recentActivities: any[] = [];
-  upcomingEvents: any[] = [];
 
   // Filter properties for graph
   startDate: Date | null = null;
   endDate: Date | null = null;
-  allStatuses: Status[] = ['Applied', 'Interview', 'OfferAwarded', 'Rejected', 'Test'];
-  selectedStatuses: Status[] = [...this.allStatuses]; // Default to all statuses selected
+  allStatuses: Status[] = statuses;
+  selectedStatuses: Status[] = statuses; // Default to all statuses selected
 
   chartType: 'bar' | 'line' = 'bar';
-
-  // Chart data
-  processedChartData: BarChartData[] = [];
+  barChartData: BarChartData[] = [];
   lineChartData: LineChartSeries[] = [];
 
-
-  view: [number, number] = [700, 300]; // Adjust as needed
-  colorScheme: any = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#007bff', '#FF7F00', '#2EC4B6']
-  };
-
-  // Dummy Data - Ensure 'Status' type is correctly defined in application.model.ts
   private dummyApplications: Application[] = applicationList;
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    this.totalApplicationsCount = 100;
+    this.interviewsCount = 25;
+    this.testsCount = 30;
+    this.offersCount = 15;
+    this.withdrawalsCount = 5;
+    this.rejectedCount = 10;
+  }
 
   ngOnInit(): void {
+    this.initializeDashboardItems();
     this.initializeFilters();
-    this.calculateCounts();
     this.getRecentActivities();
-    this.getUpcomingEvents();
     this.updateChartData(); // Initial chart data load
   }
 
   private initializeFilters(): void {
-    // Set default date range to last 30 days, or a custom period
     const today = new Date();
     this.endDate = today;
     const thirtyDaysAgo = new Date(today);
@@ -85,11 +105,66 @@ export class Dashboard implements OnInit {
     this.updateChartData();
   }
 
-  private calculateCounts(): void {
-    this.totalApplicationsCount = this.dummyApplications.length;
-    this.interviewsCount = this.dummyApplications.filter(app => app.status === 'Interview').length;
-    this.offersCount = this.dummyApplications.filter(app => app.status === 'OfferAwarded').length;
-    this.rejectedCount = this.dummyApplications.filter(app => app.status === 'Rejected').length;
+  get StatusDisplayText(): string {
+    if (!this.selectedStatuses || this.selectedStatuses.length === 0) {
+      return 'All Statuses';
+    }
+
+    if (this.selectedStatuses.length === 1) {
+      return this.selectedStatuses[0];
+    }
+
+    if (this.selectedStatuses.length === this.allStatuses.length) {
+      return 'All Statuses';
+    }
+
+    return `${this.selectedStatuses.at(0)} (+${this.selectedStatuses.length - 1} ${this.selectedStatuses.length === 2 ? 'other' : 'others'})`;
+  }
+
+  private getStatusDetailsForDashboardItem(itemName: string): { icon: string; color: string } {
+    let statusKey: Status = 'Applied';
+    switch (itemName) {
+      case 'Total Applications':
+        statusKey = 'Applied';
+        break;
+      case 'Tests':
+        statusKey = 'Test';
+        break;
+      case 'Interviews':
+        statusKey = 'Interview';
+        break;
+      case 'Offers':
+        statusKey = 'OfferAwarded';
+        break;
+      case 'Withdrawn':
+        statusKey = 'Withdrawn';
+        break;
+      case 'Rejected':
+        statusKey = 'Rejected';
+        break;
+      default:
+    }
+    const details = statusDetailsMap[statusKey];
+    return {
+      icon: details.iconClass,
+      color: details.textClass
+    };
+  }
+
+  private initializeDashboardItems(): void {
+    const baseItems: Omit<DashboardCount, 'icon' | 'color'>[] = [
+      { name: 'Total Applications', count: this.totalApplicationsCount },
+      { name: 'Interviews', count: this.interviewsCount },
+      { name: 'Tests', count: this.testsCount },
+      { name: 'Offers', count: this.offersCount },
+      { name: 'Withdrawn', count: this.withdrawalsCount },
+      { name: 'Rejected', count: this.rejectedCount }
+    ];
+
+    this.items = baseItems.map(item => {
+      const { icon, color } = this.getStatusDetailsForDashboardItem(item.name);
+      return { ...item, icon, color };
+    });
   }
 
   private getRecentActivities(): void {
@@ -99,8 +174,7 @@ export class Dashboard implements OnInit {
           company: app.company,
           position: app.position,
           date: new Date(history.createdAt),
-          // A simple way to get previous status; a more robust solution might store it directly
-          oldStatus: index > 0 ? app.statusHistory[index - 1].status : 'Initial Application',
+          oldStatus: index > 0 ? app.statusHistory[index - 1].status : 'Applied',
           newStatus: history.status,
           notes: history.notes,
           testType: history.testType,
@@ -108,58 +182,15 @@ export class Dashboard implements OnInit {
         }))
       )
       .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .slice(0, 5); // Get the 5 most recent updates overall
+      .slice(0, 6); // Get the 6 most recent updates overall
   }
-
-  private getUpcomingEvents(): void {
-    const now = new Date();
-
-    this.upcomingEvents = this.dummyApplications
-      .filter(app => app.status === 'Interview' || app.status === 'Test')
-      .map(app => {
-        const latestRelevantHistory = app.statusHistory
-          .filter(sh =>
-            (sh.status === 'Interview' || sh.status === 'Test') &&
-            (sh.interviewType || sh.testType)
-          )
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
-
-        if (!latestRelevantHistory) return null;
-
-        const eventDate = new Date(latestRelevantHistory.createdAt);
-        eventDate.setDate(eventDate.getDate() + 5);
-
-        if (eventDate <= now) return null;
-
-        let eventType = 'Unknown';
-        if (latestRelevantHistory.status === 'Interview') {
-          const type = latestRelevantHistory.interviewType;
-          eventType = `Interview (${type === 1 ? 'Phone' : type === 2 ? 'On-site' : 'Unknown'})`;
-        } else if (latestRelevantHistory.status === 'Test') {
-          eventType = `Test (${latestRelevantHistory.testType || 'Unknown'})`;
-        }
-
-        return {
-          company: app.company,
-          position: app.position,
-          eventType,
-          date: eventDate,
-          notes: latestRelevantHistory.notes || ''
-        };
-      })
-      .filter(event => event !== null)
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .slice(0, 3);
-  }
-
 
 
   private updateChartData(): void {
     let filteredApplications = this.dummyApplications.filter(app => {
       const appDate = new Date(app.createdAt);
-      const isWithinDateRange = (!this.startDate || appDate >= this.startDate) &&
+      return (!this.startDate || appDate >= this.startDate) &&
         (!this.endDate || appDate <= this.endDate);
-      return isWithinDateRange;
     });
 
     filteredApplications = filteredApplications.filter(app =>
@@ -172,18 +203,18 @@ export class Dashboard implements OnInit {
       statusCounts[app.status] = (statusCounts[app.status] || 0) + 1;
     });
 
-    this.processedChartData = Object.keys(statusCounts).map(status => ({
+    this.barChartData = Object.keys(statusCounts).map(status => ({
       name: status,
       value: statusCounts[status]
     }));
 
     // Ensure all selected statuses are represented in bar chart, even if count is 0
     this.selectedStatuses.forEach(status => {
-      if (!this.processedChartData.some(d => d.name === status)) {
-        this.processedChartData.push({ name: status, value: 0 });
+      if (!this.barChartData.some(d => d.name === status)) {
+        this.barChartData.push({name: status, value: 0});
       }
     });
-    this.processedChartData.sort((a, b) => a.name.localeCompare(b.name));
+    this.barChartData.sort((a, b) => a.name.localeCompare(b.name));
 
 
     // --- Data for Line Chart (Applications over time per status) ---

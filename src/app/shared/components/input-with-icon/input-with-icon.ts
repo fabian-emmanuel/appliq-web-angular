@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {getPasswordStrength, getPasswordStrengthLabel, passwordRequirements} from '../../utils/PasswordUtil';
+import {CommonModule} from '@angular/common';
 
 
 @Component({
@@ -13,7 +14,8 @@ import {getPasswordStrength, getPasswordStrengthLabel, passwordRequirements} fro
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    CommonModule
 ],
   templateUrl: './input-with-icon.html',
   styleUrl: './input-with-icon.css',
