@@ -1,196 +1,170 @@
-<!--<div class="dashboard-container">-->
-<!--  @for (card of cards; track card) {-->
-<!--    <div class="card"></div>-->
-<!--  }-->
-<!--</div>-->
+<div class="flex flex-col gap-3 appliq-text-white p-4 bg-appliq-50 overflow-hidden h-[100%]">
 
-<div class="dashboard-container">
-  <div class="dashboard-cards-row">
-    <div class="dashboard-card total-applications-card">
-      <div class="card-content">
-        <h3>Total Applications</h3>
-        <p class="count">{{ totalApplicationsCount }}</p>
+  <div class="flex gap-3 flex-wrap justify-between w-[100%]">
+    @for (item of items; track item) {
+      <div
+        class="bg-appliq rounded-[10px] text-sm p-4 flex-1 w-full flex justify-between items-center shadow-md overflow-hidden">
+        <div>
+          <h5 class="text-lg {{ item.color }}">{{ item.name }}</h5>
+          <p class="text-3xl font-bold {{ item.color }}">{{ item.count }}</p>
+        </div>
+        <i class="{{ item.icon }} {{ item.color }}  text-3xl mt-3"></i>
       </div>
-      <mat-icon svgIcon="work"></mat-icon>
-    </div>
-
-    <div class="dashboard-card status-card">
-      <div class="card-content">
-        <h3>Interviews</h3>
-        <p class="count">{{ interviewsCount }}</p>
-      </div>
-      <mat-icon>event</mat-icon>
-    </div>
-
-    <div class="dashboard-card status-card">
-      <div class="card-content">
-        <h3>Offers</h3>
-        <p class="count">{{ offersCount }}</p>
-      </div>
-      <mat-icon>star</mat-icon>
-    </div>
-
-    <div class="dashboard-card status-card">
-      <div class="card-content">
-        <h3>Rejected</h3>
-        <p class="count">{{ rejectedCount }}</p>
-      </div>
-      <mat-icon>cancel</mat-icon>
-    </div>
+    }
   </div>
 
-  <div class="dashboard-main-content-stacked">
+  <div class="flex flex-col bg-appliq rounded-[10px] p-4 w-full h-[70%]">
+    <h5 class="mb-3">Application Trends</h5>
 
-    <div class="applications-overview-panel graph-panel">
-      <h3>Application Trends</h3>
+    <!-- Controls Section - Responsive -->
+    <div class="bg-appliq flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center justify-between mb-4 min-h-[60px]">
 
-      <div class="graph-filters">
-        <mat-form-field appearance="outline" class="date-range-picker">
-          <mat-label>Start Date</mat-label>
-          <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" (dateChange)="onFilterChange()">
-          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #startDatePicker></mat-datepicker>
-        </mat-form-field>
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+        <!-- Date Range Picker -->
+        <div class="w-full sm:w-auto flex-shrink-0">
+          <mat-form-field appearance="outline" class="w-full sm:w-auto min-w-[200px]">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date">
+              <input matEndDate placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker
+                                   panelClass="bg-appliq-50 appliq-text-white rounded-[10px]">
+            </mat-date-range-picker>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="date-range-picker">
-          <mat-label>End Date</mat-label>
-          <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" (dateChange)="onFilterChange()">
-          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #endDatePicker></mat-datepicker>
-        </mat-form-field>
+        <div class="w-full sm:w-auto flex-shrink-0">
+          <mat-form-field appearance="outline" class="sm:w-auto min-w-[180px]">
+            <mat-label>Filter by Status</mat-label>
+            <mat-select panelClass="bg-appliq-50 appliq-text-white rounded-[10px]"
+                        [(ngModel)]="selectedStatuses"
+                        multiple
+                        (selectionChange)="onFilterChange()">
+              <mat-select-trigger>
+                {{ StatusDisplayText }}
+              </mat-select-trigger>
+              @for (status of allStatuses; track status) {
+                <mat-option [value]="status">
+                  {{ status }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="status-filter">
-          <mat-label>Filter by Status</mat-label>
-          <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()">
-            @for (status of allStatuses; track status) {
-              <mat-option [value]="status">
-                {{ status }}
-              </mat-option>
+      </div>
 
-            }
-          </mat-select>
-        </mat-form-field>
-
-
-        <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="chart-type-selector">
+      <!-- Chart Type Radio Buttons -->
+      <div class="w-full sm:w-auto flex-shrink-0">
+        <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex flex-row gap-4">
           <mat-radio-button value="bar">Bar Chart</mat-radio-button>
           <mat-radio-button value="line">Line Chart</mat-radio-button>
         </mat-radio-group>
-
-
       </div>
 
 
-      <div class="chart-container">
-        @if (processedChartData.length === 0) {
-          <div class="no-data-message">
-            No data available for the selected filters.
+    </div>
+
+    <!-- Chart Section - Takes Remaining Space -->
+    <div class="bg-appliq-50 w-full h-[47vh]">
+      @if (barChartData.length === 0 && lineChartData.length === 0) {
+        <div class="no-data-message flex items-center justify-center h-full">
+          No data available for the selected filters.
+        </div>
+      }
+      @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
+        <ngx-charts-bar-vertical class="w-full h-full overflow-hidden"
+                                 [results]="barChartData"
+                                 [xAxis]="true"
+                                 [yAxis]="true"
+                                 [showGridLines]="false"
+                                 [showXAxisLabel]="true"
+                                 [showYAxisLabel]="true"
+                                 xAxisLabel="Application Status"
+                                 yAxisLabel="Number of Applications"
+                                 [gradient]="false"
+                                 [scheme]="appliqScheme"
+                                 [barPadding]="100"
+                                 [roundDomains]="false"
+                                 [showDataLabel]="true"
+                                 [legend]="true"
+                                 [roundEdges]="true"
+                                 [tooltipDisabled]="false"
+                                 (select)="onSelect($event)"
+                                 style="fill: #9e9e9e">
+        </ngx-charts-bar-vertical>
+      }
+
+      @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
+        <ngx-charts-line-chart class="w-full h-full"
+                               [results]="lineChartData"
+                               [xAxis]="true"
+                               [yAxis]="true"
+                               [showXAxisLabel]="true"
+                               [showYAxisLabel]="true"
+                               xAxisLabel="Date"
+                               yAxisLabel="Number of Applications"
+                               [scheme]="appliqScheme"
+                               [gradient]="false"
+                               [legend]="true"
+                               [showGridLines]="false"
+                               [roundDomains]="false"
+                               [tooltipDisabled]="false"
+                               (select)="onSelect($event)"
+                               style="fill: #9e9e9e">
+        </ngx-charts-line-chart>
+      }
+    </div>
+  </div>
+
+  <!--    Recent Trends-->
+  <div class="flex flex-col bg-appliq rounded-[10px] p-2 h-[60%] w-full relative overflow-hidden">
+
+    <div class="flex gap-3 p-2 overflow-x-auto w-full">
+      @for (activity of recentActivities; track activity; let i = $index) {
+        <div
+          class="h-48 w-68 bg-appliq-50 rounded-xl p-4 shadow-md transition-all duration-300 hover:-translate-y-0.5 flex flex-col justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+              <h6 class="text-base font-semibold text-gray-900 truncate">{{ activity.company }}</h6>
+            </div>
+            <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap self-start">
+            {{ activity.position }}
+          </span>
           </div>
 
-        }
-        @if (chartType === 'bar' && processedChartData.length > 0) {
-          <ngx-charts-bar-vertical
-            [results]="processedChartData"
-            [xAxis]="true"
-            [yAxis]="true"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            xAxisLabel="Date"
-            yAxisLabel="Number of Applications"
-            [scheme]="'vivid'"
-            [gradient]="true"
-            [barPadding]="10"
-            [roundDomains]="true"
-            [showDataLabel]="true"
-            [legend]="false"
-            [tooltipDisabled]="false"
-            (select)="onSelect($event)">
-          </ngx-charts-bar-vertical>
-
-        }
-
-
-        @if (chartType === 'line' && processedChartData.length > 0) {
-          <ngx-charts-line-chart
-            [results]="lineChartData"
-            [xAxis]="true"
-            [yAxis]="true"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            xAxisLabel="Date"
-            yAxisLabel="Number of Applications"
-            [scheme]="'vivid'"
-            [gradient]="true"
-            [legend]="true"
-            [showGridLines]="true"
-            [roundDomains]="true"
-            [tooltipDisabled]="false"
-            (select)="onSelect($event)">
-          </ngx-charts-line-chart>
-
-        }
-      </div>
-
-      <h3 class="upcoming-events-header">Upcoming Events</h3>
-      @if (upcomingEvents.length === 0) {
-        <div class="no-data-message">
-          No upcoming events.
-        </div>
-
-      }
-      @if (upcomingEvents.length > 0) {
-        <div class="event-list">
-          @for (event of upcomingEvents; track event.id) {
-
-            <div class="event-item">
-              <div class="event-header">
-                <strong>{{ event.company }} - {{ event.position }}</strong>
-                <span class="event-date">{{ event.date | date:'shortDate' }}</span>
-              </div>
-              <p class="event-details">
-                Type: <strong>{{ event.eventType }}</strong>
-                @if (event.notes) {
-                  <span> - {{ event.notes }}</span>
-                }
-              </p>
+          <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-1 text-gray-500 text-xs">
+              <span>{{ activity.date | date:'MMM d, y • h:mm a' }}</span>
             </div>
-          }
-        </div>
 
-      }
-    </div>
-
-
-    <div class="recent-activity-panel">
-      <h3>Recent Activity</h3>
-      @if (recentActivities.length === 0) {
-        <div class="no-data-message">
-          No recent activities yet.
-        </div>
-
-      }
-      @if (recentActivities.length > 0) {
-        <div class="activity-list">
-          @for (activity of recentActivities; track activity) {
-            <div class="activity-item">
-              <div class="activity-header">
-                <strong>{{ activity.company }} - {{ activity.position }}</strong>
-                <span class="activity-date">{{ activity.date | date:'short' }}</span>
-              </div>
-              <p class="activity-details">
-                Status changed from <strong>{{ activity.oldStatus }}</strong> to
-                <strong>{{ activity.newStatus }}</strong>.
-              </p>
-              @if (activity.notes) {
-                <p class="activity-notes">
-                  Notes: {{ activity.notes }}
-                </p>
+            <div class="flex items-center gap-1">
+              @if (activity.oldStatus !== activity.newStatus) {
+                <span
+                  class="px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wider bg-red-50 text-red-700">
+                {{ activity.oldStatus }}
+                </span>
+                <i class="bi bi-arrow-right-short text-lg"></i>
               }
+              <span
+                class="px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wider bg-green-50 text-green-700">
+              {{ activity.newStatus }}
+            </span>
             </div>
-          }
+          </div>
+        </div>
+      }
+      @if (recentActivities.length === 0) {
+        <div class="flex flex-col items-center justify-center py-15 px-5 text-gray-400 text-center min-w-80">
+          <mat-icon class="text-5xl mb-4 opacity-50">inbox</mat-icon>
+          <h3 class="text-lg font-medium mb-2 m-0">No Recent Activities</h3>
+          <p class="text-sm m-0">Activity updates will appear here when available.</p>
         </div>
       }
     </div>
+
   </div>
 </div>
 
