@@ -10,6 +10,7 @@ import {CheckInbox} from './features/auth/components/check-inbox/check-inbox';
 import {HomePage} from './features/home-page/home-page';
 import {ForgotPassword} from './features/auth/components/forgot-password/forgot-password';
 import {Settings} from './features/settings/components/settings/settings';
+import {Toast} from './shared/components/toast/toast';
 
 export const routes: Routes = [
   {
@@ -44,6 +45,10 @@ export const routes: Routes = [
   {
     path: 'check-inbox',
     component: CheckInbox
+  },
+  {
+    path: 'toast',
+    component: Toast
   },
   {
     path: '**',
