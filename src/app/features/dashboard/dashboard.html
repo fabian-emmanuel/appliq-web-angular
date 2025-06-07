@@ -1,9 +1,9 @@
-<div class="flex flex-col gap-3 appliq-text-white p-4 bg-appliq-50 overflow-hidden h-[100%]">
+<div class="p-4 overflow-hidden flex flex-col gap-4 bg-appliq-50 appliq-text-white">
 
-  <div class="flex gap-3 flex-wrap justify-between w-[100%]">
+  <div class="flex gap-3 flex-wrap justify-between">
     @for (item of items; track item) {
       <div
-        class="bg-appliq rounded-[10px] text-sm p-4 flex-1 w-full flex justify-between items-center shadow-md overflow-hidden">
+        class="bg-appliq rounded-[10px] text-sm p-4 flex-1 flex justify-between items-center shadow-md overflow-hidden">
         <div>
           <h5 class="text-lg {{ item.color }}">{{ item.name }}</h5>
           <p class="text-3xl font-bold {{ item.color }}">{{ item.count }}</p>
@@ -13,16 +13,16 @@
     }
   </div>
 
-  <div class="flex flex-col bg-appliq rounded-[10px] p-4 w-full h-[70%]">
+  <div class="flex flex-col bg-appliq rounded-[10px] p-4 h-[70%]">
     <h5 class="mb-3">Application Trends</h5>
 
     <!-- Controls Section - Responsive -->
     <div class="bg-appliq flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center justify-between mb-4 min-h-[60px]">
 
-      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:w-auto">
         <!-- Date Range Picker -->
-        <div class="w-full sm:w-auto flex-shrink-0">
-          <mat-form-field appearance="outline" class="w-full sm:w-auto min-w-[200px]">
+        <div class="sm:w-auto flex-shrink-0">
+          <mat-form-field appearance="outline" class="sm:w-auto">
             <mat-label>Enter a date range</mat-label>
             <mat-date-range-input [rangePicker]="picker">
               <input matStartDate placeholder="Start date">
@@ -35,8 +35,8 @@
           </mat-form-field>
         </div>
 
-        <div class="w-full sm:w-auto flex-shrink-0">
-          <mat-form-field appearance="outline" class="sm:w-auto min-w-[180px]">
+        <div class="sm:w-auto flex-shrink-0">
+          <mat-form-field appearance="outline" class="sm:w-auto">
             <mat-label>Filter by Status</mat-label>
             <mat-select panelClass="bg-appliq-50 appliq-text-white rounded-[10px]"
                         [(ngModel)]="selectedStatuses"
@@ -57,7 +57,7 @@
       </div>
 
       <!-- Chart Type Radio Buttons -->
-      <div class="w-full sm:w-auto flex-shrink-0">
+      <div class="sm:w-auto flex-shrink-0">
         <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex flex-row gap-4">
           <mat-radio-button value="bar">Bar Chart</mat-radio-button>
           <mat-radio-button value="line">Line Chart</mat-radio-button>
@@ -68,14 +68,14 @@
     </div>
 
     <!-- Chart Section - Takes Remaining Space -->
-    <div class="bg-appliq-50 w-full h-[47vh]">
+    <div class="bg-appliq-50 h-[47vh]">
       @if (barChartData.length === 0 && lineChartData.length === 0) {
         <div class="no-data-message flex items-center justify-center h-full">
           No data available for the selected filters.
         </div>
       }
       @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
-        <ngx-charts-bar-vertical class="w-full h-full overflow-hidden"
+        <ngx-charts-bar-vertical class="overflow-hidden"
                                  [results]="barChartData"
                                  [xAxis]="true"
                                  [yAxis]="true"
@@ -98,7 +98,7 @@
       }
 
       @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
-        <ngx-charts-line-chart class="w-full h-full"
+        <ngx-charts-line-chart class="overflow-hidden"
                                [results]="lineChartData"
                                [xAxis]="true"
                                [yAxis]="true"
@@ -120,9 +120,9 @@
   </div>
 
   <!--    Recent Trends-->
-  <div class="flex flex-col bg-appliq rounded-[10px] p-2 h-[60%] w-full relative overflow-hidden">
+  <div class="flex flex-col bg-appliq rounded-[10px] p-2 h-[60%] relative overflow-hidden">
 
-    <div class="flex gap-3 p-2 overflow-x-auto w-full">
+    <div class="flex gap-3 p-2 overflow-x-auto">
       @for (activity of recentActivities; track activity; let i = $index) {
         <div
           class="h-48 w-68 bg-appliq-50 rounded-xl p-4 shadow-md transition-all duration-300 hover:-translate-y-0.5 flex flex-col justify-between">
@@ -157,7 +157,7 @@
         </div>
       }
       @if (recentActivities.length === 0) {
-        <div class="flex flex-col items-center justify-center py-15 px-5 text-gray-400 text-center min-w-80">
+        <div class="flex flex-col items-center justify-center py-15 px-5 text-center">
           <mat-icon class="text-5xl mb-4 opacity-50">inbox</mat-icon>
           <h3 class="text-lg font-medium mb-2 m-0">No Recent Activities</h3>
           <p class="text-sm m-0">Activity updates will appear here when available.</p>
