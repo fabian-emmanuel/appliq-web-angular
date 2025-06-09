@@ -7,7 +7,7 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {JsonPipe, NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage} from '@angular/common';
 import {CountryISO, NgxIntlTelInputModule, PhoneNumberFormat} from 'ngx-intl-tel-input';
 import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
 import {IntlInputTelComponent, SearchCountryField} from 'p-intl-input-tel';
@@ -18,8 +18,7 @@ import {IntlInputTelComponent, SearchCountryField} from 'p-intl-input-tel';
     ReactiveFormsModule,
     NgOptimizedImage,
     NgxIntlTelInputModule,
-    IntlInputTelComponent,
-    JsonPipe
+    IntlInputTelComponent
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
