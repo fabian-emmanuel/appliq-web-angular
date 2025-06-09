@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+<div class="min-h-screen bg-appliq">
   <!-- Navigation -->
   <nav class="relative z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,12 +13,17 @@
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-8">
-          <a href="#features" class="text-slate-300 hover:text-white transition-colors duration-200">Features</a>
-          <a href="#how-it-works" class="text-slate-300 hover:text-white transition-colors duration-200">How It Works</a>
-          <a href="#pricing" class="text-slate-300 hover:text-white transition-colors duration-200">Pricing</a>
+          <a href="#features"
+             class="text-slate-300 hover:text-white transition-colors duration-200 text-decoration-none ">Features</a>
+          <a href="#how-it-works"
+             class="text-slate-300 hover:text-white transition-colors duration-200 text-decoration-none">How It
+            Works</a>
           <div class="flex items-center space-x-4 ml-8">
-            <a routerLink="/login" class="text-slate-300 hover:text-white transition-colors duration-200">Sign In</a>
-            <a routerLink="/signup" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Get Started</a>
+            <a routerLink="/login"
+               class="text-slate-300 hover:text-white transition-colors duration-200 text-decoration-none">Sign In</a>
+            <a routerLink="/signup"
+               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 text-decoration-none">Get
+              Started</a>
           </div>
         </div>
 
@@ -35,12 +40,14 @@
       <!-- Mobile Navigation -->
       <div class="md:hidden" [class.hidden]="!mobileMenuOpen">
         <div class="px-2 pt-2 pb-3 space-y-1 bg-slate-800/95 backdrop-blur-md rounded-lg mt-2">
-          <a href="#features" class="block px-3 py-2 text-slate-300 hover:text-white">Features</a>
-          <a href="#how-it-works" class="block px-3 py-2 text-slate-300 hover:text-white">How It Works</a>
-          <a href="#pricing" class="block px-3 py-2 text-slate-300 hover:text-white">Pricing</a>
+          <a href="#features" class="block px-3 py-2 text-slate-300 hover:text-white text-decoration-none">Features</a>
+          <a href="#how-it-works" class="block px-3 py-2 text-slate-300 hover:text-white text-decoration-none">How It
+            Works</a>
           <div class="border-t border-slate-700 pt-3 mt-3">
-            <a routerLink="/login" class="block px-3 py-2 text-slate-300 hover:text-white">Sign In</a>
-            <a routerLink="/signup" class="block px-3 py-2 bg-blue-600 text-white rounded-lg mt-2">Get Started</a>
+            <a routerLink="/login" class="block px-3 py-2 text-slate-300 hover:text-white text-decoration-none">Sign
+              In</a>
+            <a routerLink="/signup" class="block px-3 py-2 bg-blue-600 text-white rounded-lg mt-2 text-decoration-none">Get
+              Started</a>
           </div>
         </div>
       </div>
@@ -65,21 +72,19 @@
           Like a Pro
         </h1>
         <p class="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Never lose track of your opportunities again. AppliQ helps you organize and monitor job applications, internships, scholarships, and more with powerful analytics and insights.
+          Never lose track of your opportunities again. AppliQ helps you organize and monitor job applications,
+          internships, academics, and more with powerful analytics and insights.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a routerLink="/signup" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-            Start Tracking Free
-          </a>
-          <a href="#demo" class="border border-slate-600 hover:border-slate-500 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:bg-slate-800/50">
-            Watch Demo
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+          <a routerLink="/signup"
+             class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-decoration-none">
+            Start Tracking
           </a>
         </div>
-        <p class="text-slate-400 mt-4">No credit card required • Free forever plan available</p>
       </div>
 
       <!-- Hero Image/Dashboard Preview -->
-      <div class="mt-20 relative">
+      <div class="mt-10 relative">
         <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8 shadow-2xl">
           <div class="bg-slate-900 rounded-xl p-6">
             <!-- Mock Dashboard -->
@@ -91,13 +96,13 @@
                 <div class="w-3 h-3 bg-green-500 rounded-full"></div>
               </div>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 m-6">
               <div class="bg-blue-600/20 border border-blue-500/30 rounded-lg p-4">
                 <div class="text-blue-400 text-sm">Total Applications</div>
                 <div class="text-white text-2xl font-bold">42</div>
               </div>
               <div class="bg-yellow-600/20 border border-yellow-500/30 rounded-lg p-4">
-                <div class="text-yellow-400 text-sm">In Progress</div>
+                <div class="text-yellow-400 text-sm">Tests</div>
                 <div class="text-white text-2xl font-bold">15</div>
               </div>
               <div class="bg-green-600/20 border border-green-500/30 rounded-lg p-4">
@@ -105,7 +110,7 @@
                 <div class="text-white text-2xl font-bold">8</div>
               </div>
               <div class="bg-purple-600/20 border border-purple-500/30 rounded-lg p-4">
-                <div class="text-purple-400 text-sm">Offers</div>
+                <div class="text-purple-400 text-sm">OffersAwarded</div>
                 <div class="text-white text-2xl font-bold">3</div>
               </div>
             </div>
@@ -145,89 +150,13 @@
   </section>
 
   <!-- Features Section -->
-  <section id="features" class="py-20 bg-slate-800/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          Everything You Need for Your Applications
-        </h2>
-        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
-          Powerful features designed to streamline your application process for jobs, internships, scholarships, and more.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Feature 1 -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200">
-          <div class="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Universal Application Tracking</h3>
-          <p class="text-slate-300">Track jobs, internships, scholarships, grants, and any other applications with detailed status updates and timeline tracking.</p>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200">
-          <div class="w-12 h-12 bg-green-600/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Analytics & Insights</h3>
-          <p class="text-slate-300">Get detailed analytics on your application performance with charts, success metrics, and trend analysis across all opportunity types.</p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200">
-          <div class="w-12 h-12 bg-purple-600/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Smart Deadlines & Reminders</h3>
-          <p class="text-slate-300">Never miss application deadlines, interview dates, or scholarship submission dates with intelligent reminders and calendar integration.</p>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200">
-          <div class="w-12 h-12 bg-yellow-600/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Document Management</h3>
-          <p class="text-slate-300">Store and organize resumes, cover letters, transcripts, portfolios, and other documents for different application types.</p>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200">
-          <div class="w-12 h-12 bg-red-600/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Multi-Stage Process Tracking</h3>
-          <p class="text-slate-300">Track complex application processes including interviews, tests, portfolio reviews, and multiple rounds for any opportunity type.</p>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-200">
-          <div class="w-12 h-12 bg-indigo-600/20 rounded-lg flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Secure & Private</h3>
-          <p class="text-slate-300">Your sensitive application data is encrypted and secure. We never share your information with third parties or institutions.</p>
-        </div>
-      </div>
-    </div>
+  <section id="features" class="py-20 bg-appliq-50">
+    <app-features/>
   </section>
 
+
   <!-- Application Types Section -->
-  <section class="py-20">
+  <section class="py-20 bg-appliq">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -240,21 +169,26 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Job Applications -->
-        <div class="bg-gradient-to-br from-blue-600/20 to-blue-800/20 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30 text-center">
+        <div
+          class="bg-gradient-to-br from-blue-600/20 to-blue-800/20 backdrop-blur-sm rounded-xl p-6 border border-blue-500/30 text-center">
           <div class="w-16 h-16 bg-blue-600/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"></path>
             </svg>
           </div>
           <h3 class="text-lg font-semibold text-white mb-2">Job Applications</h3>
-          <p class="text-slate-300 text-sm">Full-time, part-time, contract, and remote positions across all industries.</p>
+          <p class="text-slate-300 text-sm">Full-time, part-time, contract, and remote positions across all
+            industries.</p>
         </div>
 
         <!-- Internships -->
-        <div class="bg-gradient-to-br from-green-600/20 to-green-800/20 backdrop-blur-sm rounded-xl p-6 border border-green-500/30 text-center">
+        <div
+          class="bg-gradient-to-br from-green-600/20 to-green-800/20 backdrop-blur-sm rounded-xl p-6 border border-green-500/30 text-center">
           <div class="w-16 h-16 bg-green-600/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
             </svg>
           </div>
           <h3 class="text-lg font-semibold text-white mb-2">Internships</h3>
@@ -262,21 +196,25 @@
         </div>
 
         <!-- Scholarships -->
-        <div class="bg-gradient-to-br from-purple-600/20 to-purple-800/20 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30 text-center">
+        <div
+          class="bg-gradient-to-br from-purple-600/20 to-purple-800/20 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30 text-center">
           <div class="w-16 h-16 bg-purple-600/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white mb-2">Scholarships</h3>
+          <h3 class="text-lg font-semibold text-white mb-2">Academics</h3>
           <p class="text-slate-300 text-sm">Academic scholarships, merit awards, and financial aid opportunities.</p>
         </div>
 
         <!-- Grants & More -->
-        <div class="bg-gradient-to-br from-yellow-600/20 to-yellow-800/20 backdrop-blur-sm rounded-xl p-6 border border-yellow-500/30 text-center">
+        <div
+          class="bg-gradient-to-br from-yellow-600/20 to-yellow-800/20 backdrop-blur-sm rounded-xl p-6 border border-yellow-500/30 text-center">
           <div class="w-16 h-16 bg-yellow-600/30 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
           </div>
           <h3 class="text-lg font-semibold text-white mb-2">Grants & More</h3>
@@ -287,188 +225,151 @@
   </section>
 
   <!-- How It Works Section -->
-  <section id="how-it-works" class="py-20 bg-slate-800/30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          How AppliQ Works
-        </h2>
-        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
-          Get started in minutes and transform your application tracking process.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Step 1 -->
-        <div class="text-center">
-          <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-white font-bold text-xl">1</span>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Add Your Applications</h3>
-          <p class="text-slate-300">Quickly add any type of application with organization details, position/program, and application date.</p>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="text-center">
-          <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-white font-bold text-xl">2</span>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Track Your Progress</h3>
-          <p class="text-slate-300">Update status as you progress through interviews, tests, reviews, and decision processes.</p>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="text-center">
-          <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-white font-bold text-xl">3</span>
-          </div>
-          <h3 class="text-xl font-semibold text-white mb-2">Analyze & Optimize</h3>
-          <p class="text-slate-300">Use insights and analytics to improve your application strategy and increase your success rate.</p>
-        </div>
-      </div>
-    </div>
+  <section id="how-it-works" class="py-20 bg-appliq-50">
+    <app-how-it-works/>
   </section>
+
 
   <!-- Pricing Section -->
-  <section id="pricing" class="py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-          Simple, Transparent Pricing
-        </h2>
-        <p class="text-xl text-slate-300 max-w-2xl mx-auto">
-          Choose the plan that fits your application tracking needs. Start free, upgrade when you need more.
-        </p>
-      </div>
+  <!--  <section id="pricing" class="py-20">-->
+  <!--    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">-->
+  <!--      <div class="text-center mb-16">-->
+  <!--        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">-->
+  <!--          Simple, Transparent Pricing-->
+  <!--        </h2>-->
+  <!--        <p class="text-xl text-slate-300 max-w-2xl mx-auto">-->
+  <!--          Choose the plan that fits your application tracking needs. Start free, upgrade when you need more.-->
+  <!--        </p>-->
+  <!--      </div>-->
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <!-- Free Plan -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-8 border border-slate-700/50">
-          <h3 class="text-2xl font-bold text-white mb-2">Free</h3>
-          <div class="text-4xl font-bold text-white mb-4">$0<span class="text-lg text-slate-400">/month</span></div>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Up to 25 applications
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Basic tracking & status updates
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              All application types
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Email support
-            </li>
-          </ul>
-          <a routerLink="/signup" class="block w-full bg-slate-700 hover:bg-slate-600 text-white text-center py-3 rounded-lg transition-colors duration-200">
-            Get Started Free
-          </a>
-        </div>
+  <!--      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">-->
+  <!--        &lt;!&ndash; Free Plan &ndash;&gt;-->
+  <!--        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-8 border border-slate-700/50">-->
+  <!--          <h3 class="text-2xl font-bold text-white mb-2">Free</h3>-->
+  <!--          <div class="text-4xl font-bold text-white mb-4">$0<span class="text-lg text-slate-400">/month</span></div>-->
+  <!--          <ul class="space-y-3 mb-8">-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Up to 25 applications-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Basic tracking & status updates-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              All application types-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Email support-->
+  <!--            </li>-->
+  <!--          </ul>-->
+  <!--          <a routerLink="/signup" class="block w-full bg-slate-700 hover:bg-slate-600 text-white text-center py-3 rounded-lg transition-colors duration-200">-->
+  <!--            Get Started Free-->
+  <!--          </a>-->
+  <!--        </div>-->
 
-        <!-- Pro Plan -->
-        <div class="bg-gradient-to-b from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-8 border border-blue-500/50 relative">
-          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-            <span class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-              Most Popular
-            </span>
-          </div>
-          <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
-          <div class="text-4xl font-bold text-white mb-4">$9<span class="text-lg text-slate-400">/month</span></div>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Unlimited applications
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Advanced analytics & insights
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Smart reminders & deadlines
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Document storage & management
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Priority support
-            </li>
-          </ul>
-          <a routerLink="/signup" class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center py-3 rounded-lg transition-all duration-200">
-            Start Pro Trial
-          </a>
-        </div>
+  <!--        &lt;!&ndash; Pro Plan &ndash;&gt;-->
+  <!--        <div class="bg-gradient-to-b from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-xl p-8 border border-blue-500/50 relative">-->
+  <!--          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">-->
+  <!--            <span class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-medium">-->
+  <!--              Most Popular-->
+  <!--            </span>-->
+  <!--          </div>-->
+  <!--          <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>-->
+  <!--          <div class="text-4xl font-bold text-white mb-4">$9<span class="text-lg text-slate-400">/month</span></div>-->
+  <!--          <ul class="space-y-3 mb-8">-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Unlimited applications-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Advanced analytics & insights-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Smart reminders & deadlines-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Document storage & management-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Priority support-->
+  <!--            </li>-->
+  <!--          </ul>-->
+  <!--          <a routerLink="/signup" class="block w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-center py-3 rounded-lg transition-all duration-200">-->
+  <!--            Start Pro Trial-->
+  <!--          </a>-->
+  <!--        </div>-->
 
-        <!-- Enterprise Plan -->
-        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-8 border border-slate-700/50">
-          <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
-          <div class="text-4xl font-bold text-white mb-4">$29<span class="text-lg text-slate-400">/month</span></div>
-          <ul class="space-y-3 mb-8">
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Everything in Pro
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Team collaboration features
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Custom integrations & API
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Advanced reporting & exports
-            </li>
-            <li class="flex items-center text-slate-300">
-              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              Dedicated support & training
-            </li>
-          </ul>
-          <a href="mailto:contact@appliq.com" class="block w-full bg-slate-700 hover:bg-slate-600 text-white text-center py-3 rounded-lg transition-colors duration-200">
-            Contact Sales
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!--        &lt;!&ndash; Enterprise Plan &ndash;&gt;-->
+  <!--        <div class="bg-slate-800/50 backdrop-blur-sm rounded-xl p-8 border border-slate-700/50">-->
+  <!--          <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>-->
+  <!--          <div class="text-4xl font-bold text-white mb-4">$29<span class="text-lg text-slate-400">/month</span></div>-->
+  <!--          <ul class="space-y-3 mb-8">-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Everything in Pro-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Team collaboration features-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Custom integrations & API-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Advanced reporting & exports-->
+  <!--            </li>-->
+  <!--            <li class="flex items-center text-slate-300">-->
+  <!--              <svg class="w-5 h-5 text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">-->
+  <!--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>-->
+  <!--              </svg>-->
+  <!--              Dedicated support & training-->
+  <!--            </li>-->
+  <!--          </ul>-->
+  <!--          <a href="mailto:contact@appliq.com" class="block w-full bg-slate-700 hover:bg-slate-600 text-white text-center py-3 rounded-lg transition-colors duration-200">-->
+  <!--            Contact Sales-->
+  <!--          </a>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </section>-->
 
   <!-- CTA Section -->
-  <section class="py-20 bg-slate-800/30">
+  <section class="py-20 bg-appliq">
     <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
         Ready to Transform Your Application Process?
@@ -477,10 +378,12 @@
         Join thousands of students and professionals who have streamlined their application tracking with AppliQ.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a routerLink="/signup" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105">
-          Start Your Free Trial
+        <a routerLink="/signup"
+           class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105 text-decoration-none">
+          Get Started
         </a>
-        <a routerLink="/login" class="border border-slate-600 hover:border-slate-500 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:bg-slate-800/50">
+        <a routerLink="/login"
+           class="border border-slate-600 hover:border-slate-500 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 hover:bg-slate-800/50 text-decoration-none">
           Sign In
         </a>
       </div>
@@ -488,56 +391,8 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <!-- Logo and Description -->
-        <div class="col-span-1 md:col-span-2">
-          <div class="flex items-center space-x-3 mb-4">
-            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <span class="text-slate-900 font-bold">AQ</span>
-            </div>
-            <span class="text-white font-bold text-lg">AppliQ</span>
-          </div>
-          <p class="text-slate-400 max-w-md">
-            The ultimate application tracking tool for jobs, internships, scholarships, and more. Organize, track, and optimize your opportunities with powerful analytics.
-          </p>
-        </div>
+  <app-footer/>
 
-        <!-- Product Links -->
-        <div>
-          <h3 class="text-white font-semibold mb-4">Product</h3>
-          <ul class="space-y-2">
-            <li><a href="#features" class="text-slate-400 hover:text-white transition-colors">Features</a></li>
-            <li><a href="#pricing" class="text-slate-400 hover:text-white transition-colors">Pricing</a></li>
-            <li><a href="#" class="text-slate-400 hover:text-white transition-colors">API</a></li>
-            <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Integrations</a></li>
-          </ul>
-        </div>
-
-        <!-- Company Links -->
-        <div>
-          <h3 class="text-white font-semibold mb-4">Company</h3>
-          <ul class="space-y-2">
-            <li><a href="#" class="text-slate-400 hover:text-white transition-colors">About</a></li>
-            <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Blog</a></li>
-            <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Careers</a></li>
-            <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p class="text-slate-400 text-sm">
-          © 2025 AppliQ. All rights reserved.
-        </p>
-        <div class="flex space-x-6 mt-4 md:mt-0">
-          <a href="#" class="text-slate-400 hover:text-white transition-colors">Privacy Policy</a>
-          <a href="#" class="text-slate-400 hover:text-white transition-colors">Terms of Service</a>
-        </div>
-      </div>
-    </div>
-  </footer>
 </div>
 
 <router-outlet/>

@@ -11,6 +11,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
 import {SignupFormData} from '../../../../core/models/auth';
 import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
+import {CountryISO, NgxIntlTelInputModule, PhoneNumberFormat, SearchCountryField} from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,8 @@ import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
     InputWithIcon,
     ReactiveFormsModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    NgxIntlTelInputModule
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
@@ -144,4 +146,8 @@ export class Signup {
 
     return errors;
   }
+
+  protected readonly PhoneNumberFormat = PhoneNumberFormat;
+  protected readonly SearchCountryField = SearchCountryField;
+  protected readonly CountryISO = CountryISO;
 }

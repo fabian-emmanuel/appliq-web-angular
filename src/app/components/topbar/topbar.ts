@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {Observable} from 'rxjs';
 import {PageTitle} from '../../shared/services/page-title/page-title';
+import {environment} from '../../../environment/environment';
 
 
 @Component({
@@ -13,20 +14,13 @@ import {PageTitle} from '../../shared/services/page-title/page-title';
 export class Topbar {
 
   title$: Observable<string>;
-  menuOpen = false;
+  buyMeACoffeeUrl!: string | undefined;
+
 
   constructor(private pageTitle: PageTitle) {
     this.title$ = this.pageTitle.title$;
-  }
-
-
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
-
-  setTheme(theme: string) {
-    console.log('Theme selected:', theme);
-    this.menuOpen = false;
+    this.buyMeACoffeeUrl = environment.KOFI_URL;
+    console.log(`Buy Me A Coffee URL ${this.buyMeACoffeeUrl}`);
   }
 }
 

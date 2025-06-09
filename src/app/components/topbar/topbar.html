@@ -1,25 +1,14 @@
-<div class="topbar">
-  <div class="title">{{title$ | async }}</div>
-
-  <div class="theme-toggle">
-    <div class="dropdown">
-      <button class="icon-btn" (click)="toggleMenu()">
-        <i class="bi bi-moon"></i>
-      </button>
-      @if (menuOpen) {
-        <div class="menu">
-          <div class="menu-item" (click)="setTheme('light')">
-            <i class="bi bi-brightness-high"></i> Light
-          </div>
-          <div class="menu-item" (click)="setTheme('dark')">
-            <i class="bi bi-moon"></i> Dark
-          </div>
-          <div class="menu-item" (click)="setTheme('system')">
-            <i class="bi bi-display"></i> System
-          </div>
-        </div>
-      }
-    </div>
+<div class="flex text-[1.25rem] justify-between items-center p-3 bg-appliq-50 appliq-text-white border-b border-solid">
+  <div class="font-semibold">{{ title$ | async }}</div>
+  <div>
+    <a
+      href="{{buyMeACoffeeUrl}}"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="bg-appliq text-[1.2rem] appliq-text-white hover:text-white transition-colors duration-200 px-4 py-2 rounded-2xl text-decoration-none"
+    >
+      ☕ Buy Me a Coffee
+    </a>
   </div>
 </div>
 

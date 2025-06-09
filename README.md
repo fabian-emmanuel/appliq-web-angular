@@ -76,7 +76,7 @@ Before you begin, ensure you have the following installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/appliq-web-angular.git
+git clone https://github.com/fabian-emmanuel/appliq-web-angular.git
 cd appliq-web-angular
 ```
 
@@ -175,7 +175,7 @@ src/
 - **Primary**: Slate/Blue gradient theme (#0F172A, #1F2937)
 - **Background**: Dark slate with blue accents
 - **Text**: Light gray (#D6D6D6) with semantic color variations
-- **Status Colors**: 
+- **Status Colors**:
   - Blue (#3B82F6) - Applied/In Progress
   - Green (#22C55E) - Success/Accepted
   - Yellow (#EAB308) - Pending/Under Review
@@ -196,45 +196,6 @@ src/
 - **Navigation**: Fixed sidebar with collapsible mobile menu and breadcrumbs
 - **Charts**: Consistent color scheme across all data visualizations
 
-## 🔧 Configuration
-
-### Environment Setup
-The application uses Angular's environment configuration:
-
-```typescript
-// src/environments/environment.ts
-export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:3000/api',
-  features: {
-    enableNotifications: true,
-    enableAnalytics: true,
-    enableExport: true
-  }
-};
-```
-
-### Tailwind Configuration
-Tailwind CSS is configured with custom colors and utilities:
-
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ["./src/**/*.{html,ts}"],
-  theme: {
-    extend: {
-      colors: {
-        'appliq': '#0F172A',
-        'appliq-50': '#1F2937',
-      },
-      fontFamily: {
-        'sans': ['Itim', 'cursive'],
-      }
-    }
-  }
-}
-```
-
 ## 📊 Features Deep Dive
 
 ### Universal Application Management
@@ -250,20 +211,6 @@ module.exports = {
 - **Comparative Analysis**: Compare performance across different application types, time periods, and organizations
 - **Custom Filters**: Advanced filtering by date range, status, organization type, and custom criteria
 - **Export Capabilities**: Download charts and data in various formats (PDF, PNG, CSV, Excel)
-
-### Smart Notification System
-- **Deadline Tracking**: Automatic reminders for application deadlines, interview dates, and follow-up tasks
-- **Custom Alerts**: Set personalized reminders for specific milestones and events
-- **Email Integration**: Receive notifications via email with customizable frequency
-- **Calendar Sync**: Integration with popular calendar applications
-- **Mobile Notifications**: Push notifications for mobile users
-
-### Document Management System
-- **File Organization**: Organize documents by application type, organization, or custom categories
-- **Version Control**: Track different versions of documents with automatic versioning
-- **Template Library**: Store reusable templates for cover letters, personal statements, and other documents
-- **Secure Storage**: Encrypted document storage with access controls
-- **Quick Access**: Fast search and retrieval of documents during application processes
 
 ### Interview & Assessment Tracking
 - **Multi-round Management**: Track complex interview processes with multiple rounds and stakeholders
@@ -362,13 +309,6 @@ bun run serve:ssr
 - **Service Workers**: Offline functionality and background sync
 - **Performance Monitoring**: Real-time performance metrics and alerts
 
-### Database Optimization
-- **Query Optimization**: Efficient database queries with proper indexing
-- **Connection Pooling**: Optimized database connection management
-- **Caching Layer**: Redis caching for frequently accessed data
-- **Data Pagination**: Efficient handling of large datasets
-- **Background Processing**: Asynchronous processing for heavy operations
-
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
@@ -384,10 +324,10 @@ We welcome contributions! Please follow these steps:
    ```
 
 3. **Make Your Changes**
-   - Follow the coding standards and style guide
-   - Add comprehensive tests for new features
-   - Update documentation for any API changes
-   - Ensure all existing tests pass
+  - Follow the coding standards and style guide
+  - Add comprehensive tests for new features
+  - Update documentation for any API changes
+  - Ensure all existing tests pass
 
 4. **Commit Your Changes**
    ```bash
@@ -400,9 +340,9 @@ We welcome contributions! Please follow these steps:
    ```
 
 6. **Open a Pull Request**
-   - Provide a clear description of the changes
-   - Include screenshots for UI changes
-   - Reference any related issues
+  - Provide a clear description of the changes
+  - Include screenshots for UI changes
+  - Reference any related issues
 
 ### Coding Standards
 - Use TypeScript strict mode for type safety
@@ -418,72 +358,6 @@ We welcome contributions! Please follow these steps:
 - Squash commits before merging to maintain clean history
 - Use pull request templates for consistent reviews
 - Require code review approval before merging
-
-## 📝 API Documentation
-
-### Application Endpoints
-```typescript
-// Get all applications with filtering
-GET /api/applications?type=job&status=applied&page=1&limit=20
-Response: PaginatedApplications
-
-// Create new application
-POST /api/applications
-Body: CreateApplicationDto
-Response: Application
-
-// Update application
-PUT /api/applications/:id
-Body: UpdateApplicationDto
-Response: Application
-
-// Delete application
-DELETE /api/applications/:id
-Response: { success: boolean }
-
-// Get application analytics
-GET /api/applications/analytics?startDate=2024-01-01&endDate=2024-12-31
-Response: AnalyticsData
-```
-
-### Authentication Endpoints
-```typescript
-// User registration
-POST /api/auth/register
-Body: RegisterDto
-Response: { user: User, token: string }
-
-// User login
-POST /api/auth/login
-Body: LoginDto
-Response: { user: User, token: string }
-
-// Password reset
-POST /api/auth/reset-password
-Body: ResetPasswordDto
-Response: { success: boolean }
-
-// Refresh token
-POST /api/auth/refresh
-Body: { refreshToken: string }
-Response: { token: string }
-```
-
-### Document Management Endpoints
-```typescript
-// Upload document
-POST /api/documents
-Body: FormData (multipart/form-data)
-Response: Document
-
-// Get documents
-GET /api/documents?applicationId=123&type=resume
-Response: Document[]
-
-// Delete document
-DELETE /api/documents/:id
-Response: { success: boolean }
-```
 
 ## 🐛 Troubleshooting
 
@@ -523,17 +397,6 @@ npx webpack-bundle-analyzer dist/stats.json
 bun run ng build --source-map
 ```
 
-**Database Connection Issues**
-```bash
-# Check database connectivity
-bun run test:db
-
-# Reset database schema
-bun run db:reset
-
-# Check environment variables
-bun run env:check
-```
 
 ## 📚 Learning Resources
 
@@ -567,6 +430,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Lead Developer**: [Your Name](https://github.com/yourusername)
 - **UI/UX Designer**: [Designer Name](https://github.com/designerusername)
 - **Backend Developer**: [Backend Dev](https://github.com/backendusername)
+- **Frontend Developer**: [Frontend Dev](https://github.com/frontendusername)
 - **DevOps Engineer**: [DevOps Name](https://github.com/devopsusername)
 
 ## 🙏 Acknowledgments
