@@ -67,5 +67,11 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.8.3"
+  },
+  "optionalDependencies": {
+    "msgpackr-extract": "^3.0.2"
+  },
+  "overrides": {
+    "msgpackr-extract": "^3.0.2"
   }
 }
