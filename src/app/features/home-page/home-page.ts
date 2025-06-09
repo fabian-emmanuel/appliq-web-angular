@@ -12,5 +12,9 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
   styleUrl: './home-page.css'
 })
 export class HomePage {
+  mobileMenuOpen = false;
 
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
 }
