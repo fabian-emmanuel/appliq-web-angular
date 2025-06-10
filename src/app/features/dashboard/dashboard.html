@@ -8,7 +8,7 @@
           <h5 class="text-lg {{ item.color }}">{{ item.name }}</h5>
           <p class="text-3xl font-bold {{ item.color }}">{{ item.count }}</p>
         </div>
-        <i class="{{ item.icon }} {{ item.color }}  text-3xl mt-3"></i>
+        <i class="{{ item.icon }} {{ item.color }}  text-3xl"></i>
       </div>
     }
   </div>
@@ -17,12 +17,12 @@
     <h5 class="mb-3">Application Trends</h5>
 
     <!-- Controls Section - Responsive -->
-    <div class="bg-appliq flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center justify-between mb-4 min-h-[60px]">
+    <div class="bg-appliq flex flex-col sm:flex-row flex-wrap gap-3 items-stretch sm:items-center justify-start sm:justify-between mb-4">
 
       <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:w-auto">
         <!-- Date Range Picker -->
-        <div class="sm:w-auto flex-shrink-0">
-          <mat-form-field appearance="outline" class="sm:w-auto">
+        <div class="w-full sm:w-auto sm:flex-shrink-0">
+          <mat-form-field appearance="outline" class="w-full">
             <mat-label>Enter a date range</mat-label>
             <mat-date-range-input [rangePicker]="picker">
               <input matStartDate placeholder="Start date">
@@ -35,8 +35,8 @@
           </mat-form-field>
         </div>
 
-        <div class="sm:w-auto flex-shrink-0">
-          <mat-form-field appearance="outline" class="sm:w-auto">
+        <div class="w-full sm:w-auto sm:flex-shrink-0">
+          <mat-form-field appearance="outline" class="w-full">
             <mat-label>Filter by Status</mat-label>
             <mat-select panelClass="bg-appliq-50 appliq-text-white rounded-[10px]"
                         [(ngModel)]="selectedStatuses"
@@ -57,8 +57,8 @@
       </div>
 
       <!-- Chart Type Radio Buttons -->
-      <div class="sm:w-auto flex-shrink-0">
-        <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex flex-row gap-4">
+      <div class="w-full sm:w-auto sm:flex-shrink-0">
+        <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex flex-row justify-center sm:justify-start gap-4">
           <mat-radio-button value="bar">Bar Chart</mat-radio-button>
           <mat-radio-button value="line">Line Chart</mat-radio-button>
         </mat-radio-group>
@@ -68,7 +68,7 @@
     </div>
 
     <!-- Chart Section - Takes Remaining Space -->
-    <div class="bg-appliq-50 h-[47vh]">
+    <div class="bg-appliq-50 h-[300px] sm:h-[400px] md:h-[47vh] border-0">
       @if (barChartData.length === 0 && lineChartData.length === 0) {
         <div class="no-data-message flex items-center justify-center h-full">
           No data available for the selected filters.
@@ -120,12 +120,12 @@
   </div>
 
   <!--    Recent Trends-->
-  <div class="flex flex-col bg-appliq rounded-[10px] p-2 h-[60%] relative overflow-hidden">
+  <div class="flex flex-col bg-appliq rounded-[10px] p-4 h-[60%] relative overflow-hidden">
 
-    <div class="flex gap-3 p-2 overflow-x-auto">
+    <div class="flex gap-3 p-0 overflow-x-auto">
       @for (activity of recentActivities; track activity; let i = $index) {
         <div
-          class="h-48 w-68 bg-appliq-50 rounded-xl p-4 shadow-md transition-all duration-300 hover:-translate-y-0.5 flex flex-col justify-between">
+          class="h-48 w-60 bg-appliq-50 rounded-xl p-4 shadow-md transition-all duration-300 hover:-translate-y-0.5 flex flex-col justify-between">
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-2">
               <h6 class="text-base font-semibold text-gray-900 truncate">{{ activity.company }}</h6>
@@ -157,9 +157,9 @@
         </div>
       }
       @if (recentActivities.length === 0) {
-        <div class="flex flex-col items-center justify-center py-15 px-5 text-center">
+        <div class="flex flex-col items-center justify-center py-10 px-4 text-center">
           <mat-icon class="text-5xl mb-4 opacity-50">inbox</mat-icon>
-          <h3 class="text-lg font-medium mb-2 m-0">No Recent Activities</h3>
+          <h3 class="text-lg font-medium mb-2">No Recent Activities</h3>
           <p class="text-sm m-0">Activity updates will appear here when available.</p>
         </div>
       }
