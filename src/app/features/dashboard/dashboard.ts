@@ -45,12 +45,14 @@ export class Dashboard implements OnInit {
     selectable: true,
     group: ScaleType.Quantile,
     domain: [
-      '#3B82F6',
-      '#8B5CF6',
-      '#22C55E',
-      '#EF4444',
-      '#EAB308',
-      '#6B7280',
+      '#3B82F6', // Blue
+      '#8B5CF6', // Purple
+      '#22C55E', // Green
+      '#EF4444', // Red
+      '#F59E0B', // Amber
+      '#06B6D4', // Cyan
+      '#EC4899', // Pink
+      '#84CC16', // Lime
     ],
   }
 
@@ -78,12 +80,7 @@ export class Dashboard implements OnInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    this.totalApplicationsCount = 100;
-    this.interviewsCount = 25;
-    this.testsCount = 30;
-    this.offersCount = 15;
-    this.withdrawalsCount = 5;
-    this.rejectedCount = 10;
+    this.calculateStats();
   }
 
   ngOnInit(): void {
@@ -91,6 +88,15 @@ export class Dashboard implements OnInit {
     this.initializeFilters();
     this.getRecentActivities();
     this.updateChartData(); // Initial chart data load
+  }
+
+  private calculateStats(): void {
+    this.totalApplicationsCount = this.dummyApplications.length;
+    this.interviewsCount = this.dummyApplications.filter(app => app.status === 'Interview').length;
+    this.testsCount = this.dummyApplications.filter(app => app.status === 'Test').length;
+    this.offersCount = this.dummyApplications.filter(app => app.status === 'OfferAwarded').length;
+    this.withdrawalsCount = this.dummyApplications.filter(app => app.status === 'Withdrawn').length;
+    this.rejectedCount = this.dummyApplications.filter(app => app.status === 'Rejected').length;
   }
 
   private initializeFilters(): void {
@@ -185,7 +191,6 @@ export class Dashboard implements OnInit {
       .slice(0, 6); // Get the 6 most recent updates overall
   }
 
-
   private updateChartData(): void {
     let filteredApplications = this.dummyApplications.filter(app => {
       const appDate = new Date(app.createdAt);
@@ -215,7 +220,6 @@ export class Dashboard implements OnInit {
       }
     });
     this.barChartData.sort((a, b) => a.name.localeCompare(b.name));
-
 
     // --- Data for Line Chart (Applications over time per status) ---
     const lineDataMap = new Map<Status, Map<string, number>>(); // Map<Status, Map<DateString, Count>>
@@ -258,9 +262,6 @@ export class Dashboard implements OnInit {
         series: seriesData
       };
     });
-
-    // Ngx-charts often expects data to be sorted by date for line charts
-    // The date sorting is done when creating sortedDates
   }
 
   onSelect(event: any): void {
@@ -268,4 +269,3 @@ export class Dashboard implements OnInit {
     // You can add navigation or more detail display here
   }
 }
-
