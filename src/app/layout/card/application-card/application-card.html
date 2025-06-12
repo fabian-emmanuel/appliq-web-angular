@@ -1,5 +1,6 @@
 <div class="application-card">
   <div class="card-header">
+    <!-- Status badge color and icon -->
     <span class="badge" [ngClass]="currentStatusDetails.colorClass">
       <i [ngClass]="currentStatusDetails.iconClass"></i>
       {{ application.status }}
@@ -11,7 +12,7 @@
   </div>
 
   <div class="company-position">
-    <div class="company-avatar" [ngClass]="currentStatusDetails.colorClass">
+    <div class="company-avatar">
       {{ getInitials(application.company) }}
     </div>
     <div class="position-details">
@@ -32,9 +33,13 @@
       <span>Progress</span>
       <span>{{ currentStatusDetails.progress }}%</span>
     </div>
+    <!-- Progress bar color and width -->
     <div class="progress-bar-bg">
-      <div class="progress-bar" [ngClass]="currentStatusDetails.colorClass"
-      [style.width.%]="currentStatusDetails.progress"></div>
+      <div
+        class="progress-bar"
+        [ngClass]="currentStatusDetails.colorClass"
+        [style.width.%]="currentStatusDetails.progress">
+      </div>
     </div>
   </div>
 
@@ -44,7 +49,7 @@
       @for (status of application.statusHistory.slice().reverse(); track status; let sIndex = $index) {
         <li>
           <div class="timeline-indicator">
-            <div class="dot" [ngClass]="statusDetailsMap[status.status].colorClass"></div>
+            <div class="bi bi-person-check" [ngClass]="statusDetailsMap[status.status].textClass"></div>
             @if (sIndex !== application.statusHistory.length - 1) {
               <div class="connector"></div>
             }
@@ -71,7 +76,7 @@
       @if (showStatusMenu) {
         <ul class="dropdown-menu">
           @for (statusOption of statuses; track statusOption) {
-            <li (click)="onRequestStatusChange(statusOption)">
+            <li (click)="openStatusModal(statusOption)">
               @if (application.status === statusOption) {
                 <span>✓</span>
               }
@@ -88,3 +93,21 @@
   </div>
 </div>
 
+<!-- Modal for status change -->
+@if (showStatusModal) {
+  <div class="modal-backdrop"></div>
+  <div class="modal-popup">
+    <h4>Change Status</h4>
+    <p>Are you sure you want to change status to <b>{{ selectedStatus }}</b>?</p>
+    <textarea
+      [(ngModel)]="statusChangeReason"
+      placeholder="Reason for status change..."
+      rows="3"
+      style="width: 100%; margin-top: 1rem; border-radius: 6px; border: 1px solid #343650; padding: 0.5rem; background: #181a2a; color: #fff;"
+    ></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" (click)="confirmStatusChange()" [disabled]="!statusChangeReason.trim()">Yes, Change</button>
+      <button class="btn btn-secondary" (click)="closeStatusModal()">Cancel</button>
+    </div>
+  </div>
+}

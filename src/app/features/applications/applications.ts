@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { statuses, statusDetailsMap, Application } from '@core/models/application';
+import { statuses, statusDetailsMap, Application, Status } from '@core/models/application';
 import { ApplicationCardComponent } from '@layout/card/application-card/application-card';
 import { PageLayoutComponent } from '@layout/page-layout/page-layout';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar';
@@ -189,14 +189,29 @@ export class ApplicationsComponent {
     }
   }
 
-  handleStatusChange(event: { appId: number, newStatus: string }) {
-    // Find the application and update its status
-    const app = this.applications.find((a: any) => a.id === event.appId);
-    if (app) {
-      // app.statusHistory = event.newStatus;
-      // Optionally, update statusHistory or call an API here
-    }
+  // handleStatusChange(event: { appId: number, newStatus: string }) {
+  //   // Find the application and update its status
+  //   const app = this.applications.find((a: any) => a.id === event.appId);
+  //   if (app) {
+  //     // app.statusHistory = event.newStatus;
+  //     // Optionally, update statusHistory or call an API here
+  //   }
+  // }
+
+  handleStatusChange(event: { appId: number, newStatus: string, reason: string }) {
+  const app = this.applications.find((a: any) => a.id === event.appId);
+  if (app) {
+    app.status = event.newStatus as Status;
+    app.statusHistory.push({
+      id: Date.now(), // or your ID logic
+      applicationId: app.id,
+      createdBy: 1, // or current user
+      status: event.newStatus as any,
+      createdAt: new Date().toISOString(),
+      notes: event.reason
+    });
   }
+}
 
   editApplication(appId: number) {
     // Implement logic to edit application

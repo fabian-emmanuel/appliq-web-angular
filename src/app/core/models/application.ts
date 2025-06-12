@@ -46,39 +46,39 @@ export interface Pagination {
 
 export const statusDetailsMap: Record<Status, StatusDetails> = {
   Applied: {
-    colorClass: 'bg-blue-500',
+    colorClass: 'bg-primary',
     progress: 10,
     iconClass: 'bi bi-send',
-    textClass: 'text-blue-500'
+    textClass: 'text-primary'
   },
   Test: {
-    colorClass: 'bg-yellow-500',
+    colorClass: 'bg-warning',
     progress: 30,
     iconClass: 'bi bi-clipboard-check',
-    textClass: 'text-yellow-500'
+    textClass: 'text-warning'
   },
   Interview: {
-    colorClass: 'bg-purple-500',
+    colorClass: 'bg-sea-green',
     progress: 60,
     iconClass: 'bi bi-person-lines-fill',
-    textClass: 'text-purple-500'
+    textClass: 'text-sea-green'
   },
   OfferAwarded: {
-    colorClass: 'bg-green-500',
+    colorClass: 'bg-success',
     progress: 100,
     iconClass: 'bi bi-award',
-    textClass: 'text-green-500'
+    textClass: 'text-success'
   },
   Rejected: {
-    colorClass: 'bg-red-500',
+    colorClass: 'bg-danger',
     progress: 100,
     iconClass: 'bi bi-x-circle',
-    textClass: 'text-red-500'
+    textClass: 'text-danger'
   },
   Withdrawn: {
-    colorClass: 'bg-gray-500',
+    colorClass: 'bg-secondary',
     progress: 100,
     iconClass: 'bi bi-arrow-counterclockwise',
-    textClass: 'text-gray-500'
+    textClass: 'text-secondary'
   }
 };
