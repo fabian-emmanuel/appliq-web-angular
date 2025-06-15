@@ -1,6 +1,6 @@
-<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 md:p-6 lg:p-8">
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 md:p-6 lg:p-8 overflow-x-hidden">
   <!-- Header Section -->
-  <div class="mb-8">
+  <div class="mb-6 md:mb-8">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -9,8 +9,8 @@
         <p class="text-slate-400 mt-1 text-sm md:text-base">Track your application progress and insights</p>
       </div>
       <div class="flex items-center gap-3">
-        <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl px-4 py-2">
-          <span class="text-xs text-slate-400">Last updated</span>
+        <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl px-3 py-2 text-xs md:text-sm">
+          <span class="text-slate-400">Last updated</span>
           <p class="text-sm font-medium">{{ 'now' | date:'short' }}</p>
         </div>
       </div>
@@ -18,217 +18,223 @@
   </div>
 
   <!-- Stats Cards Grid -->
-  <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6 mb-8">
-    @for (item of items; track item) {
-      <div class="group relative bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6 hover:bg-slate-800/60 hover:border-slate-600/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/10">
-        <!-- Gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
-        <div class="relative z-10">
-          <div class="flex items-center justify-between mb-3">
-            <div class="p-2 bg-slate-700/50 rounded-xl group-hover:bg-slate-600/50 transition-colors duration-300">
-              <i class="{{ item.icon }} text-lg {{ item.color }}"></i>
+  <div class="mb-6 md:mb-8">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6">
+      @for (item of items; track item) {
+        <div class="group relative bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-3 md:p-4 lg:p-6 hover:bg-slate-800/60 hover:border-slate-600/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/10">
+          <!-- Gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <div class="relative z-10">
+            <div class="flex items-center justify-between mb-2 md:mb-3">
+              <div class="p-1.5 md:p-2 bg-slate-700/50 rounded-lg group-hover:bg-slate-600/50 transition-colors duration-300">
+                <i class="{{ item.icon }} text-sm md:text-lg {{ item.color }}"></i>
+              </div>
+              <div class="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full animate-pulse"></div>
             </div>
-            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-          </div>
-          
-          <div class="space-y-1">
-            <p class="text-2xl md:text-3xl font-bold {{ item.color }}">{{ item.count }}</p>
-            <p class="text-xs md:text-sm text-slate-400 font-medium">{{ item.name }}</p>
-          </div>
-          
-          <!-- Mini trend indicator -->
-          <div class="mt-3 flex items-center gap-1">
-            <i class="bi bi-trending-up text-green-400 text-xs"></i>
-            <span class="text-xs text-green-400">+12%</span>
+            
+            <div class="space-y-1">
+              <p class="text-lg md:text-2xl lg:text-3xl font-bold {{ item.color }}">{{ item.count }}</p>
+              <p class="text-xs md:text-sm text-slate-400 font-medium leading-tight">{{ item.name }}</p>
+            </div>
+            
+            <!-- Mini trend indicator -->
+            <div class="mt-2 md:mt-3 flex items-center gap-1">
+              <i class="bi bi-trending-up text-green-400 text-xs"></i>
+              <span class="text-xs text-green-400">+12%</span>
+            </div>
           </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <!-- Charts and Analytics Section -->
-  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8 mb-8">
-    <!-- Main Chart -->
-    <div class="xl:col-span-2 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 md:p-8">
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
-        <div>
-          <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Application Trends</h3>
-          <p class="text-slate-400 text-sm">Track your application performance over time</p>
-        </div>
-        
-        <!-- Chart Controls -->
-        <div class="flex flex-col sm:flex-row gap-3">
-          <!-- Date Range Picker -->
-          <div class="relative">
-            <mat-form-field appearance="outline" class="w-full sm:w-auto">
-              <mat-label class="text-slate-300">Date Range</mat-label>
-              <mat-date-range-input [rangePicker]="picker" class="text-white">
-                <input matStartDate placeholder="Start date" class="text-white">
-                <input matEndDate placeholder="End date" class="text-white">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker panelClass="bg-slate-800 text-white rounded-xl border border-slate-700"></mat-date-range-picker>
-            </mat-form-field>
+  <div class="mb-6 md:mb-8">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+      <!-- Main Chart -->
+      <div class="xl:col-span-2 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6 lg:p-8">
+        <div class="flex flex-col gap-4 mb-4 md:mb-6">
+          <div>
+            <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2">Application Trends</h3>
+            <p class="text-slate-400 text-sm">Track your application performance over time</p>
           </div>
-
-          <!-- Status Filter -->
-          <div class="relative">
-            <mat-form-field appearance="outline" class="w-full sm:w-auto">
-              <mat-label class="text-slate-300">Status Filter</mat-label>
-              <mat-select panelClass="bg-slate-800 text-white rounded-xl border border-slate-700"
-                          [(ngModel)]="selectedStatuses"
-                          multiple
-                          (selectionChange)="onFilterChange()"
-                          class="text-white">
-                <mat-select-trigger class="text-white">
-                  {{ StatusDisplayText }}
-                </mat-select-trigger>
-                @for (status of allStatuses; track status) {
-                  <mat-option [value]="status" class="text-white hover:bg-slate-700">
-                    {{ status }}
-                  </mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <!-- Chart Type Toggle -->
-          <div class="flex bg-slate-700/50 rounded-xl p-1">
-            <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex">
-              <mat-radio-button value="bar" class="flex-1">
-                <span class="px-3 py-2 text-xs font-medium rounded-lg transition-colors duration-200" 
-                      [class]="chartType === 'bar' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:text-white'">
-                  Bar
-                </span>
-              </mat-radio-button>
-              <mat-radio-button value="line" class="flex-1">
-                <span class="px-3 py-2 text-xs font-medium rounded-lg transition-colors duration-200"
-                      [class]="chartType === 'line' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:text-white'">
-                  Line
-                </span>
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-      </div>
-
-      <!-- Chart Container -->
-      <div class="bg-slate-900/50 rounded-xl p-4 h-64 md:h-80 lg:h-96">
-        @if (barChartData.length === 0 && lineChartData.length === 0) {
-          <div class="flex flex-col items-center justify-center h-full text-center">
-            <div class="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">
-              <i class="bi bi-bar-chart text-2xl text-slate-400"></i>
+          
+          <!-- Chart Controls -->
+          <div class="flex flex-col gap-3">
+            <!-- Date Range Picker -->
+            <div class="w-full">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label class="text-slate-300">Date Range</mat-label>
+                <mat-date-range-input [rangePicker]="picker" class="text-white">
+                  <input matStartDate placeholder="Start date" class="text-white">
+                  <input matEndDate placeholder="End date" class="text-white">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker panelClass="bg-slate-800 text-white rounded-xl border border-slate-700"></mat-date-range-picker>
+              </mat-form-field>
             </div>
-            <h4 class="text-lg font-medium text-slate-300 mb-2">No Data Available</h4>
-            <p class="text-sm text-slate-500">Adjust your filters to view analytics</p>
-          </div>
-        }
-        
-        @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
-          <ngx-charts-bar-vertical
-            [results]="barChartData"
-            [xAxis]="true"
-            [yAxis]="true"
-            [showGridLines]="false"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            xAxisLabel="Application Status"
-            yAxisLabel="Count"
-            [gradient]="true"
-            [scheme]="appliqScheme"
-            [barPadding]="8"
-            [roundDomains]="false"
-            [showDataLabel]="true"
-            [legend]="false"
-            [roundEdges]="true"
-            [tooltipDisabled]="false"
-            (select)="onSelect($event)"
-            class="w-full h-full">
-          </ngx-charts-bar-vertical>
-        }
 
-        @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
-          <ngx-charts-line-chart
-            [results]="lineChartData"
-            [xAxis]="true"
-            [yAxis]="true"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
-            xAxisLabel="Date"
-            yAxisLabel="Count"
-            [scheme]="appliqScheme"
-            [gradient]="true"
-            [legend]="false"
-            [showGridLines]="false"
-            [roundDomains]="false"
-            [tooltipDisabled]="false"
-            (select)="onSelect($event)"
-            class="w-full h-full">
-          </ngx-charts-line-chart>
-        }
+            <div class="flex flex-col sm:flex-row gap-3">
+              <!-- Status Filter -->
+              <div class="flex-1">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label class="text-slate-300">Status Filter</mat-label>
+                  <mat-select panelClass="bg-slate-800 text-white rounded-xl border border-slate-700"
+                              [(ngModel)]="selectedStatuses"
+                              multiple
+                              (selectionChange)="onFilterChange()"
+                              class="text-white">
+                    <mat-select-trigger class="text-white">
+                      {{ StatusDisplayText }}
+                    </mat-select-trigger>
+                    @for (status of allStatuses; track status) {
+                      <mat-option [value]="status" class="text-white hover:bg-slate-700">
+                        {{ status }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- Chart Type Toggle -->
+              <div class="flex bg-slate-700/50 rounded-xl p-1 self-start">
+                <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex">
+                  <mat-radio-button value="bar" class="flex-1">
+                    <span class="px-2 md:px-3 py-1 md:py-2 text-xs font-medium rounded-lg transition-colors duration-200" 
+                          [class]="chartType === 'bar' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:text-white'">
+                      Bar
+                    </span>
+                  </mat-radio-button>
+                  <mat-radio-button value="line" class="flex-1">
+                    <span class="px-2 md:px-3 py-1 md:py-2 text-xs font-medium rounded-lg transition-colors duration-200"
+                          [class]="chartType === 'line' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:text-white'">
+                      Line
+                    </span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="bg-slate-900/50 rounded-xl p-4 h-64 md:h-80 lg:h-96">
+          @if (barChartData.length === 0 && lineChartData.length === 0) {
+            <div class="flex flex-col items-center justify-center h-full text-center">
+              <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">
+                <i class="bi bi-bar-chart text-xl md:text-2xl text-slate-400"></i>
+              </div>
+              <h4 class="text-base md:text-lg font-medium text-slate-300 mb-2">No Data Available</h4>
+              <p class="text-sm text-slate-500">Adjust your filters to view analytics</p>
+            </div>
+          }
+          
+          @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
+            <ngx-charts-bar-vertical
+              [results]="barChartData"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showGridLines]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              xAxisLabel="Application Status"
+              yAxisLabel="Count"
+              [gradient]="true"
+              [scheme]="appliqScheme"
+              [barPadding]="8"
+              [roundDomains]="false"
+              [showDataLabel]="true"
+              [legend]="false"
+              [roundEdges]="true"
+              [tooltipDisabled]="false"
+              (select)="onSelect($event)"
+              class="w-full h-full">
+            </ngx-charts-bar-vertical>
+          }
+
+          @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
+            <ngx-charts-line-chart
+              [results]="lineChartData"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              xAxisLabel="Date"
+              yAxisLabel="Count"
+              [scheme]="appliqScheme"
+              [gradient]="true"
+              [legend]="false"
+              [showGridLines]="false"
+              [roundDomains]="false"
+              [tooltipDisabled]="false"
+              (select)="onSelect($event)"
+              class="w-full h-full">
+            </ngx-charts-line-chart>
+          }
+        </div>
       </div>
-    </div>
 
-    <!-- Quick Stats Sidebar -->
-    <div class="space-y-6">
-      <!-- Success Rate Card -->
-      <div class="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h4 class="text-lg font-semibold text-white">Success Rate</h4>
-          <div class="p-2 bg-green-500/20 rounded-xl">
-            <i class="bi bi-trophy text-green-400"></i>
+      <!-- Quick Stats Sidebar -->
+      <div class="space-y-4 md:space-y-6">
+        <!-- Success Rate Card -->
+        <div class="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-4 md:p-6">
+          <div class="flex items-center justify-between mb-3 md:mb-4">
+            <h4 class="text-base md:text-lg font-semibold text-white">Success Rate</h4>
+            <div class="p-1.5 md:p-2 bg-green-500/20 rounded-xl">
+              <i class="bi bi-trophy text-green-400 text-sm md:text-base"></i>
+            </div>
+          </div>
+          <div class="space-y-2 md:space-y-3">
+            <div class="text-2xl md:text-3xl font-bold text-green-400">73%</div>
+            <div class="w-full bg-slate-700/50 rounded-full h-2">
+              <div class="bg-gradient-to-r from-green-400 to-emerald-400 h-2 rounded-full" style="width: 73%"></div>
+            </div>
+            <p class="text-xs text-slate-400">Based on last 30 applications</p>
           </div>
         </div>
-        <div class="space-y-3">
-          <div class="text-3xl font-bold text-green-400">73%</div>
-          <div class="w-full bg-slate-700/50 rounded-full h-2">
-            <div class="bg-gradient-to-r from-green-400 to-emerald-400 h-2 rounded-full" style="width: 73%"></div>
-          </div>
-          <p class="text-xs text-slate-400">Based on last 30 applications</p>
-        </div>
-      </div>
 
-      <!-- Response Time Card -->
-      <div class="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-2xl p-6">
-        <div class="flex items-center justify-between mb-4">
-          <h4 class="text-lg font-semibold text-white">Avg Response</h4>
-          <div class="p-2 bg-blue-500/20 rounded-xl">
-            <i class="bi bi-clock text-blue-400"></i>
+        <!-- Response Time Card -->
+        <div class="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-2xl p-4 md:p-6">
+          <div class="flex items-center justify-between mb-3 md:mb-4">
+            <h4 class="text-base md:text-lg font-semibold text-white">Avg Response</h4>
+            <div class="p-1.5 md:p-2 bg-blue-500/20 rounded-xl">
+              <i class="bi bi-clock text-blue-400 text-sm md:text-base"></i>
+            </div>
+          </div>
+          <div class="space-y-2 md:space-y-3">
+            <div class="text-2xl md:text-3xl font-bold text-blue-400">12 days</div>
+            <div class="flex items-center gap-2">
+              <i class="bi bi-trending-down text-green-400 text-sm"></i>
+              <span class="text-xs text-green-400">2 days faster</span>
+            </div>
+            <p class="text-xs text-slate-400">Compared to last month</p>
           </div>
         </div>
-        <div class="space-y-3">
-          <div class="text-3xl font-bold text-blue-400">12 days</div>
-          <div class="flex items-center gap-2">
-            <i class="bi bi-trending-down text-green-400 text-sm"></i>
-            <span class="text-xs text-green-400">2 days faster</span>
-          </div>
-          <p class="text-xs text-slate-400">Compared to last month</p>
-        </div>
-      </div>
 
-      <!-- Quick Actions -->
-      <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6">
-        <h4 class="text-lg font-semibold text-white mb-4">Quick Actions</h4>
-        <div class="space-y-3">
-          <button class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-3 px-4 text-sm font-medium transition-all duration-200 hover:scale-105">
-            <i class="bi bi-plus-circle mr-2"></i>
-            Add Application
-          </button>
-          <button class="w-full bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl py-3 px-4 text-sm font-medium transition-all duration-200">
-            <i class="bi bi-download mr-2"></i>
-            Export Data
-          </button>
+        <!-- Quick Actions -->
+        <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6">
+          <h4 class="text-base md:text-lg font-semibold text-white mb-3 md:mb-4">Quick Actions</h4>
+          <div class="space-y-2 md:space-y-3">
+            <button class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl py-2.5 md:py-3 px-4 text-sm font-medium transition-all duration-200 hover:scale-105">
+              <i class="bi bi-plus-circle mr-2"></i>
+              Add Application
+            </button>
+            <button class="w-full bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl py-2.5 md:py-3 px-4 text-sm font-medium transition-all duration-200">
+              <i class="bi bi-download mr-2"></i>
+              Export Data
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Recent Activities Section -->
-  <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 md:p-8">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+  <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6 lg:p-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 md:mb-6">
       <div>
-        <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Recent Activities</h3>
+        <h3 class="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2">Recent Activities</h3>
         <p class="text-slate-400 text-sm">Latest updates on your applications</p>
       </div>
       <button class="self-start sm:self-auto bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl py-2 px-4 text-sm font-medium transition-all duration-200">
@@ -237,87 +243,52 @@
     </div>
 
     @if (recentActivities.length > 0) {
-      <!-- Desktop/Tablet View -->
-      <div class="hidden md:block overflow-x-auto">
-        <div class="flex gap-6 pb-4">
-          @for (activity of recentActivities; track activity; let i = $index) {
-            <div class="flex-shrink-0 w-80 bg-slate-900/50 rounded-xl p-6 border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 hover:scale-105">
-              <div class="flex items-start justify-between mb-4">
-                <div class="flex-1 min-w-0">
-                  <h4 class="font-semibold text-white truncate">{{ activity.company }}</h4>
-                  <p class="text-sm text-slate-400 truncate">{{ activity.position }}</p>
-                </div>
-                <div class="ml-3 flex-shrink-0">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400">
-                    {{ activity.newStatus }}
-                  </span>
-                </div>
-              </div>
-              
-              <div class="space-y-3">
-                <div class="text-xs text-slate-500">
-                  {{ activity.date | date:'MMM d, y • h:mm a' }}
-                </div>
-                
-                @if (activity.oldStatus !== activity.newStatus) {
-                  <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-red-500/20 text-red-400">
-                      {{ activity.oldStatus }}
-                    </span>
-                    <i class="bi bi-arrow-right text-slate-400"></i>
-                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-500/20 text-green-400">
-                      {{ activity.newStatus }}
-                    </span>
-                  </div>
-                }
-                
-                @if (activity.notes) {
-                  <p class="text-xs text-slate-400 line-clamp-2">{{ activity.notes }}</p>
-                }
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-
-      <!-- Mobile View -->
-      <div class="md:hidden space-y-4">
-        @for (activity of recentActivities.slice(0, 3); track activity) {
-          <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
-            <div class="flex items-start justify-between mb-3">
+      <!-- Activities Grid - No Horizontal Scroll -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+        @for (activity of recentActivities.slice(0, 6); track activity; let i = $index) {
+          <div class="bg-slate-900/50 rounded-xl p-4 md:p-6 border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 hover:scale-105">
+            <div class="flex items-start justify-between mb-3 md:mb-4">
               <div class="flex-1 min-w-0">
-                <h4 class="font-semibold text-white text-sm">{{ activity.company }}</h4>
-                <p class="text-xs text-slate-400">{{ activity.position }}</p>
+                <h4 class="font-semibold text-white truncate text-sm md:text-base">{{ activity.company }}</h4>
+                <p class="text-xs md:text-sm text-slate-400 truncate">{{ activity.position }}</p>
               </div>
-              <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400 ml-2">
-                {{ activity.newStatus }}
-              </span>
-            </div>
-            
-            <div class="text-xs text-slate-500 mb-2">
-              {{ activity.date | date:'MMM d • h:mm a' }}
-            </div>
-            
-            @if (activity.oldStatus !== activity.newStatus) {
-              <div class="flex items-center gap-2">
-                <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-red-500/20 text-red-400">
-                  {{ activity.oldStatus }}
-                </span>
-                <i class="bi bi-arrow-right text-slate-400 text-xs"></i>
-                <span class="inline-flex items-center px-2 py-1 rounded text-xs bg-green-500/20 text-green-400">
+              <div class="ml-3 flex-shrink-0">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400">
                   {{ activity.newStatus }}
                 </span>
               </div>
-            }
+            </div>
+            
+            <div class="space-y-2 md:space-y-3">
+              <div class="text-xs text-slate-500">
+                {{ activity.date | date:'MMM d, y • h:mm a' }}
+              </div>
+              
+              @if (activity.oldStatus !== activity.newStatus) {
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-red-500/20 text-red-400">
+                    {{ activity.oldStatus }}
+                  </span>
+                  <i class="bi bi-arrow-right text-slate-400 text-xs"></i>
+                  <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-500/20 text-green-400">
+                    {{ activity.newStatus }}
+                  </span>
+                </div>
+              }
+              
+              @if (activity.notes) {
+                <p class="text-xs text-slate-400 line-clamp-2">{{ activity.notes }}</p>
+              }
+            </div>
           </div>
         }
       </div>
     } @else {
-      <div class="flex flex-col items-center justify-center py-12 text-center">
-        <div class="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">
-          <i class="bi bi-activity text-2xl text-slate-400"></i>
+      <div class="flex flex-col items-center justify-center py-8 md:py-12 text-center">
+        <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4">
+          <i class="bi bi-activity text-xl md:text-2xl text-slate-400"></i>
         </div>
-        <h4 class="text-lg font-medium text-slate-300 mb-2">No Recent Activities</h4>
+        <h4 class="text-base md:text-lg font-medium text-slate-300 mb-2">No Recent Activities</h4>
         <p class="text-sm text-slate-500 max-w-sm">Activity updates will appear here when you start tracking applications.</p>
       </div>
     }

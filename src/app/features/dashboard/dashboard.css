@@ -139,3 +139,36 @@
     background-position: -200% 0;
   }
 }
+
+/* Prevent horizontal overflow */
+* {
+  box-sizing: border-box;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+/* Ensure responsive images and content */
+img, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive text sizing */
+@media (max-width: 640px) {
+  .text-4xl {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
