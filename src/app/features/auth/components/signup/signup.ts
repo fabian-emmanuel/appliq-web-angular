@@ -11,7 +11,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
 import {SignupFormData} from '../../../../core/models/auth';
 import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
-import {CountryISO, NgxIntlTelInputModule, PhoneNumberFormat, SearchCountryField} from 'ngx-intl-tel-input';
+import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
 
 @Component({
   selector: 'app-signup',
@@ -20,7 +20,7 @@ import {CountryISO, NgxIntlTelInputModule, PhoneNumberFormat, SearchCountryField
     ReactiveFormsModule,
     RouterLink,
     RouterOutlet,
-    NgxIntlTelInputModule
+    PhoneInput,
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
@@ -36,6 +36,7 @@ export class Signup {
   get firstName() { return this.signupForm.get('firstName') as FormControl; }
   get lastName() { return this.signupForm.get('lastName') as FormControl; }
   get email() { return this.signupForm.get('email') as FormControl; }
+  get phone() { return this.signupForm.get('phone') as FormControl; }
   get password() { return this.signupForm.get('password') as FormControl; }
   get confirmPassword() { return this.signupForm.get('confirmPassword') as FormControl; }
   get acceptTerms() { return this.signupForm.get('acceptTerms') as FormControl; }
@@ -79,6 +80,7 @@ export class Signup {
         Validators.maxLength(50),
         this.noWhitespaceValidator
       ]],
+      phone: [''], // Phone input is handled separately, no validators here
       email: ['', [
         Validators.required,
         Validators.email,
@@ -147,7 +149,4 @@ export class Signup {
     return errors;
   }
 
-  protected readonly PhoneNumberFormat = PhoneNumberFormat;
-  protected readonly SearchCountryField = SearchCountryField;
-  protected readonly CountryISO = CountryISO;
 }

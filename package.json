@@ -44,7 +44,6 @@
     "google-libphonenumber": "^3.2.42",
     "intl-tel-input": "^25.3.1",
     "ng2-charts": "^8.0.0",
-    "ngx-intl-tel-input": "^17.0.0",
     "p-intl-input-tel": "^19.0.6",
     "postcss": "^8.5.4",
     "primeng": "^19.1.3",

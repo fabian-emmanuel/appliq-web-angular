@@ -1,38 +1,14 @@
-<div class="min-h-screen bg-appliq text-white">
-  <!-- Mobile Header -->
-  <div class="block md:hidden px-4 py-3 border-b border-slate-700/50">
-    <h1 class="text-xl font-bold text-white">Dashboard</h1>
-    <p class="text-sm text-slate-400 mt-1">{{ 'now' | date:'short' }}</p>
-  </div>
-
-  <!-- Desktop Header -->
-  <div class="hidden md:block px-6 py-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-      <div>
-        <h1 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-          Dashboard Overview
-        </h1>
-        <p class="text-slate-400 mt-2">Track your application progress and insights</p>
-      </div>
-      <div class="flex items-center gap-3">
-        <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-xl px-4 py-2">
-          <span class="text-slate-400 text-sm">Last updated</span>
-          <p class="text-sm font-medium text-white">{{ 'now' | date:'short' }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
+<div class="min-h-screen bg-appliq-50 appliq-text-white">
   <!-- Stats Grid - Mobile First -->
-  <div class="px-4 md:px-6 mb-8">
+  <div class="px-4 md:px-6 mb-6">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
       @for (item of items; track item) {
         <div class="group relative bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-3 md:p-4 hover:bg-slate-800/60 hover:border-slate-600/50 transition-all duration-300 hover:scale-105"
              style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
-          
+
           <!-- Gradient overlay -->
           <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
+
           <div class="relative z-10">
             <!-- Icon and Status -->
             <div class="flex items-center justify-between mb-2">
@@ -42,13 +18,13 @@
               </div>
               <div class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
             </div>
-            
+
             <!-- Count and Label -->
             <div class="space-y-1">
               <p class="text-lg md:text-2xl font-bold {{ item.color }}">{{ item.count }}</p>
               <p class="text-xs md:text-sm text-slate-400 font-medium leading-tight">{{ item.name }}</p>
             </div>
-            
+
             <!-- Trend -->
             <div class="mt-2 flex items-center gap-1">
               <i class="bi bi-trending-up text-green-400 text-xs"></i>
@@ -61,19 +37,19 @@
   </div>
 
   <!-- Main Content Grid -->
-  <div class="px-4 md:px-6 mb-8">
+  <div class="px-4 md:px-6 mb-6">
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
-      
+
       <!-- Chart Section -->
       <div class="xl:col-span-2 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
            style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
-        
+
         <!-- Chart Header -->
         <div class="mb-4 md:mb-6">
           <h3 class="text-lg md:text-xl font-bold text-white mb-2">Application Trends</h3>
           <p class="text-slate-400 text-sm">Track your application performance over time</p>
         </div>
-        
+
         <!-- Mobile Controls -->
         <div class="block md:hidden mb-4 space-y-3">
           <!-- Date Range - Mobile -->
@@ -108,7 +84,7 @@
           <div class="flex bg-slate-700/50 rounded-xl p-1">
             <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
               <mat-radio-button value="bar" class="flex-1">
-                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full" 
+                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
                       [style.background]="chartType === 'bar' ? '#3B82F6' : 'transparent'"
                       [style.color]="chartType === 'bar' ? 'white' : '#94A3B8'">
                   Bar
@@ -161,7 +137,7 @@
               <div class="flex bg-slate-700/50 rounded-xl p-1 w-full">
                 <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
                   <mat-radio-button value="bar" class="flex-1">
-                    <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center" 
+                    <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center"
                           [style.background]="chartType === 'bar' ? '#3B82F6' : 'transparent'"
                           [style.color]="chartType === 'bar' ? 'white' : '#94A3B8'">
                       Bar
@@ -193,7 +169,7 @@
               <p class="text-sm text-slate-500">Adjust your filters to view analytics</p>
             </div>
           }
-          
+
           @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
             <ngx-charts-bar-vertical
               [results]="barChartData"
@@ -254,7 +230,7 @@
           <div class="space-y-2 md:space-y-3">
             <div class="text-2xl md:text-3xl font-bold text-green-400">73%</div>
             <div class="w-full bg-slate-700/50 rounded-full h-2">
-              <div class="h-2 rounded-full" 
+              <div class="h-2 rounded-full"
                    style="width: 73%; background: linear-gradient(90deg, #22C55E 0%, #10B981 100%);"></div>
             </div>
             <p class="text-xs text-slate-400">Based on last 30 applications</p>
@@ -305,7 +281,7 @@
   <div class="px-4 md:px-6 pb-6">
     <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
          style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
-      
+
       <!-- Section Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 md:mb-6">
         <div>
@@ -333,12 +309,12 @@
                   {{ activity.newStatus }}
                 </span>
               </div>
-              
+
               <div class="space-y-2">
                 <div class="text-xs text-slate-500">
                   {{ activity.date | date:'MMM d • h:mm a' }}
                 </div>
-                
+
                 @if (activity.oldStatus !== activity.newStatus) {
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium"
@@ -352,7 +328,7 @@
                     </span>
                   </div>
                 }
-                
+
                 @if (activity.notes) {
                   <p class="text-xs text-slate-400 line-clamp-2">{{ activity.notes }}</p>
                 }
@@ -378,12 +354,12 @@
                   </span>
                 </div>
               </div>
-              
+
               <div class="space-y-2 md:space-y-3">
                 <div class="text-xs text-slate-500">
                   {{ activity.date | date:'MMM d, y • h:mm a' }}
                 </div>
-                
+
                 @if (activity.oldStatus !== activity.newStatus) {
                   <div class="flex items-center gap-2 flex-wrap">
                     <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium"
@@ -397,7 +373,7 @@
                     </span>
                   </div>
                 }
-                
+
                 @if (activity.notes) {
                   <p class="text-xs text-slate-400 line-clamp-2">{{ activity.notes }}</p>
                 }
