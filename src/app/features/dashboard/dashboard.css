@@ -22,7 +22,7 @@
 }
 
 ::ng-deep .mat-mdc-input-element {
-  color: white !important;
+  color: var(--appliq-text-color) !important;
 }
 
 /* Custom Radio Button Styling */
@@ -52,7 +52,7 @@
 }
 
 ::ng-deep .mat-mdc-option {
-  color: white !important;
+  color: var(--appliq-text-color) !important;
 }
 
 ::ng-deep .mat-mdc-option:hover {
@@ -72,16 +72,16 @@
 
 ::ng-deep .mat-calendar {
   background: #1F2937 !important;
-  color: white !important;
+  color: var(--appliq-text-color) !important;
 }
 
 ::ng-deep .mat-calendar-header {
   background: #1F2937 !important;
-  color: white !important;
+  color: var(--appliq-text-color) !important;
 }
 
 ::ng-deep .mat-calendar-body-cell-content {
-  color: white !important;
+  color: var(--appliq-text-color) !important;
 }
 
 ::ng-deep .mat-calendar-body-selected {
@@ -203,18 +203,11 @@
 
 /* Ensure proper contrast for accessibility */
 .text-contrast {
-  color: #F8FAFC;
+  color: var(--appliq-text-color);
 }
 
 .bg-contrast {
   background-color: #0F172A;
-}
-
-/* Focus states for better accessibility */
-button:focus,
-.mat-mdc-form-field:focus-within {
-  outline: 2px solid #3B82F6;
-  outline-offset: 2px;
 }
 
 /* Smooth transitions for all interactive elements */
