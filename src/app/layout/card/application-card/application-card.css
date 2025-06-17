@@ -1,16 +1,29 @@
 .application-card {
-  background: #0F172AEB;
+  background: #0F172A;
   color: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   display: flex;
   flex-direction: column;
   transition: box-shadow 0.2s, transform 0.2s;
-  /* overflow: hidden; */
   margin-bottom: 1.5rem;
+}   /* overflow: hidden; */
+
+.application-container.list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  background: #0F172A;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  box-shadow: none;
+  min-height: 48px;
+  gap: 1rem;
 }
 
-.application-card:hover {
+.application-card:hover, .application-container.list-row:hover {
   box-shadow: 0 6px 24px rgba(0,0,0,0.18);
   transform: scale(1.01);
 }
@@ -317,3 +330,24 @@
   background: #343650;
   color: #fff;
 }
+
+.list-col {
+  flex: 1 1 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list-col.company { min-width: 120px; font-weight: 600; }
+.list-col.position { min-width: 140px; }
+.list-col.status { min-width: 110px; }
+.list-col.date { min-width: 100px; }
+.list-col.actions {
+  min-width: 80px;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+
+

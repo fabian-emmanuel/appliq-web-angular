@@ -14,6 +14,7 @@ export class ApplicationCardComponent {
   @Input() application!: Application;
   @Input() statusDetailsMap: any = {};
   @Input() statuses: string[] = [];
+  @Input() viewMode: 'grid' | 'list' = 'grid';
 
   @Output() requestStatusChange = new EventEmitter<{ appId: number, newStatus: string, reason: string }>();
   @Output() edit = new EventEmitter<number>();

@@ -77,6 +77,7 @@
             [application]="app"
             [statusDetailsMap]="statusDetailsMap"
             [statuses]="statuses"
+            [viewMode]="viewMode"
             (requestStatusChange)="handleStatusChange($event)"
             (edit)="editApplication($event)"
             (delete)="deleteApplication($event)">
@@ -119,22 +120,12 @@
 </div>
 <router-outlet />
 
-<!-- <button class="filter-btn" (click)="toggleStatusDropdown()">
-All Statuses <i class="bi bi-chevron-double-up ms-2"></i>
-</button>
-<div class="dropdown-menu" *ngIf="statusDropdownOpen">
-  <a class="dropdown-item" href="#">All Statuses</a>
-  <a class="dropdown-item" href="#">Applied</a>
-  <a class="dropdown-item" href="#">Test</a>
-  <a class="dropdown-item" href="#">Interview</a>
-  <a class="dropdown-item" href="#">OfferAwarded</a>
-  <a class="dropdown-item" href="#">Rejected</a>
-  <a class="dropdown-item" href="#">Withdrawn</a>
-</div> -->
-
-<!-- <div class="application-card" *ngFor="let app of paginatedApplications">
-<h4>{{ app.title }}</h4>
-<p>{{ app.description }}</p>
-<p>{{ app.status }}</p>
-<p>{{ app.date }}</p>
-</div> -->
+@if (viewMode === 'list') {
+  <div class="application-list-header application-card list-row" style="font-weight: bold; background: #181a2a;">
+    <div class="list-col company">Company</div>
+    <div class="list-col position">Position</div>
+    <div class="list-col status">Status</div>
+    <div class="list-col date">Date Created</div>
+    <div class="list-col actions">Actions</div>
+  </div>
+}
