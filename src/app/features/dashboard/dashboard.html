@@ -1,170 +1,397 @@
-<div class="p-4 overflow-hidden flex flex-col gap-4 bg-appliq-50 appliq-text-white">
+<div class="min-h-screen bg-appliq-50 appliq-text-white">
+  <!-- Stats Grid - Mobile First -->
+  <div class="px-4 md:px-6 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+      @for (item of items; track item) {
+        <div class="group relative bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-3 md:p-4 hover:bg-slate-800/60 hover:border-slate-600/50 transition-all duration-300 hover:scale-105"
+             style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
 
-  <div class="flex gap-3 flex-wrap justify-between">
-    @for (item of items; track item) {
-      <div
-        class="bg-appliq rounded-[10px] text-sm p-4 flex-1 flex justify-between items-center shadow-md overflow-hidden">
-        <div>
-          <h5 class="text-lg {{ item.color }}">{{ item.name }}</h5>
-          <p class="text-3xl font-bold {{ item.color }}">{{ item.count }}</p>
-        </div>
-        <i class="{{ item.icon }} {{ item.color }}  text-3xl mt-3"></i>
-      </div>
-    }
-  </div>
+          <!-- Gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-  <div class="flex flex-col bg-appliq rounded-[10px] p-4 h-[70%]">
-    <h5 class="mb-3">Application Trends</h5>
-
-    <!-- Controls Section - Responsive -->
-    <div class="bg-appliq flex flex-col sm:flex-row flex-wrap gap-3 items-start sm:items-center justify-between mb-4 min-h-[60px]">
-
-      <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:w-auto">
-        <!-- Date Range Picker -->
-        <div class="sm:w-auto flex-shrink-0">
-          <mat-form-field appearance="outline" class="sm:w-auto">
-            <mat-label>Enter a date range</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate placeholder="Start date">
-              <input matEndDate placeholder="End date">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-date-range-picker #picker
-                                   panelClass="bg-appliq-50 appliq-text-white rounded-[10px]">
-            </mat-date-range-picker>
-          </mat-form-field>
-        </div>
-
-        <div class="sm:w-auto flex-shrink-0">
-          <mat-form-field appearance="outline" class="sm:w-auto">
-            <mat-label>Filter by Status</mat-label>
-            <mat-select panelClass="bg-appliq-50 appliq-text-white rounded-[10px]"
-                        [(ngModel)]="selectedStatuses"
-                        multiple
-                        (selectionChange)="onFilterChange()">
-              <mat-select-trigger>
-                {{ StatusDisplayText }}
-              </mat-select-trigger>
-              @for (status of allStatuses; track status) {
-                <mat-option [value]="status">
-                  {{ status }}
-                </mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-      </div>
-
-      <!-- Chart Type Radio Buttons -->
-      <div class="sm:w-auto flex-shrink-0">
-        <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex flex-row gap-4">
-          <mat-radio-button value="bar">Bar Chart</mat-radio-button>
-          <mat-radio-button value="line">Line Chart</mat-radio-button>
-        </mat-radio-group>
-      </div>
-
-
-    </div>
-
-    <!-- Chart Section - Takes Remaining Space -->
-    <div class="bg-appliq-50 h-[47vh]">
-      @if (barChartData.length === 0 && lineChartData.length === 0) {
-        <div class="no-data-message flex items-center justify-center h-full">
-          No data available for the selected filters.
-        </div>
-      }
-      @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
-        <ngx-charts-bar-vertical class="overflow-hidden"
-                                 [results]="barChartData"
-                                 [xAxis]="true"
-                                 [yAxis]="true"
-                                 [showGridLines]="false"
-                                 [showXAxisLabel]="true"
-                                 [showYAxisLabel]="true"
-                                 xAxisLabel="Application Status"
-                                 yAxisLabel="Number of Applications"
-                                 [gradient]="false"
-                                 [scheme]="appliqScheme"
-                                 [barPadding]="100"
-                                 [roundDomains]="false"
-                                 [showDataLabel]="true"
-                                 [legend]="true"
-                                 [roundEdges]="true"
-                                 [tooltipDisabled]="false"
-                                 (select)="onSelect($event)"
-                                 style="fill: #9e9e9e">
-        </ngx-charts-bar-vertical>
-      }
-
-      @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
-        <ngx-charts-line-chart class="overflow-hidden"
-                               [results]="lineChartData"
-                               [xAxis]="true"
-                               [yAxis]="true"
-                               [showXAxisLabel]="true"
-                               [showYAxisLabel]="true"
-                               xAxisLabel="Date"
-                               yAxisLabel="Number of Applications"
-                               [scheme]="appliqScheme"
-                               [gradient]="false"
-                               [legend]="true"
-                               [showGridLines]="false"
-                               [roundDomains]="false"
-                               [tooltipDisabled]="false"
-                               (select)="onSelect($event)"
-                               style="fill: #9e9e9e">
-        </ngx-charts-line-chart>
-      }
-    </div>
-  </div>
-
-  <!--    Recent Trends-->
-  <div class="flex flex-col bg-appliq rounded-[10px] p-2 h-[60%] relative overflow-hidden">
-
-    <div class="flex gap-3 p-2 overflow-x-auto">
-      @for (activity of recentActivities; track activity; let i = $index) {
-        <div
-          class="h-48 w-68 bg-appliq-50 rounded-xl p-4 shadow-md transition-all duration-300 hover:-translate-y-0.5 flex flex-col justify-between">
-          <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-2">
-              <h6 class="text-base font-semibold text-gray-900 truncate">{{ activity.company }}</h6>
+          <div class="relative z-10">
+            <!-- Icon and Status -->
+            <div class="flex items-center justify-between mb-2">
+              <div class="p-1.5 md:p-2 bg-slate-700/50 rounded-lg group-hover:bg-slate-600/50 transition-colors duration-300"
+                   style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
+                <i class="{{ item.icon }} text-sm md:text-base {{ item.color }}"></i>
+              </div>
+              <div class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
             </div>
-            <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full text-xs font-medium whitespace-nowrap self-start">
-            {{ activity.position }}
-          </span>
+
+            <!-- Count and Label -->
+            <div class="space-y-1">
+              <p class="text-lg md:text-2xl font-bold {{ item.color }}">{{ item.count }}</p>
+              <p class="text-xs md:text-sm text-slate-400 font-medium leading-tight">{{ item.name }}</p>
+            </div>
+
+            <!-- Trend -->
+            <div class="mt-2 flex items-center gap-1">
+              <i class="bi bi-trending-up text-green-400 text-xs"></i>
+              <span class="text-xs text-green-400">+12%</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="px-4 md:px-6 mb-6">
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
+
+      <!-- Chart Section -->
+      <div class="xl:col-span-2 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+           style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
+
+        <!-- Chart Header -->
+        <div class="mb-4 md:mb-6">
+          <h3 class="text-lg md:text-xl font-bold text-white mb-2">Application Trends</h3>
+          <p class="text-slate-400 text-sm">Track your application performance over time</p>
+        </div>
+
+        <!-- Mobile Controls -->
+        <div class="block md:hidden mb-4 space-y-3">
+          <!-- Date Range - Mobile -->
+          <div class="w-full">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label class="text-slate-300">Date Range</mat-label>
+              <mat-date-range-input [rangePicker]="picker" class="text-white">
+                <input matStartDate placeholder="Start" class="text-white">
+                <input matEndDate placeholder="End" class="text-white">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
           </div>
 
-          <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-1 text-gray-500 text-xs">
-              <span>{{ activity.date | date:'MMM d, y • h:mm a' }}</span>
-            </div>
+          <!-- Status Filter - Mobile -->
+          <div class="w-full">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label class="text-slate-300">Status</mat-label>
+              <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()" class="text-white">
+                <mat-select-trigger class="text-white">
+                  {{ StatusDisplayText }}
+                </mat-select-trigger>
+                @for (status of allStatuses; track status) {
+                  <mat-option [value]="status" class="text-white">{{ status }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
 
-            <div class="flex items-center gap-1">
-              @if (activity.oldStatus !== activity.newStatus) {
-                <span
-                  class="px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wider bg-red-50 text-red-700">
-                {{ activity.oldStatus }}
+          <!-- Chart Type - Mobile -->
+          <div class="flex bg-slate-700/50 rounded-xl p-1">
+            <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
+              <mat-radio-button value="bar" class="flex-1">
+                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
+                      [style.background]="chartType === 'bar' ? '#3B82F6' : 'transparent'"
+                      [style.color]="chartType === 'bar' ? 'white' : '#94A3B8'">
+                  Bar
                 </span>
-                <i class="bi bi-arrow-right-short text-lg"></i>
-              }
-              <span
-                class="px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wider bg-green-50 text-green-700">
-              {{ activity.newStatus }}
-            </span>
+              </mat-radio-button>
+              <mat-radio-button value="line" class="flex-1">
+                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
+                      [style.background]="chartType === 'line' ? '#3B82F6' : 'transparent'"
+                      [style.color]="chartType === 'line' ? 'white' : '#94A3B8'">
+                  Line
+                </span>
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <!-- Desktop Controls -->
+        <div class="hidden md:block mb-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <!-- Date Range - Desktop -->
+            <div class="lg:col-span-1">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label class="text-slate-300">Date Range</mat-label>
+                <mat-date-range-input [rangePicker]="picker2" class="text-white">
+                  <input matStartDate placeholder="Start date" class="text-white">
+                  <input matEndDate placeholder="End date" class="text-white">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker2" class="text-slate-300"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker2></mat-date-range-picker>
+              </mat-form-field>
+            </div>
+
+            <!-- Status Filter - Desktop -->
+            <div class="lg:col-span-1">
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label class="text-slate-300">Status Filter</mat-label>
+                <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()" class="text-white">
+                  <mat-select-trigger class="text-white">
+                    {{ StatusDisplayText }}
+                  </mat-select-trigger>
+                  @for (status of allStatuses; track status) {
+                    <mat-option [value]="status" class="text-white">{{ status }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Chart Type - Desktop -->
+            <div class="lg:col-span-1 flex items-end">
+              <div class="flex bg-slate-700/50 rounded-xl p-1 w-full">
+                <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
+                  <mat-radio-button value="bar" class="flex-1">
+                    <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center"
+                          [style.background]="chartType === 'bar' ? '#3B82F6' : 'transparent'"
+                          [style.color]="chartType === 'bar' ? 'white' : '#94A3B8'">
+                      Bar
+                    </span>
+                  </mat-radio-button>
+                  <mat-radio-button value="line" class="flex-1">
+                    <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center"
+                          [style.background]="chartType === 'line' ? '#3B82F6' : 'transparent'"
+                          [style.color]="chartType === 'line' ? 'white' : '#94A3B8'">
+                      Line
+                    </span>
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
             </div>
           </div>
         </div>
-      }
-      @if (recentActivities.length === 0) {
-        <div class="flex flex-col items-center justify-center py-15 px-5 text-center">
-          <mat-icon class="text-5xl mb-4 opacity-50">inbox</mat-icon>
-          <h3 class="text-lg font-medium mb-2 m-0">No Recent Activities</h3>
-          <p class="text-sm m-0">Activity updates will appear here when available.</p>
+
+        <!-- Chart Container -->
+        <div class="bg-slate-900/50 rounded-xl p-3 md:p-4 h-64 md:h-80 lg:h-96"
+             style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);">
+          @if (barChartData.length === 0 && lineChartData.length === 0) {
+            <div class="flex flex-col items-center justify-center h-full text-center">
+              <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4"
+                   style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
+                <i class="bi bi-bar-chart text-xl md:text-2xl text-slate-400"></i>
+              </div>
+              <h4 class="text-base md:text-lg font-medium text-slate-300 mb-2">No Data Available</h4>
+              <p class="text-sm text-slate-500">Adjust your filters to view analytics</p>
+            </div>
+          }
+
+          @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
+            <ngx-charts-bar-vertical
+              [results]="barChartData"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showGridLines]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              xAxisLabel="Status"
+              yAxisLabel="Count"
+              [gradient]="true"
+              [scheme]="appliqScheme"
+              [barPadding]="8"
+              [roundDomains]="false"
+              [showDataLabel]="true"
+              [legend]="false"
+              [roundEdges]="true"
+              [tooltipDisabled]="false"
+              (select)="onSelect($event)"
+              class="w-full h-full">
+            </ngx-charts-bar-vertical>
+          }
+
+          @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
+            <ngx-charts-line-chart
+              [results]="lineChartData"
+              [xAxis]="true"
+              [yAxis]="true"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              xAxisLabel="Date"
+              yAxisLabel="Count"
+              [scheme]="appliqScheme"
+              [gradient]="true"
+              [legend]="false"
+              [showGridLines]="false"
+              [roundDomains]="false"
+              [tooltipDisabled]="false"
+              (select)="onSelect($event)"
+              class="w-full h-full">
+            </ngx-charts-line-chart>
+          }
+        </div>
+      </div>
+
+      <!-- Sidebar Stats -->
+      <div class="space-y-4">
+        <!-- Success Rate Card -->
+        <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+             style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); border-color: rgba(34, 197, 94, 0.2); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+          <div class="flex items-center justify-between mb-3 md:mb-4">
+            <h4 class="text-base md:text-lg font-semibold text-white">Success Rate</h4>
+            <div class="p-1.5 md:p-2 rounded-xl"
+                 style="background: rgba(34, 197, 94, 0.2);">
+              <i class="bi bi-trophy text-green-400 text-sm md:text-base"></i>
+            </div>
+          </div>
+          <div class="space-y-2 md:space-y-3">
+            <div class="text-2xl md:text-3xl font-bold text-green-400">73%</div>
+            <div class="w-full bg-slate-700/50 rounded-full h-2">
+              <div class="h-2 rounded-full"
+                   style="width: 73%; background: linear-gradient(90deg, #22C55E 0%, #10B981 100%);"></div>
+            </div>
+            <p class="text-xs text-slate-400">Based on last 30 applications</p>
+          </div>
+        </div>
+
+        <!-- Response Time Card -->
+        <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+             style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); border-color: rgba(59, 130, 246, 0.2); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+          <div class="flex items-center justify-between mb-3 md:mb-4">
+            <h4 class="text-base md:text-lg font-semibold text-white">Avg Response</h4>
+            <div class="p-1.5 md:p-2 rounded-xl"
+                 style="background: rgba(59, 130, 246, 0.2);">
+              <i class="bi bi-clock text-blue-400 text-sm md:text-base"></i>
+            </div>
+          </div>
+          <div class="space-y-2 md:space-y-3">
+            <div class="text-2xl md:text-3xl font-bold text-blue-400">12 days</div>
+            <div class="flex items-center gap-2">
+              <i class="bi bi-trending-down text-green-400 text-sm"></i>
+              <span class="text-xs text-green-400">2 days faster</span>
+            </div>
+            <p class="text-xs text-slate-400">Compared to last month</p>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+             style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+          <h4 class="text-base md:text-lg font-semibold text-white mb-3 md:mb-4">Quick Actions</h4>
+          <div class="space-y-2 md:space-y-3">
+            <button class="w-full text-white rounded-xl py-2.5 md:py-3 px-4 text-sm font-medium transition-all duration-200 hover:scale-105"
+                    style="background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);">
+              <i class="bi bi-plus-circle mr-2"></i>
+              Add Application
+            </button>
+            <button class="w-full bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl py-2.5 md:py-3 px-4 text-sm font-medium transition-all duration-200">
+              <i class="bi bi-download mr-2"></i>
+              Export Data
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activities Section -->
+  <div class="px-4 md:px-6 pb-6">
+    <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+         style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
+
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 md:mb-6">
+        <div>
+          <h3 class="text-lg md:text-xl font-bold text-white mb-2">Recent Activities</h3>
+          <p class="text-slate-400 text-sm">Latest updates on your applications</p>
+        </div>
+        <button class="self-start sm:self-auto bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl py-2 px-4 text-sm font-medium transition-all duration-200">
+          View All
+        </button>
+      </div>
+
+      @if (recentActivities.length > 0) {
+        <!-- Mobile Activities List -->
+        <div class="block md:hidden space-y-3">
+          @for (activity of recentActivities.slice(0, 4); track activity) {
+            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30"
+                 style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);">
+              <div class="flex items-start justify-between mb-2">
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-semibold text-white text-sm truncate">{{ activity.company }}</h4>
+                  <p class="text-xs text-slate-400 truncate">{{ activity.position }}</p>
+                </div>
+                <span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                      style="background: rgba(59, 130, 246, 0.2); color: #60A5FA;">
+                  {{ activity.newStatus }}
+                </span>
+              </div>
+
+              <div class="space-y-2">
+                <div class="text-xs text-slate-500">
+                  {{ activity.date | date:'MMM d • h:mm a' }}
+                </div>
+
+                @if (activity.oldStatus !== activity.newStatus) {
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium"
+                          style="background: rgba(239, 68, 68, 0.2); color: #F87171;">
+                      {{ activity.oldStatus }}
+                    </span>
+                    <i class="bi bi-arrow-right text-slate-400 text-xs"></i>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium"
+                          style="background: rgba(34, 197, 94, 0.2); color: #4ADE80;">
+                      {{ activity.newStatus }}
+                    </span>
+                  </div>
+                }
+
+                @if (activity.notes) {
+                  <p class="text-xs text-slate-400 line-clamp-2">{{ activity.notes }}</p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Desktop Activities Grid -->
+        <div class="hidden md:grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          @for (activity of recentActivities.slice(0, 6); track activity) {
+            <div class="bg-slate-900/50 rounded-xl p-4 md:p-6 border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 hover:scale-105"
+                 style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              <div class="flex items-start justify-between mb-3 md:mb-4">
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-semibold text-white truncate text-sm md:text-base">{{ activity.company }}</h4>
+                  <p class="text-xs md:text-sm text-slate-400 truncate">{{ activity.position }}</p>
+                </div>
+                <div class="ml-3 flex-shrink-0">
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                        style="background: rgba(59, 130, 246, 0.2); color: #60A5FA;">
+                    {{ activity.newStatus }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="space-y-2 md:space-y-3">
+                <div class="text-xs text-slate-500">
+                  {{ activity.date | date:'MMM d, y • h:mm a' }}
+                </div>
+
+                @if (activity.oldStatus !== activity.newStatus) {
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium"
+                          style="background: rgba(239, 68, 68, 0.2); color: #F87171;">
+                      {{ activity.oldStatus }}
+                    </span>
+                    <i class="bi bi-arrow-right text-slate-400 text-xs"></i>
+                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium"
+                          style="background: rgba(34, 197, 94, 0.2); color: #4ADE80;">
+                      {{ activity.newStatus }}
+                    </span>
+                  </div>
+                }
+
+                @if (activity.notes) {
+                  <p class="text-xs text-slate-400 line-clamp-2">{{ activity.notes }}</p>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="flex flex-col items-center justify-center py-8 md:py-12 text-center">
+          <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4"
+               style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
+            <i class="bi bi-activity text-xl md:text-2xl text-slate-400"></i>
+          </div>
+          <h4 class="text-base md:text-lg font-medium text-slate-300 mb-2">No Recent Activities</h4>
+          <p class="text-sm text-slate-500 max-w-sm">Activity updates will appear here when you start tracking applications.</p>
         </div>
       }
     </div>
-
   </div>
 </div>
 
