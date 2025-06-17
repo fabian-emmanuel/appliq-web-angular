@@ -299,7 +299,6 @@ import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {isPlatformBrowser} from '@angular/common';
-import {MatIcon} from '@angular/material/icon';
 import {BarChartData, DashboardCount, LineChartSeries} from '../../core/models/dashboard';
 
 
@@ -318,14 +317,12 @@ export class Dashboard implements OnInit {
     selectable: true,
     group: ScaleType.Quantile,
     domain: [
-      '#3B82F6', // Blue
-      '#8B5CF6', // Purple
-      '#22C55E', // Green
-      '#EF4444', // Red
-      '#F59E0B', // Amber
-      '#06B6D4', // Cyan
-      '#EC4899', // Pink
-      '#84CC16', // Lime
+      '#3B82F6',
+      '#8B5CF6',
+      '#22C55E',
+      '#EF4444',
+      '#EAB308',
+      '#6B7280',
     ],
   }
 
@@ -432,17 +429,17 @@ export class Dashboard implements OnInit {
 
   private initializeDashboardItems(): void {
     const baseItems: Omit<DashboardCount, 'icon' | 'color'>[] = [
-      { name: 'Total Applications', count: this.totalApplicationsCount },
-      { name: 'Interviews', count: this.interviewsCount },
-      { name: 'Tests', count: this.testsCount },
-      { name: 'Offers', count: this.offersCount },
-      { name: 'Withdrawn', count: this.withdrawalsCount },
-      { name: 'Rejected', count: this.rejectedCount }
+      {name: 'Total Applications', count: this.totalApplicationsCount},
+      {name: 'Interviews', count: this.interviewsCount},
+      {name: 'Tests', count: this.testsCount},
+      {name: 'Offers', count: this.offersCount},
+      {name: 'Withdrawn', count: this.withdrawalsCount},
+      {name: 'Rejected', count: this.rejectedCount}
     ];
 
     this.items = baseItems.map(item => {
-      const { icon, color } = this.getStatusDetailsForDashboardItem(item.name);
-      return { ...item, icon, color };
+      const {icon, color} = this.getStatusDetailsForDashboardItem(item.name);
+      return {...item, icon, color};
     });
   }
 
