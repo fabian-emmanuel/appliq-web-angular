@@ -39,6 +39,11 @@
             type="text"
           />
 
+          <div class="mb-3">
+            <label for="phone" class="form-label appliq-text-white mb-1">Phone Number</label>
+            <app-phone-input [formControl]="phone"/>
+          </div>
+
 
           <app-input-with-icon
             label="Email"
@@ -65,18 +70,20 @@
           />
 
 
-                    <div class="mb-3">
-                      <label class="custom-checkbox appliq-text-white">
-                        <input
-                          type="checkbox"
-                          [formControl]="acceptTerms"
-                          (change)="onCheckboxChange($event)"
-                          (click)="$event.stopPropagation()">
-                        <span class="checkbox-icon"><i class="bi bi-plugin"></i></span>
-                        I accept the <a [routerLink]="['/terms-of-service']" class="appliq-text-white-50 text-decoration-none">&nbsp; Terms of Service &nbsp;</a>
-                        and  <a [routerLink]="['/privacy-policy']" class="appliq-text-white-50 text-decoration-none "> &nbsp;Privacy Policy &nbsp;</a>
-                      </label>
-                    </div>
+          <div class="mb-3">
+            <label class="custom-checkbox appliq-text-white">
+              <input
+                type="checkbox"
+                [formControl]="acceptTerms"
+                (change)="onCheckboxChange($event)"
+                (click)="$event.stopPropagation()">
+              <span class="checkbox-icon"><i class="bi bi-plugin"></i></span>
+              I accept the <a [routerLink]="['/terms-of-service']" class="appliq-text-white-50 text-decoration-none">&nbsp;
+              Terms of Service &nbsp;</a>
+              and <a [routerLink]="['/privacy-policy']" class="appliq-text-white-50 text-decoration-none "> &nbsp;Privacy
+              Policy &nbsp;</a>
+            </label>
+          </div>
 
           <button type="submit" class="btn bg-appliq-white w-100 mb-3" [disabled]="signupForm.invalid">Create Account
           </button>
@@ -87,7 +94,8 @@
         <div class="text-center">
           <div class="text-center appliq-text-white">
             <p class="mt-1">Already have an account? <a [routerLink]="['/login']"
-                                                        class="appliq-text-white-50 text-decoration-none">Sign In</a></p>
+                                                        class="appliq-text-white-50 text-decoration-none">Sign In</a>
+            </p>
           </div>
         </div>
       </div>

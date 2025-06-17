@@ -7,18 +7,14 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {NgOptimizedImage} from '@angular/common';
-import {CountryISO, NgxIntlTelInputModule, PhoneNumberFormat} from 'ngx-intl-tel-input';
 import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
-import {IntlInputTelComponent, SearchCountryField} from 'p-intl-input-tel';
+import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
 
 @Component({
   selector: 'app-settings',
   imports: [
     ReactiveFormsModule,
-    NgOptimizedImage,
-    NgxIntlTelInputModule,
-    IntlInputTelComponent
+    PhoneInput
   ],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
@@ -32,7 +28,6 @@ export class Settings {
   profileImageUrl = 'https://github.com/shadcn.png';
   isLoading = false;
 
-  preferredCountries: CountryISO[] = [CountryISO.Nigeria, CountryISO.UnitedKingdom];
 
   constructor(private fb: FormBuilder) {
     this.profileForm = this.createProfileForm();
@@ -234,7 +229,4 @@ export class Settings {
     return '';
   }
 
-  protected readonly CountryISO = CountryISO;
-  protected readonly SearchCountryField = SearchCountryField;
-  protected readonly PhoneNumberFormat = PhoneNumberFormat;
 }

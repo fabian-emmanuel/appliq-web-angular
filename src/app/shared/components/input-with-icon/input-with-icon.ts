@@ -35,7 +35,7 @@ export class InputWithIcon implements ControlValueAccessor{
   @Input() isLoginForm !: string;
   @Input() type!: string;
   @Input() control!: FormControl;
-  @Input() additionalClasses: string[] = [];
+  // @Input() additionalClasses: string[] = [];
 
   value: string = '';
   disabled: boolean = false;
@@ -44,12 +44,12 @@ export class InputWithIcon implements ControlValueAccessor{
   passwordStrength: number = 0;
   passwordRequirements = passwordRequirements
 
-  get inputClasses(): string {
-    return `form-control bg-dark border-secondary text-white ${this.additionalClasses.join(' ')}`;
-  }
+  // get inputClasses(): string {
+  //   return ` ${this.additionalClasses.join(' ')}`;
+  // }
 
   get isInvalid(): boolean {
-    return this.control?.invalid && (this.control?.dirty || this.control?.touched);
+    return this.control?.invalid && this.control?.dirty;
   }
 
 

@@ -15,32 +15,8 @@
     </div>
 
     <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-      <!-- Profile Image -->
-      <div class="flex justify-center py-8">
-        <div class="relative">
-          <img ngSrc="{{profileImageUrl}}" alt="Profile Picture"
-               width="128" height="128"
-               class="w-32 h-32 rounded-full object-cover border-2 border-gray-200">
 
-          @if (isProfileEditing) {
-            <div
-              (click)="triggerFileInput()"
-              class="absolute inset-5 bg-appliq bg-opacity-70 rounded-full flex flex-col items-center justify-center cursor-pointer opacity-70 hover:opacity-90 transition-opacity">
-              <span class="text-2xl mb-1">📷</span>
-              <span class="text-xs appliq-text-white">Change Photo</span>
-            </div>
-
-          }
-        </div>
-        <input
-          type="file"
-          id="profileImage"
-          accept="image/*"
-          (change)="onFileSelected($event)"
-          class="hidden">
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 pb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 py-6">
         <!-- First Name -->
         <div class="space-y-2">
           <label for="firstName" class="block text-sm font-medium">First Name *</label>
@@ -51,7 +27,7 @@
             [readonly]="!isProfileEditing"
             [class]="!isProfileEditing ?
               'block w-full px-3 py-2  border border-gray-300 rounded-lg cursor-default' :
-              'block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
+              'block w-full px-[11px] py-[10px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
             [class.border-red-500]="firstName.invalid && firstName.touched">
           @if (getFieldError(profileForm, 'firstName')) {
             <span
@@ -72,7 +48,7 @@
             [readonly]="!isProfileEditing"
             [class]="!isProfileEditing ?
               'block w-full px-3 py-2 border border-gray-300 rounded-lg  cursor-default' :
-              'block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
+              'block w-full px-[11px] py-[10px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
             [class.border-red-500]="lastName.invalid && lastName.touched">
 
           @if (getFieldError(profileForm, 'lastName')) {
@@ -87,20 +63,7 @@
           <label for="phone" class="block text-sm font-medium ">Phone Number</label>
 
           @if (isProfileEditing) {
-            <div class="block w-full rounded-lg">
-              <p-intl-tel-input
-                [favoriteCountries]="preferredCountries"
-                [enableAutoCountrySelect]="true"
-                [displayPlaceholder]="true"
-                [selectedCountryISO]="CountryISO.FrenchPolynesia"
-                [phoneValidation]="true"
-                [separateDialCode]="true"
-                [numberFormat]="PhoneNumberFormat.International"
-                [searchCountryField]="[SearchCountryField.NAME, SearchCountryField.DIALCODE]"
-                formControlName="phone">
-              </p-intl-tel-input>
-            </div>
-
+              <app-phone-input [formControl]="phone"/>
           } @else {
 
             <input
@@ -124,7 +87,7 @@
             [readonly]="!isProfileEditing"
             [class]="!isProfileEditing ?
               'block w-full px-3 py-2 border border-gray-300 rounded-lg cursor-default' :
-              'block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'">
+              'block w-full px-[10px] py-[11px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'">
         </div>
 
         <!-- Bio -->
@@ -137,7 +100,7 @@
             rows="4"
             [class]="!isProfileEditing ?
               'block w-full px-3 py-2  border border-gray-300 rounded-lg cursor-default resize-none' :
-              'block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-vertical'"
+              'block w-full px-[10px] py-[11px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-vertical'"
             placeholder="Tell us about yourself..."></textarea>
           <div class="flex justify-end">
             <span class="text-xs text-gray-500">

@@ -1,0 +1,43 @@
+/* your-component.component.css */
+
+/* If you want to target the input by its ID directly within the p-intl-tel-input */
+:host ::ng-deep input#phone {
+  background: var(--appliq-bg-color-50);
+  color: var(--appliq-text-color);
+  border: none;
+  padding: 11px 10px;
+}
+
+:host ::ng-deep p-select#pn_id_2 {
+  background: var(--appliq-bg-color-50);
+  color: var(--appliq-text-color);
+  border: none;
+}
+
+:host ::ng-deep .p-inputgroup-addon{
+  background: var(--appliq-bg-color-50);
+  color: var(--appliq-text-color);
+  border: none;
+}
+
+:host ::ng-deep .p-inputgroupaddon{
+  background: var(--appliq-bg-color-50);
+  color: var(--appliq-text-color);
+  border: none;
+}
+
+:host ::ng-deep .p-select-overlay{
+  background: var(--appliq-bg-color-50);
+  color: var(--appliq-text-color);
+  border: none;
+}
+
+::ng-deep .p-inputgroupaddon:first-child,
+::ng-deep .p-inputgroupaddon + .p-inputgroupaddon {
+  border-inline-start: none !important;
+}
+
+:host ::ng-deep .p-inputtext {
+  background: var(--appliq-bg-color-50);
+}
+
