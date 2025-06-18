@@ -80,7 +80,7 @@
   .coffee-button-text {
     display: none;
   }
-  
+
   .coffee-button-mobile {
     padding: 0.5rem;
     border-radius: 50%;
@@ -92,11 +92,12 @@
   }
 }
 
-/* Hover effects for better interactivity */
-.coffee-button:hover .coffee-steam {
-  animation-duration: 1s;
+
+.appliq-text-white.hover-effect:hover {
+  cursor: pointer;
 }
 
-.coffee-button:active {
-  transform: scale(0.98);
+.appliq-text-white.hover-effect:hover svg path {
+  stroke: Green;
+  stroke-width: 1px;
 }
