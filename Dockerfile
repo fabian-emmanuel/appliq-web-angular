@@ -35,8 +35,17 @@ FROM nginx:1.25-alpine
 # Copy built Angular files
 COPY --from=builder /app/dist/appliq-web-angular/browser /usr/share/nginx/html
 
-# Minimal SPA configuration
-RUN echo "try_files \$uri \$uri/ /index.html;" > /etc/nginx/conf.d/spa_fallback.conf
+# Proper NGINX configuration for Angular apps
+RUN rm /etc/nginx/conf.d/default.conf && \
+    echo "server {" > /etc/nginx/conf.d/spa.conf && \
+    echo "    listen 80;" >> /etc/nginx/conf.d/spa.conf && \
+    echo "    server_name localhost;" >> /etc/nginx/conf.d/spa.conf && \
+    echo "    root /usr/share/nginx/html;" >> /etc/nginx/conf.d/spa.conf && \
+    echo "    index index.html;" >> /etc/nginx/conf.d/spa.conf && \
+    echo "    location / {" >> /etc/nginx/conf.d/spa.conf && \
+    echo "        try_files \$uri \$uri/ /index.html;" >> /etc/nginx/conf.d/spa.conf && \
+    echo "    }" >> /etc/nginx/conf.d/spa.conf && \
+    echo "}" >> /etc/nginx/conf.d/spa.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
