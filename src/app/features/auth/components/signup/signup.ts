@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {InputWithIconComponent} from '@shared/components/input-with-icon/input-with-icon';
 import {
   AbstractControl,
   FormBuilder, FormControl,
@@ -9,21 +8,24 @@ import {
   Validators
 } from '@angular/forms';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {SignupFormData} from '@core/models/auth';
-import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
+import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
+import {SignupFormData} from '../../../../core/models/auth';
+import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
+import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
 
 @Component({
   selector: 'app-signup',
   imports: [
-    InputWithIconComponent,
+    InputWithIcon,
     ReactiveFormsModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    PhoneInput,
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
 })
-export class SignupComponent {
+export class Signup {
   signupForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {
@@ -34,6 +36,7 @@ export class SignupComponent {
   get firstName() { return this.signupForm.get('firstName') as FormControl; }
   get lastName() { return this.signupForm.get('lastName') as FormControl; }
   get email() { return this.signupForm.get('email') as FormControl; }
+  get phone() { return this.signupForm.get('phone') as FormControl; }
   get password() { return this.signupForm.get('password') as FormControl; }
   get confirmPassword() { return this.signupForm.get('confirmPassword') as FormControl; }
   get acceptTerms() { return this.signupForm.get('acceptTerms') as FormControl; }
@@ -77,6 +80,7 @@ export class SignupComponent {
         Validators.maxLength(50),
         this.noWhitespaceValidator
       ]],
+      phone: [''], // Phone input is handled separately, no validators here
       email: ['', [
         Validators.required,
         Validators.email,
@@ -144,4 +148,5 @@ export class SignupComponent {
 
     return errors;
   }
+
 }

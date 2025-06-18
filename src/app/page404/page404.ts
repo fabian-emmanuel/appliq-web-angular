@@ -10,6 +10,6 @@ import {RouterLink, RouterOutlet} from '@angular/router';
   templateUrl: './page404.html',
   styleUrl: './page404.css'
 })
-export class Page404Component {
+export class Page404 {
 
 }

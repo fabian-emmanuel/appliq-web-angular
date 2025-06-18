@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Page404Component } from './page404';
+import { Page404 } from './page404';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 
-describe('Page404Component', () => {
-  let component: Page404Component;
-  let fixture: ComponentFixture<Page404Component>;
+describe('Page404', () => {
+  let component: Page404;
+  let fixture: ComponentFixture<Page404>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Page404Component],
+      imports: [Page404],
       providers: [
         {
           provide: ActivatedRoute,
@@ -28,7 +28,7 @@ describe('Page404Component', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Page404Component);
+    fixture = TestBed.createComponent(Page404);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,50 +1,57 @@
-import {Routes} from '@angular/router';
-import {LandingComponent} from './landing/landing';
-import {LoginComponent} from '@features/auth/components/login/login';
-import {SignupComponent} from '@features/auth/components/signup/signup';
-import {Page404Component} from './page404/page404';
-import {ForgotpasswordComponent} from '@features/auth/components/forgotpassword/forgotpassword';
-import {ResetPasswordComponent} from '@features/auth/components/reset-password/reset-password';
-import {CheckInboxComponent} from '@features/auth/components/check-inbox/check-inbox';
-import { DashboardComponent } from '@features/dashboard/dashboard';
-import { ApplicationsComponent } from '@features/applications/applications';
-import { PageLayoutComponent } from '@layout/page-layout/page-layout';
+import { Routes } from '@angular/router';
+import {Page404} from './page404/page404';
+import {PageLayout} from './layout/page-layout/page-layout';
+import { Dashboard } from './features/dashboard/dashboard';
+import { Applications } from './features/applications/applications';
+import { Login } from './features/auth/components/login/login';
+import { Signup } from './features/auth/components/signup/signup';
+import {ResetPassword} from './features/auth/components/reset-password/reset-password';
+import {CheckInbox} from './features/auth/components/check-inbox/check-inbox';
+import {HomePage} from './features/home-page/home-page';
+import {ForgotPassword} from './features/auth/components/forgot-password/forgot-password';
+import {Settings} from './features/settings/components/settings/settings';
+import {Toast} from './shared/components/toast/toast';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LandingComponent
+    component: HomePage
   },
   {
     path: '',
-    component: PageLayoutComponent,
+    component: PageLayout,
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'applications', component: ApplicationsComponent },
+      { path: 'dashboard', component: Dashboard },
+      { path: 'applications', component: Applications },
+      { path: 'settings', component: Settings },
     ]
   },
   {
     path: "login",
-    component: LoginComponent
+    component: Login
   },
   {
     path: "signup",
-    component: SignupComponent
+    component: Signup
   },
   {
     path: 'forgot-password',
-    component: ForgotpasswordComponent
+    component: ForgotPassword
   },
   {
     path: 'reset-password',
-    component: ResetPasswordComponent
+    component: ResetPassword
   },
   {
     path: 'check-inbox',
-    component: CheckInboxComponent
+    component: CheckInbox
+  },
+  {
+    path: 'toast',
+    component: Toast
   },
   {
     path: '**',
-    component: Page404Component,
+    component: Page404,
   },
 ];

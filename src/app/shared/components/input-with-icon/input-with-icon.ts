@@ -5,17 +5,17 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import {RouterLink, RouterOutlet} from '@angular/router';
+import {getPasswordStrength, getPasswordStrengthLabel, passwordRequirements} from '../../utils/PasswordUtil';
+import {CommonModule} from '@angular/common';
 
-import {passwordRequirements,
-  getPasswordStrengthLabel,
-  getPasswordStrength} from '@shared/utils/PasswordUtil';
 
 @Component({
   selector: 'app-input-with-icon',
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    CommonModule
 ],
   templateUrl: './input-with-icon.html',
   styleUrl: './input-with-icon.css',
@@ -23,11 +23,11 @@ import {passwordRequirements,
     {
       provide: NG_VALUE_ACCESSOR,
       multi:true,
-      useExisting:  InputWithIconComponent,
+      useExisting:  InputWithIcon,
     }
   ]
 })
-export class InputWithIconComponent implements ControlValueAccessor{
+export class InputWithIcon implements ControlValueAccessor{
   @Input() formGroup!: string;
   @Input() label!: string;
   @Input() placeholder!: string;
@@ -35,7 +35,7 @@ export class InputWithIconComponent implements ControlValueAccessor{
   @Input() isLoginForm !: string;
   @Input() type!: string;
   @Input() control!: FormControl;
-  @Input() additionalClasses: string[] = [];
+  // @Input() additionalClasses: string[] = [];
 
   value: string = '';
   disabled: boolean = false;
@@ -44,12 +44,12 @@ export class InputWithIconComponent implements ControlValueAccessor{
   passwordStrength: number = 0;
   passwordRequirements = passwordRequirements
 
-  get inputClasses(): string {
-    return `form-control bg-dark border-secondary text-white ${this.additionalClasses.join(' ')}`;
-  }
+  // get inputClasses(): string {
+  //   return ` ${this.additionalClasses.join(' ')}`;
+  // }
 
   get isInvalid(): boolean {
-    return this.control?.invalid && (this.control?.dirty || this.control?.touched);
+    return this.control?.invalid && this.control?.dirty;
   }
 
 

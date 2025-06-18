@@ -18,7 +18,7 @@ export function getPasswordStrength(password: string){
   if (/[^A-Za-z0-9]/.test(password)) score += 15; // Has special char
 
   return Math.min(100, score);
-};
+}
 
 
 export function getPasswordStrengthLabel(password: string)  {
@@ -28,7 +28,7 @@ export function getPasswordStrengthLabel(password: string)  {
   if (passwordStrength < 70) return "Fair";
   if (passwordStrength < 90) return "Good";
   return "Strong";
-};
+}
 
 
 export const passwordRequirements = [
@@ -48,7 +48,7 @@ export const passwordRequirements = [
     test: (password: string) => /[^A-Za-z0-9]/.test(password),
     text: "Contains special character"
   }
-];
+]
 
 
 export function strongPasswordValidator(): ValidatorFn {

@@ -1,9 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 
-
-
-
 export interface NavItem {
   label: string;
   icon?: string;
@@ -21,7 +18,7 @@ export interface NavItem {
   templateUrl: './side-nav.html',
   styleUrl: './side-nav.css'
 })
-export class SideNavComponent {
+export class SideNav {
   @Input() title = 'My App';
   @Input() userName = 'John Doe';
   @Input() userRole = 'Administrator';

@@ -1,7 +1,7 @@
-<div class="mb-3">
+<div class="mb-3 appliq-text-white">
   @if (isPasswordField) {
     <div class="d-flex justify-content-between align-items-center mb-1">
-      <label class="text-white mb-1 me-2">{{label}}</label>
+      <label class="mb-1 me-2">{{label}}</label>
       <div class="d-flex align-items-center">
         @if (passwordStrength > 0 && !isLogin && label === 'Password') {
           <span [class]="passwordStrengthTextClass" style="font-size: 0.75rem; font-weight: 500;">
@@ -14,23 +14,22 @@
       }
     </div>
   } @else {
-    <label class="form-label text-white mb-1">{{ label }}</label>
+    <label class="form-label mb-1">{{ label }}</label>
   }
 
-  <div class="input-group">
-    <span class="input-group-text bg-dark border-0">
+  <div class="flex flex-wrap !bg-appliq-50 w-full">
+    <span class="bg-appliq-50 px-3 py-2 border-0 rounded-start">
       <i class="{{icon}} ph-icon"></i>
     </span>
     <input
       [type]="currentInputType"
       [formControl]="control"
-      class="{{inputClasses}}"
+      class="bg-appliq-50 appliq-text-white {{isPasswordField ? '': 'rounded-end'}} flex flex-auto !border-none pl-2 focus:outline-none"
       placeholder="{{placeholder}}"
-      style="border: none; box-shadow: none;"
       (input)="onInputChange($event)"
       />
     @if (isPasswordField) {
-      <span class="input-group-text bg-dark border-0">
+      <span class="bg-appliq-50 px-3 py-2 border-0 rounded-end">
         <i [class]="showPassword ? 'bi bi-eye-slash ph-icon' : 'bi bi-eye ph-icon'" class="cursor-pointer" (click)="togglePasswordVisibility()"></i>
       </span>
     }

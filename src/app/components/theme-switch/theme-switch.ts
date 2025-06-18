@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './theme-switch.html',
   styleUrl: './theme-switch.css'
 })
-export class ThemeSwitchComponent {
+export class ThemeSwitch {
 
 }

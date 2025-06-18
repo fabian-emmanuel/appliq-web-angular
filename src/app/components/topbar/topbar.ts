@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ThemeSwitchComponent } from '../theme-switch/theme-switch';
-import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { PageTitleService } from '@shared/app-page-layout/page-title.service';
+import {CommonModule} from '@angular/common';
+import {Observable} from 'rxjs';
+import {PageTitle} from '../../shared/services/page-title/page-title';
+import {environment} from '../../../environment/environment';
 
 
 @Component({
@@ -11,20 +11,16 @@ import { PageTitleService } from '@shared/app-page-layout/page-title.service';
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.css']
 })
-export class TopbarComponent {
-  title$ = this.pageTitle.title$;
+export class Topbar {
 
-  constructor(private pageTitle: PageTitleService) {}
+  title$: Observable<string>;
+  buyMeACoffeeUrl!: string | undefined;
 
-  menuOpen = false;
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
-  }
-
-  setTheme(theme: string) {
-    console.log('Theme selected:', theme);
-    this.menuOpen = false;
+  constructor(private pageTitle: PageTitle) {
+    this.title$ = this.pageTitle.title$;
+    this.buyMeACoffeeUrl = environment.KOFI_URL;
+    console.log(`Buy Me A Coffee URL ${this.buyMeACoffeeUrl}`);
   }
 }
 

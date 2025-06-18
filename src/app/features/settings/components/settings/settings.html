@@ -1,0 +1,245 @@
+<div class="p-4 overflow-hidden flex flex-col gap-4 bg-appliq-50 appliq-text-white">
+
+  <!-- Profile Basics Section -->
+  <div class="bg-appliq rounded-xl shadow-sm  overflow-hidden">
+    <div class="flex justify-between items-center p-4 border-b border-gray-200">
+      <h5 class="text-xl font-semibold">Profile Information</h5>
+      <button
+        (click)="toggleProfileEdit()"
+        [class]="isProfileEditing ?
+          'flex items-center gap-2 px-4 py-2 text-sm font-medium bg-appliq-50 hover:bg-gray-700 rounded-[10px] transition-colors' :
+          'flex items-center gap-2 px-4 py-2 text-sm font-medium bg-appliq-50 hover:bg-blue-700 rounded-lg transition-colors'">
+        <span class="text-sm">{{ isProfileEditing ? '✕' : '✏️' }}</span>
+        {{ isProfileEditing ? 'Cancel' : 'Edit' }}
+      </button>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 py-6">
+        <!-- First Name -->
+        <div class="space-y-2">
+          <label for="firstName" class="block text-sm font-medium">First Name *</label>
+          <input
+            type="text"
+            id="firstName"
+            [formControl]="firstName"
+            [readonly]="!isProfileEditing"
+            [class]="!isProfileEditing ?
+              'block w-full px-3 py-2  border border-gray-300 rounded-lg cursor-default' :
+              'block w-full px-[11px] py-[10px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
+            [class.border-red-500]="firstName.invalid && firstName.touched">
+          @if (getFieldError(profileForm, 'firstName')) {
+            <span
+              class="text-xs text-red-600">
+            {{ getFieldError(profileForm, 'firstName') }}
+          </span>
+
+          }
+        </div>
+
+        <!-- Last Name -->
+        <div class="space-y-2">
+          <label for="lastName" class="block text-sm font-medium">Last Name *</label>
+          <input
+            type="text"
+            id="lastName"
+            [formControl]="lastName"
+            [readonly]="!isProfileEditing"
+            [class]="!isProfileEditing ?
+              'block w-full px-3 py-2 border border-gray-300 rounded-lg  cursor-default' :
+              'block w-full px-[11px] py-[10px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
+            [class.border-red-500]="lastName.invalid && lastName.touched">
+
+          @if (getFieldError(profileForm, 'lastName')) {
+            <span class="text-xs text-red-600">
+            {{ getFieldError(profileForm, 'lastName') }}
+          </span>
+          }
+        </div>
+
+        <!-- Phone -->
+        <div class="space-y-2">
+          <label for="phone" class="block text-sm font-medium ">Phone Number</label>
+
+          @if (isProfileEditing) {
+              <app-phone-input [formControl]="phone"/>
+          } @else {
+
+            <input
+              type="tel"
+              id="phone"
+              [formControl]="phone"
+              [readonly]="!isProfileEditing"
+              [class]="'block w-full px-3 py-2 border border-gray-300 rounded-lg cursor-default'"
+              [class.border-red-500]="phone.invalid && phone.touched">
+          }
+
+        </div>
+
+        <!-- Location -->
+        <div class="space-y-2">
+          <label for="location" class="block text-sm font-medium ">Location</label>
+          <input
+            type="text"
+            id="location"
+            [formControl]="location"
+            [readonly]="!isProfileEditing"
+            [class]="!isProfileEditing ?
+              'block w-full px-3 py-2 border border-gray-300 rounded-lg cursor-default' :
+              'block w-full px-[10px] py-[11px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'">
+        </div>
+
+        <!-- Bio -->
+        <div class="space-y-2 md:col-span-2">
+          <label for="bio" class="block text-sm font-medium ">Bio</label>
+          <textarea
+            id="bio"
+            [formControl]="bio"
+            [readonly]="!isProfileEditing"
+            rows="4"
+            [class]="!isProfileEditing ?
+              'block w-full px-3 py-2  border border-gray-300 rounded-lg cursor-default resize-none' :
+              'block w-full px-[10px] py-[11px] bg-appliq-50 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-vertical'"
+            placeholder="Tell us about yourself..."></textarea>
+          <div class="flex justify-end">
+            <span class="text-xs text-gray-500">
+              {{ bio.value?.length || 0 }}/500
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      @if (isProfileEditing) {
+        <div class="px-6 pb-6 flex justify-end">
+          <button type="submit"
+                  [disabled]="isLoading || !profileForm.valid"
+                  class="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+
+            @if (isLoading) {
+              <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            }
+            {{ isLoading ? 'Saving...' : 'Save Changes' }}
+          </button>
+        </div>
+      }
+    </form>
+  </div>
+
+  <!-- Account Settings Section -->
+  <div class="bg-appliq rounded-xl shadow-sm  overflow-hidden">
+    <div class="flex justify-between items-center p-4 border-b border-gray-200">
+      <h5 class="text-xl font-semibold text-gray-900">Account Settings</h5>
+      <button
+        (click)="toggleAccountEdit()"
+        [class]="isAccountEditing ?
+          'flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors' :
+          'flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors'">
+        <span class="text-sm">{{ isAccountEditing ? '✕' : '✏️' }}</span>
+        {{ isAccountEditing ? 'Cancel' : 'Edit' }}
+      </button>
+    </div>
+
+    <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 py-6">
+        <!-- Email -->
+        <div class="space-y-2 md:col-span-2">
+          <label for="email" class="block text-sm font-medium">Email Address *</label>
+          <input
+            type="email"
+            id="email"
+            [formControl]="email"
+            [readonly]="!isAccountEditing"
+            [class]="!isAccountEditing ?
+              'block w-full px-3 py-2 border border-gray-300 rounded-lg cursor-default' :
+              'block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors'"
+            [class.border-red-500]="email.invalid && email.touched">
+          @if (getFieldError(accountForm, 'email')) {
+
+            <span class="text-xs text-red-600">
+            {{ getFieldError(accountForm, 'email') }}
+          </span>
+          }
+        </div>
+
+        <!-- Password Change Section -->
+        @if (isAccountEditing) {
+
+          <ng-container>
+            <div class="space-y-2 md:col-span-2">
+              <label for="currentPassword" class="block text-sm font-medium">Current Password</label>
+              <input
+                type="password"
+                id="currentPassword"
+                [formControl]="currentPassword"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                placeholder="Enter current password to change">
+            </div>
+
+            <div class="space-y-2">
+              <label for="newPassword" class="block text-sm font-medium">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                [formControl]="password"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                [class.border-red-500]="password.invalid && password.touched"
+                placeholder="********">
+              @if (getFieldError(accountForm, 'password')) {
+                <span class="text-xs text-red-600">{{ getFieldError(accountForm, 'password') }}</span>
+              }
+            </div>
+
+            <div class="space-y-2">
+              <label for="confirmPassword" class="block text-sm font-medium ">Confirm New Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                [formControl]="confirmPassword"
+                class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                [class.border-red-500]="accountForm.errors?.['passwordMismatch'] && confirmPassword.touched"
+                placeholder="Confirm new password">
+              @if (accountForm.errors?.['passwordMismatch'] && confirmPassword.touched) {
+                <span class="text-xs text-red-600">Passwords do not match</span>
+              }
+            </div>
+          </ng-container>
+
+        }
+      </div>
+
+      <!-- Save Button -->
+      @if (isAccountEditing) {
+        <div class="px-6 pb-6 flex justify-end">
+          <button type="submit"
+                  [disabled]="isLoading || !accountForm.valid"
+                  class="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+            @if (isLoading) {
+              <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            }
+            {{ isLoading ? 'Saving...' : 'Save Changes' }}
+          </button>
+        </div>
+      }
+    </form>
+  </div>
+
+
+  <!-- Danger Zone -->
+  <div class="rounded-xl bg-appliq shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b">
+      <h5 class="text-xl font-semibold text-red-800">Danger Zone</h5>
+    </div>
+    <div class="px-6 py-6 space-y-4">
+      <button
+        class="px-4 py-2 border border-red-300 text-red-700 bg-white rounded-lg hover:bg-red-50 font-medium transition-colors">
+        Delete Account
+      </button>
+      <p class="text-sm mt-3">
+        Once you delete your account, there is no going back. Please be certain.
+      </p>
+    </div>
+  </div>
+
+</div>

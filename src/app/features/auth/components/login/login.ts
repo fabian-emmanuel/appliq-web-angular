@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {
   AbstractControl,
@@ -9,9 +9,9 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {InputWithIconComponent} from '@shared/components/input-with-icon/input-with-icon';
-import {LoginRequest} from '@core/models/auth';
-import {getFormErrors} from '@core/models/errors';
+import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
+import {getFormErrors} from '../../../../core/models/errors';
+import {LoginRequest} from '../../../../core/models/auth';
 
 @Component({
   selector: 'app-login',
@@ -19,12 +19,12 @@ import {getFormErrors} from '@core/models/errors';
     RouterOutlet,
     ReactiveFormsModule,
     RouterLink,
-    InputWithIconComponent
+    InputWithIcon
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class LoginComponent {
+export class Login {
 
   loginForm!: FormGroup;
 
@@ -42,14 +42,13 @@ export class LoginComponent {
     if (!this.loginForm.valid) {
       this.markAllFieldsAsTouched();
       console.log('Form is not valid', getFormErrors(this.loginForm));
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard']).then();
       return;
     }
 
     const formData = this.loginForm.value as LoginRequest;
     console.log('Submitting form', formData);
 
-    // TODO: Call your signup service here
     // this.authService.signup(formData).subscribe(...)
   }
 

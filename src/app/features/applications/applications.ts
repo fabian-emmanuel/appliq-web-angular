@@ -2,20 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import { statuses, statusDetailsMap, Application, Status } from '@core/models/application';
-import { ApplicationCardComponent } from '@layout/card/application-card/application-card';
-import { PageLayoutComponent } from '@layout/page-layout/page-layout';
-import { SidebarComponent } from 'src/app/components/sidebar/sidebar';
-import { TopbarComponent } from 'src/app/components/topbar/topbar';
+import {ApplicationCard} from '../../layout/card/application-card/application-card';
+import {Application, statusDetailsMap, statuses} from '../../core/models/application';
+import {applicationList} from '../../core/models/store';
 
 @Component({
   selector: 'app-applications',
-  imports: [RouterOutlet, CommonModule, FormsModule, ApplicationCardComponent],
+  imports: [RouterOutlet, CommonModule, FormsModule, ApplicationCard],
   templateUrl: './applications.html',
   styleUrl: './applications.css',
 })
 
-export class ApplicationsComponent {
+export class Applications {
   statusDropdownOpen = true;
   dateDropdownOpen = true;
   startDate: string | null = null;
@@ -32,97 +30,7 @@ export class ApplicationsComponent {
     this.viewMode = mode;
   }
 
-  applications: Application[] = [
-  {
-    id: 1,
-    company: 'MetaAi',
-    position: 'Software Engineer',
-    status: 'Applied',
-    statusHistory: [
-      {
-        id: 101,
-        applicationId: 1,
-        createdBy: 1,
-        status: 'Applied',
-        createdAt: '2024-05-01T10:00:00Z',
-        notes: 'Application submitted online'
-      }
-    ],
-    website: 'https://meta.com/careers',
-    applicationType: 'Full-time',
-    createdAt: 1714545600000,
-    createdBy: 1
-  },
-  {
-    id: 2,
-    company: 'Jobberman',
-    position: 'Frontend Developer',
-    status: 'Interview',
-    statusHistory: [
-      {
-        id: 201,
-        applicationId: 2,
-        createdBy: 2,
-        status: 'Applied',
-        createdAt: '2024-04-15T09:00:00Z'
-      },
-      {
-        id: 202,
-        applicationId: 2,
-        createdBy: 2,
-        status: 'Test',
-        createdAt: '2024-04-20T14:00:00Z',
-        notes: 'Completed coding test'
-      },
-      {
-        id: 203,
-        applicationId: 2,
-        createdBy: 2,
-        status: 'Interview',
-        createdAt: '2024-04-25T11:00:00Z',
-        notes: 'Scheduled for technical interview'
-      }
-    ],
-    website: 'https://jobberman.com/jobs/123',
-    applicationType: 'Contract',
-    createdAt: 1713162000000,
-    createdBy: 2
-  },
-  {
-    id: 3,
-    company: 'Google',
-    position: 'Product Manager',
-    status: 'Rejected',
-    statusHistory: [
-      {
-        id: 301,
-        applicationId: 3,
-        createdBy: 3,
-        status: 'Applied',
-        createdAt: '2024-03-10T08:00:00Z'
-      },
-      {
-        id: 302,
-        applicationId: 3,
-        createdBy: 3,
-        status: 'Interview',
-        createdAt: '2024-03-20T10:00:00Z'
-      },
-      {
-        id: 303,
-        applicationId: 3,
-        createdBy: 3,
-        status: 'Rejected',
-        createdAt: '2024-03-25T15:00:00Z',
-        notes: 'Position filled by another candidate'
-      }
-    ],
-    website: 'https://careers.google.com/jobs/results/456',
-    applicationType: 'Full-time',
-    createdAt: 1710057600000,
-    createdBy: 3
-  }
-];
+  applications: Application[] = applicationList;
 
   currentPage = 1;
   pageSize = 1;
@@ -189,29 +97,14 @@ export class ApplicationsComponent {
     }
   }
 
-  // handleStatusChange(event: { appId: number, newStatus: string }) {
-  //   // Find the application and update its status
-  //   const app = this.applications.find((a: any) => a.id === event.appId);
-  //   if (app) {
-  //     // app.statusHistory = event.newStatus;
-  //     // Optionally, update statusHistory or call an API here
-  //   }
-  // }
-
-  handleStatusChange(event: { appId: number, newStatus: string, reason: string }) {
-  const app = this.applications.find((a: any) => a.id === event.appId);
-  if (app) {
-    app.status = event.newStatus as Status;
-    app.statusHistory.push({
-      id: Date.now(), // or your ID logic
-      applicationId: app.id,
-      createdBy: 1, // or current user
-      status: event.newStatus as any,
-      createdAt: new Date().toISOString(),
-      notes: event.reason
-    });
+  handleStatusChange(event: { appId: number, newStatus: string }) {
+    // Find the application and update its status
+    const app = this.applications.find((a: any) => a.id === event.appId);
+    if (app) {
+      // app.statusHistory = event.newStatus;
+      // Optionally, update statusHistory or call an API here
+    }
   }
-}
 
   editApplication(appId: number) {
     // Implement logic to edit application

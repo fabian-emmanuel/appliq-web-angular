@@ -1,24 +1,24 @@
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
-import { LoginComponent } from './login';
+import { Login } from './login';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {ActivatedRoute, RouterLink, RouterModule} from '@angular/router';
-import { InputWithIconComponent } from '@shared/components/input-with-icon/input-with-icon';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
+import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('Login', () => {
+  let component: Login;
+  let fixture: ComponentFixture<Login>;
   let formBuilder: FormBuilder;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        LoginComponent,
+        Login,
         ReactiveFormsModule,
         RouterModule,
-        InputWithIconComponent,
+        InputWithIcon,
       ],
       providers: [
         FormBuilder,
@@ -37,7 +37,7 @@ describe('LoginComponent', () => {
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
     formBuilder = TestBed.inject(FormBuilder);
     fixture.detectChanges();
@@ -71,38 +71,37 @@ describe('LoginComponent', () => {
   });
 
   describe('Email Field Validation', () => {
-    it('should mark email as invalid when empty (required)', fakeAsync(() => {
+    it('should mark email as invalid when empty (required)', () => {
       const emailControl = component.email;
       emailControl.setValue('');
       emailControl.markAsTouched();
-      tick();
       fixture.detectChanges();
 
       expect(emailControl.errors?.['required']).toBeTrue();
       expect(emailControl.valid).toBeFalse();
       expect(component.loginForm.valid).toBeFalse();
-    }));
+    });
 
-    it('should mark email as invalid for an invalid email format', fakeAsync(() => {
+    it('should mark email as invalid for an invalid email format', () => {
       const emailControl = component.email;
       emailControl.setValue('invalid-email');
       emailControl.markAsTouched();
-      tick();
+
       fixture.detectChanges();
 
       expect(emailControl.errors?.['email']).toBeTrue();
       expect(emailControl.valid).toBeFalse();
       expect(component.loginForm.valid).toBeFalse();
-    }));
+    });
 
-    it('should mark email as invalid if length exceeds 254 characters', fakeAsync(() => {
+    it('should mark email as invalid if length exceeds 254 characters', () => {
       const emailControl = component.email;
       // Create an email string that is longer than the actual maxLength (254)
       // For example, 250 'a' characters + '@example.com' makes it 262 characters long.
       const longEmail = 'a'.repeat(250) + '@example.com';
       emailControl.setValue(longEmail);
       emailControl.markAsTouched();
-      tick();
+
       fixture.detectChanges();
 
       // console.log('Testing invalid email length: ', component.email.errors);
@@ -111,20 +110,20 @@ describe('LoginComponent', () => {
 
       expect(emailControl.valid).toBeFalse();
       expect(component.loginForm.valid).toBeFalse();
-    }));
+    });
 
-    it('should mark email as valid for a valid email', fakeAsync(() => {
+    it('should mark email as valid for a valid email', () => {
       const emailControl = component.email;
       emailControl.setValue('test@example.com');
       emailControl.markAsTouched();
-      tick();
+
       fixture.detectChanges();
 
       expect(emailControl.errors).toBeNull();
       expect(emailControl.valid).toBeTrue();
-    }));
+    });
 
-    it('should handle various valid email formats', fakeAsync(() => {
+    it('should handle various valid email formats', () => {
       const validEmails = [
         'user@example.com',
         'user.name@example.com',
@@ -136,17 +135,17 @@ describe('LoginComponent', () => {
       validEmails.forEach(email => {
         component.email.setValue(email);
         component.email.markAsTouched();
-        tick();
+
         fixture.detectChanges();
 
         expect(component.email.valid).toBeTrue();
       });
-    }));
+    });
 
-    it('should handle various invalid email formats', fakeAsync(() => {
+    it('should handle various invalid email formats', () => {
       const invalidEmails = [
-        'plainaddress',
-        '@missingusername.com',
+        'plain-address',
+        '@missing-username.com',
         'username@.com',
         'username@com',
         'username@-example.com'
@@ -155,39 +154,38 @@ describe('LoginComponent', () => {
       invalidEmails.forEach(email => {
         component.email.setValue(email);
         component.email.markAsTouched();
-        tick();
         fixture.detectChanges();
         // console.log(`Testing invalid email: ${email}`, component.email.errors);
         expect(component.email.valid).toBeFalse();
       });
-    }));
+    });
   });
 
   describe('Password Field Validation', () => {
-    it('should mark password as invalid when empty (required)', fakeAsync(() => {
+    it('should mark password as invalid when empty (required)', () => {
       const passwordControl = component.password;
       passwordControl.setValue('');
       passwordControl.markAsTouched();
-      tick();
+
       fixture.detectChanges();
 
       expect(passwordControl.errors?.['required']).toBeTrue();
       expect(passwordControl.valid).toBeFalse();
       expect(component.loginForm.valid).toBeFalse();
-    }));
+    });
 
-    it('should mark password as valid when not empty', fakeAsync(() => {
+    it('should mark password as valid when not empty', () => {
       const passwordControl = component.password;
       passwordControl.setValue('password123');
       passwordControl.markAsTouched();
-      tick();
+
       fixture.detectChanges();
 
       expect(passwordControl.errors).toBeNull();
       expect(passwordControl.valid).toBeTrue();
-    }));
+    });
 
-    it('should accept passwords of various lengths and characters', fakeAsync(() => {
+    it('should accept passwords of various lengths and characters', () => {
       const validPasswords = [
         'a',
         '123',
@@ -200,12 +198,12 @@ describe('LoginComponent', () => {
       validPasswords.forEach(password => {
         component.password.setValue(password);
         component.password.markAsTouched();
-        tick();
+
         fixture.detectChanges();
 
         expect(component.password.valid).toBeTrue();
       });
-    }));
+    });
   });
 
   describe('Remember Me Checkbox', () => {
@@ -229,20 +227,20 @@ describe('LoginComponent', () => {
       expect(component.rememberMe.touched).toBeTrue();
     });
 
-    it('should handle checkbox change through FormControl binding', fakeAsync(() => {
+    it('should handle checkbox change through FormControl binding', () => {
       // Simulate setting the FormControl directly
       component.rememberMe.setValue(true);
-      tick();
+
       fixture.detectChanges();
 
       expect(component.rememberMe.value).toBeTrue();
 
       component.rememberMe.setValue(false);
-      tick();
+
       fixture.detectChanges();
 
       expect(component.rememberMe.value).toBeFalse();
-    }));
+    });
 
     it('should log checkbox state change', () => {
       spyOn(console, 'log');
@@ -261,19 +259,18 @@ describe('LoginComponent', () => {
     });
 
     it('should call markAllFieldsAsTouched and log errors if form is invalid on submit', () => {
-      // Form is invalid by default (empty fields)
       component.onSubmit();
 
       expect(component.markAllFieldsAsTouched).toHaveBeenCalled();
       expect(console.log).toHaveBeenCalledWith('Form is not valid', jasmine.any(Object));
     });
 
-    it('should log form data if form is valid on submit', fakeAsync(() => {
+    it('should log form data if form is valid on submit', () => {
       // Make form valid
       component.email.setValue('test@example.com');
       component.password.setValue('password123');
       component.rememberMe.setValue(false);
-      tick();
+
       fixture.detectChanges();
 
       component.onSubmit();
@@ -284,69 +281,69 @@ describe('LoginComponent', () => {
         password: 'password123',
         rememberMe: false
       });
-    }));
+    });
 
-    it('should handle form submission with rememberMe checked', fakeAsync(() => {
+    it('should handle form submission with rememberMe checked', () => {
       component.email.setValue('user@test.com');
-      component.password.setValue('testpass');
+      component.password.setValue('test-pass');
       component.rememberMe.setValue(true);
-      tick();
+
       fixture.detectChanges();
 
       component.onSubmit();
 
       expect(console.log).toHaveBeenCalledWith('Submitting form', {
         email: 'user@test.com',
-        password: 'testpass',
+        password: 'test-pass',
         rememberMe: true
       });
-    }));
+    });
 
-    it('should not submit if email is invalid but password is valid', fakeAsync(() => {
+    it('should not submit if email is invalid but password is valid', () => {
       component.email.setValue('invalid-email');
-      component.password.setValue('validpassword');
-      tick();
+      component.password.setValue('valid-password');
+
       fixture.detectChanges();
 
       component.onSubmit();
 
       expect(component.markAllFieldsAsTouched).toHaveBeenCalled();
       expect(console.log).toHaveBeenCalledWith('Form is not valid', jasmine.any(Object));
-    }));
+    });
 
-    it('should not submit if password is empty but email is valid', fakeAsync(() => {
+    it('should not submit if password is empty but email is valid', () => {
       component.email.setValue('valid@email.com');
       component.password.setValue('');
-      tick();
+
       fixture.detectChanges();
 
       component.onSubmit();
 
       expect(component.markAllFieldsAsTouched).toHaveBeenCalled();
       expect(console.log).toHaveBeenCalledWith('Form is not valid', jasmine.any(Object));
-    }));
+    });
   });
 
   describe('Form State and UI Integration', () => {
-    it('should disable submit button when form is invalid', fakeAsync(() => {
+    it('should disable submit button when form is invalid', () => {
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('button[type="submit"]'));
 
       expect(submitButton.nativeElement.disabled).toBeTrue();
-    }));
+    });
 
-    it('should enable submit button when form is valid', fakeAsync(() => {
+    it('should enable submit button when form is valid', () => {
       // Make form valid
       component.email.setValue('test@example.com');
       component.password.setValue('password123');
-      tick();
+
       fixture.detectChanges();
 
       const submitButton = fixture.debugElement.query(By.css('button[type="submit"]'));
       expect(submitButton.nativeElement.disabled).toBeFalse();
-    }));
+    });
 
-    it('should toggle submit button state as form validity changes', fakeAsync(() => {
+    it('should toggle submit button state as form validity changes', () => {
       const submitButton = fixture.debugElement.query(By.css('button[type="submit"]'));
 
       // Initially invalid
@@ -355,16 +352,16 @@ describe('LoginComponent', () => {
       // Make valid
       component.email.setValue('test@example.com');
       component.password.setValue('password123');
-      tick();
+
       fixture.detectChanges();
       expect(submitButton.nativeElement.disabled).toBeFalse();
 
       // Make invalid again
       component.email.setValue('invalid');
-      tick();
+
       fixture.detectChanges();
       expect(submitButton.nativeElement.disabled).toBeTrue();
-    }));
+    });
   });
 
   describe('Private Methods', () => {
@@ -382,12 +379,12 @@ describe('LoginComponent', () => {
       expect(component.rememberMe.touched).toBeTrue();
     });
 
-    it('getFormErrors should return an object with control errors', fakeAsync(() => {
+    it('getFormErrors should return an object with control errors', () => {
       component.email.setValue('invalid');
       component.password.setValue('');
       component.email.markAsTouched();
       component.password.markAsTouched();
-      tick();
+
       fixture.detectChanges();
 
       const errors = (component as any).getFormErrors();
@@ -397,17 +394,17 @@ describe('LoginComponent', () => {
       expect(errors['password']).toBeDefined();
       expect(errors['password']['required']).toBeTrue();
       expect(errors['rememberMe']).toBeUndefined();
-    }));
+    });
 
-    it('getFormErrors should return an empty object if no errors', fakeAsync(() => {
+    it('getFormErrors should return an empty object if no errors', () => {
       component.email.setValue('test@example.com');
       component.password.setValue('password123');
-      tick();
+
       fixture.detectChanges();
 
       const errors = (component as any).getFormErrors();
       expect(Object.keys(errors).length).toBe(0);
-    }));
+    });
 
     it('getFormErrors should include form-level errors if they exist', () => {
       // Add a form-level error for testing

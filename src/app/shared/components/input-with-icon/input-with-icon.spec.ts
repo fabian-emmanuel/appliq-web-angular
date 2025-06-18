@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {InputWithIconComponent} from './input-with-icon';
+import {InputWithIcon} from './input-with-icon';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 import {FormControl} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 
-describe('InputWithIconComponent', () => {
-  let component: InputWithIconComponent;
-  let fixture: ComponentFixture<InputWithIconComponent>;
+describe('InputWithIcon', () => {
+  let component: InputWithIcon;
+  let fixture: ComponentFixture<InputWithIcon>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InputWithIconComponent],
+      imports: [InputWithIcon],
       providers: [
         {
           provide: ActivatedRoute,
@@ -31,7 +31,7 @@ describe('InputWithIconComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(InputWithIconComponent);
+    fixture = TestBed.createComponent(InputWithIcon);
     component = fixture.componentInstance;
     component.control = new FormControl('');
     fixture.detectChanges();

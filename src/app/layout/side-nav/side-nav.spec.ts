@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SideNavComponent } from './side-nav';
+import { SideNav } from './side-nav';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 
-describe('SideNavComponent', () => {
-  let component: SideNavComponent;
-  let fixture: ComponentFixture<SideNavComponent>;
+describe('SideNav', () => {
+  let component: SideNav;
+  let fixture: ComponentFixture<SideNav>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SideNavComponent],
+      imports: [SideNav],
       providers: [
         {
           provide: ActivatedRoute,
@@ -28,7 +28,7 @@ describe('SideNavComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SideNavComponent);
+    fixture = TestBed.createComponent(SideNav);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

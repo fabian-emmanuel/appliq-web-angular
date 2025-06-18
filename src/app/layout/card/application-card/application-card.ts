@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Application } from '@core/models/application';
+import { Application } from '../../../core/models/application';
 
 @Component({
   selector: 'app-application-card',
@@ -10,7 +10,7 @@ import { Application } from '@core/models/application';
   imports: [CommonModule, FormsModule]
 })
 
-export class ApplicationCardComponent {
+export class ApplicationCard {
   @Input() application!: Application;
   @Input() statusDetailsMap: any = {};
   @Input() statuses: string[] = [];

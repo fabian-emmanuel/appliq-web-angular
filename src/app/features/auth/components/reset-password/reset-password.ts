@@ -1,5 +1,4 @@
 import {Component, inject} from '@angular/core';
-import {BrandComponent} from "@shared/components/brand/brand";
 import {
   AbstractControl,
   FormBuilder,
@@ -9,25 +8,26 @@ import {
   ValidationErrors,
   Validators
 } from "@angular/forms";
-import {InputWithIconComponent} from "@shared/components/input-with-icon/input-with-icon";
 import {RouterOutlet, Router} from "@angular/router";
-import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
-import {SignupFormData} from '@core/models/auth';
-import {getFormErrors, markAllFieldsAsTouched} from '@core/models/errors';
+import {Brand} from '../../../../shared/components/brand/brand';
+import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
+import {getFormErrors, markAllFieldsAsTouched} from '../../../../core/models/errors';
+import {SignupFormData} from '../../../../core/models/auth';
+import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
 
 @Component({
   selector: 'app-reset-password',
   imports: [
-    BrandComponent,
+    Brand,
     FormsModule,
-    InputWithIconComponent,
+    InputWithIcon,
     RouterOutlet,
     ReactiveFormsModule
   ],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.css'
 })
-export class ResetPasswordComponent {
+export class ResetPassword {
   private router = inject(Router);
 
   resetPasswordForm!: FormGroup;
@@ -52,7 +52,7 @@ export class ResetPasswordComponent {
 
     // TODO: Call your signup service here
     // this.authService.signup(formData).subscribe(...)
-    this.router.navigateByUrl('/check-inbox').then(r => []);
+    this.router.navigateByUrl('/check-inbox').then();
   }
 
 

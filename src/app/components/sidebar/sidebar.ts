@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import { PageTitleService } from '@shared/app-page-layout/page-title.service';
+import {PageTitle} from '../../shared/services/page-title/page-title';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,8 +8,8 @@ import { PageTitleService } from '@shared/app-page-layout/page-title.service';
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
-export class SidebarComponent {
-  constructor(private pageTitle: PageTitleService) {}
+export class Sidebar {
+  constructor(private pageTitle: PageTitle) {}
 
   setTitle(title: string) {
     this.pageTitle.setTitle(title);

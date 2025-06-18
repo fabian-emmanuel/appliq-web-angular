@@ -1,6 +1,18 @@
 export type Status = 'Applied' | 'Test' | 'Interview' | 'OfferAwarded' | 'Rejected' | 'Withdrawn';
 export const statuses: Status[] = ['Applied', 'Test', 'Interview', 'OfferAwarded', 'Rejected', 'Withdrawn'];
+export enum InterviewType {
+  Hr,
+  Behavioural,
+  Technical,
+  Other
+}
 
+export enum TestType {
+  Aptitude,
+  Technical,
+  English,
+  Other,
+}
 export interface StatusDetails {
   colorClass: string;
   progress: number;
@@ -13,10 +25,10 @@ export interface StatusHistory {
     applicationId: number;
     createdBy: number;
     status: Status;
-    createdAt: string;
+    createdAt: Date;
     notes?: string;
-    testType?: string;
-    interviewType?: number;
+    testType?: TestType;
+    interviewType?: InterviewType;
 }
 
 export interface Application {
@@ -27,7 +39,7 @@ export interface Application {
     statusHistory: StatusHistory[];
     website?: string;
     applicationType?: string;
-    createdAt: number;
+    createdAt: Date;
     createdBy: number;
 }
 
@@ -46,39 +58,39 @@ export interface Pagination {
 
 export const statusDetailsMap: Record<Status, StatusDetails> = {
   Applied: {
-    colorClass: 'bg-primary',
+    colorClass: 'bg-blue-500',
     progress: 10,
     iconClass: 'bi bi-send',
-    textClass: 'text-primary'
+    textClass: 'text-blue-500'
   },
   Test: {
-    colorClass: 'bg-warning',
+    colorClass: 'bg-yellow-500',
     progress: 30,
     iconClass: 'bi bi-clipboard-check',
-    textClass: 'text-warning'
+    textClass: 'text-yellow-500'
   },
   Interview: {
-    colorClass: 'bg-sea-green',
+    colorClass: 'bg-purple-500',
     progress: 60,
     iconClass: 'bi bi-person-lines-fill',
-    textClass: 'text-sea-green'
+    textClass: 'text-purple-500'
   },
   OfferAwarded: {
-    colorClass: 'bg-success',
+    colorClass: 'bg-green-500',
     progress: 100,
     iconClass: 'bi bi-award',
-    textClass: 'text-success'
+    textClass: 'text-green-500'
   },
   Rejected: {
-    colorClass: 'bg-danger',
+    colorClass: 'bg-red-500',
     progress: 100,
     iconClass: 'bi bi-x-circle',
-    textClass: 'text-danger'
+    textClass: 'text-red-500'
   },
   Withdrawn: {
-    colorClass: 'bg-secondary',
+    colorClass: 'bg-gray-500',
     progress: 100,
     iconClass: 'bi bi-arrow-counterclockwise',
-    textClass: 'text-secondary'
+    textClass: 'text-gray-500'
   }
 };
