@@ -11,33 +11,39 @@
 
   <div class="list-col position">{{ application.position }}</div>
   <div class="list-col status">
-    <span class="badge" [ngClass]="currentStatusDetails.colorClass">
+    <span
+      class="badge"
+      [ngClass]="currentStatusDetails.colorClass"
+      [title]="getCurrentStatusNote()"
+    >
       <i [ngClass]="currentStatusDetails.iconClass"></i>
       {{ application.status }}
     </span>
-  </div>
+  </div>                                                                                  
   <div class="list-col date">
     {{ application.createdAt | date:'shortDate' }}
   </div>
   <div class="list-col actions">
-    <div class="dropdown" style="display: inline-block">
+    <div class="dropdown">
       <button
-        (click)="showStatusMenu = !showStatusMenu"
+        (click)="toggleStatusMenu()"
         class="btn btn-sm text-white"
       >
         Change Status <i class="bi bi-chevron-down"></i>
       </button>
-      @if (showStatusMenu) {
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu-list" *ngIf="showStatusMenu">
         @for (statusOption of statuses; track statusOption) {
-        <li (click)="openStatusModal(statusOption)">
-          @if (application.status === statusOption) {
-          <span>✓</span>
-          } {{ statusOption }}
-        </li>
+          <li
+            (click)="openStatusModal(statusOption)"
+            [ngClass]="statusDetailsMap[statusOption]?.textClass"
+          >
+            @if (application.status === statusOption) {
+              <span>✓</span>
+            }
+            {{ statusOption }}
+          </li>
         }
       </ul>
-      }
     </div>
     <button (click)="onEdit()" title="Edit">
       <i class="bi bi-pencil text-gray"></i>
@@ -132,7 +138,7 @@
       @if (showStatusMenu) {
       <ul class="dropdown-menu">
         @for (statusOption of statuses; track statusOption) {
-        <li (click)="openStatusModal(statusOption)">
+        <li (click)="openStatusModal(statusOption)" [ngClass]="statusDetailsMap[statusOption]?.textClass">
           @if (application.status === statusOption) {
           <span>✓</span>
           } {{ statusOption }}
@@ -151,38 +157,5 @@
     </div>
   </div>
 </div>
+}
 
-<!-- Modal for status change -->
-@if (showStatusModal) {
-<div class="modal-backdrop"></div>
-<div class="modal-popup">
-  <h4>Change Status</h4>
-  <p>Are you sure you want to change status to <b>{{ selectedStatus }}</b>?</p>
-  <textarea
-    [(ngModel)]="statusChangeReason"
-    placeholder="Reason for status change..."
-    rows="3"
-    style="
-      width: 100%;
-      margin-top: 1rem;
-      border-radius: 6px;
-      border: 1px solid #343650;
-      padding: 0.5rem;
-      background: #181a2a;
-      color: #fff;
-    "
-  ></textarea>
-  <div class="modal-actions">
-    <button
-      class="btn btn-primary"
-      (click)="confirmStatusChange()"
-      [disabled]="!statusChangeReason.trim()"
-    >
-      Yes, Change
-    </button>
-    <button class="btn btn-secondary" (click)="closeStatusModal()">
-      Cancel
-    </button>
-  </div>
-</div>
-} }

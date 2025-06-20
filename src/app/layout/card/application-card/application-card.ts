@@ -16,14 +16,14 @@ export class ApplicationCard {
   @Input() statuses: string[] = [];
   @Input() viewMode: 'grid' | 'list' = 'grid';
 
-  @Output() requestStatusChange = new EventEmitter<{ appId: number, newStatus: string, reason: string }>();
+  @Output() requestStatusChange = new EventEmitter<{ appId: number; newStatus: string; reason?: string }>();
   @Output() edit = new EventEmitter<number>();
   @Output() delete = new EventEmitter<number>();
 
-  showStatusMenu: boolean = false;
-   showStatusModal: boolean = false;
+  showStatusMenu = false;
+  showStatusModal: boolean = false;
   selectedStatus: string | null = null;
- statusChangeReason: string = '';
+  statusChangeReason: string = '';
 
   get lastUpdateTimestamp() {
     return this.application.statusHistory[this.application.statusHistory.length - 1]?.createdAt;
@@ -33,16 +33,11 @@ export class ApplicationCard {
     return this.statusDetailsMap[this.application.status];
   }
 
-  // onRequestStatusChange(newStatus: string) {
-  //   this.requestStatusChange.emit({ appId: this.application.id, newStatus });
-  // }
 
-   openStatusModal(status: string) {
-    this.selectedStatus = status;
-    this.statusChangeReason = '';
-    this.showStatusModal = true;
-    this.showStatusMenu = false;
-  }
+openStatusModal(status: string) {
+  this.requestStatusChange.emit({ appId: this.application.id, newStatus: status });
+  this.showStatusMenu = false;
+}
 
   confirmStatusChange() {
     if (this.selectedStatus) {
@@ -71,10 +66,22 @@ export class ApplicationCard {
     this.delete.emit(this.application.id);
   }
 
+  toggleStatusMenu() {
+    this.showStatusMenu = !this.showStatusMenu;
+    console.log('showStatusMenu:', this.showStatusMenu);
+  }
+
   // Add your utility functions here or import them if needed
   getInitials(company: string): string {
     return company.replace(/\s+/g, '').substring(0, 2).toUpperCase(); 
  }
-}
 
-//     return company.split(' ').map((n: string) => n[0]).join('').toUpperCase();
+//  get latest status history
+ getCurrentStatusNote(): string {
+  const current = this.application.statusHistory
+    .slice()
+    .reverse()
+    .find(s => s.status === this.application.status);
+  return current?.notes || '';
+}
+}

@@ -2,40 +2,41 @@
   <div class="apps-header">
     <div class="search-and-filters">
       <div class="search-input-wrapper">
-        <input type="text" placeholder="Search..." class="search-bar" />
+        <input type="text" placeholder="Search..." class="search-bar" [(ngModel)]="searchTerm" (ngModelChange)="filterApplications()" />
         <i class="bi bi-search search-icon"></i>
       </div>
       <div class="filters">
         <div class="dropdown">
-          <select class="filter-btn">
+          <select
+            class="filter-btn"
+            [(ngModel)]="selectedStatus"
+            (ngModelChange)="filterApplications()"
+          >
             <option value="">All Statuses</option>
             @for (status of statuses; track status) {
-              <option
-                [value]="status"
-                class="filter-select"
-                >
-                {{ status }}
-              </option>
+            <option [value]="status" class="filter-select">{{ status }}</option>
             }
           </select>
         </div>
-        <div class="dropdown">
-          <button class="filter-btn" (click)="toggleDateDropdown()">
-            Date Range <i class="bi bi-calendar4-event ms-2"></i>
-          </button>
-          @if (dateDropdownOpen) {
-            <div class="dropdown-menu date-range-menu">
-              <label>
-                Start:
-                <input type="date" [(ngModel)]="startDate" />
-              </label>
-              <label>
-                End:
-                <input type="date" [(ngModel)]="endDate" />
-              </label>
-              <button class="apply-btn" (click)="applyDateRange()">Apply</button>
-            </div>
-          }
+        <div class="lg:col-span-1">
+          <mat-form-field appearance="outline" class="mat-form-field w-full">
+            <mat-label>Date Range</mat-label>
+            <mat-date-range-input
+              [rangePicker]="picker"
+              [(ngModel)]="dateRange"
+              name="dateRange" class="mat-date-range-input"
+            >
+              <input matStartDate placeholder="Start date" />
+              <input matEndDate placeholder="End date" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+          <!-- <pre>{{ dateRange | json }}</pre>
+          <div>
+            Date range: {{ dateRange.begin }} - {{ dateRange.end }}<br />
+            Filtered count: {{ filteredApplications.length }}
+          </div> -->
         </div>
       </div>
     </div>
@@ -45,69 +46,135 @@
           [class.active]="viewMode === 'grid'"
           (click)="toggleView('grid')"
           aria-label="Grid view"
-          >
+        >
           <i class="bi bi-grid-3x3-gap-fill"></i>
         </button>
         <button
           [class.active]="viewMode === 'list'"
           (click)="toggleView('list')"
           aria-label="List view"
-          >
+        >
           <i class="bi bi-list"></i>
         </button>
       </div>
       <div class="add-application">
-        <button class="add-application-btn">
-          <i class="bi bi-plus me-2"></i> Add Application
+        <button class="add-application-btn" (click)="showAddModal = true">
+          <i class="bi bi-plus me-2"></i> Add Applications
         </button>
+        @if (showAddModal) {
+        <div class="modal-backdrop"></div>
+        <div class="modal-popup">
+          <h3 class="margin-bottom: 1rem">Add New Application</h3>
+          <form (ngSubmit)="addApplication()" #addAppForm="ngForm">
+            <p>Company Name</p>
+            <input
+              type="text"
+              placeholder="Company"
+              [(ngModel)]="newApp.company"
+              name="company"
+              required
+            />
+            <p>Company Website</p>
+            <input
+              type="text"
+              placeholder="website"
+              [(ngModel)]="newApp.website"
+              name="website"
+              required
+            />
+            <p>Position/Role</p>
+            <input
+              type="text"
+              placeholder="Position"
+              [(ngModel)]="newApp.position"
+              name="position"
+              required
+            />
+            <!-- <p>Status</p>
+            <input
+              type="text"
+              placeholder="Status"
+              [(ngModel)]="newApp.status"
+              name="status"
+              
+            /> -->
+            <!-- <p>Applied Via</p>
+            <select name="applied" id="" [(ngModel)]="newApp.appliedVia"
+              name="appliedVia"
+              required>
+              <option value="Website">Website</option>
+              <option value="Email">Email</option>
+            </select> -->
+
+            <div class="modal-actions">
+              <button
+                class="btn btn-primary"
+                type="submit"
+                [disabled]="!addAppForm.form.valid"
+              >
+                Add Application
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+                (click)="showAddModal = false"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+        }
       </div>
     </div>
   </div>
   @if (applications && applications.length > 0) {
-    <div class="applications-content">
-      <div
-        class="applications-list"
-        [ngClass]="{
+  <div class="applications-content">
+    <div
+      class="applications-list"
+      [ngClass]="{
           'grid-view': viewMode === 'grid',
           'list-view': viewMode === 'list',
         }"
-        >
-        @for (app of applications; track app) {
-          <app-application-card
-            [application]="app"
-            [statusDetailsMap]="statusDetailsMap"
-            [statuses]="statuses"
-            [viewMode]="viewMode"
-            (requestStatusChange)="handleStatusChange($event)"
-            (edit)="editApplication($event)"
-            (delete)="deleteApplication($event)">
-          </app-application-card>
-        }
-      </div>
-    </div>
-    <div class="pagination">
-      <button (click)="prevPage()" [disabled]="currentPage === 1">
-        Previous
-      </button>
-      @for (page of paginationArray; track page) {
-        <button [class.active]="page === currentPage" (click)="goToPage(page)">
-          {{ page }}
-        </button>
+    >
+  
+      @for (app of displayedApplications; track app) {
+      <app-application-card
+        [application]="app"
+        [statusDetailsMap]="statusDetailsMap"
+        [statuses]="statuses"
+        [viewMode]="viewMode"
+        (requestStatusChange)="openStatusModal($event)"
+        (edit)="editApplication($event)"
+        (delete)="deleteApplication($event)"
+      >
+      </app-application-card>
       }
-      <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-        Next
-      </button>
     </div>
+  </div>
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    @for (page of paginationArray; track page) {
+    <button [class.active]="page === currentPage" (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    }
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
   } @else {
-    <div class="empty-state">
-      <img
-        [src]="image"
-        alt="No Applications"
-        style="height: 40vh; width: auto; object-fit: cover"
-        />
-      <!-- <img src="https://images.app.goo.gl/XvZc64fCWh1ZGnqf7" alt="not showing" /> -->
-      <p>No applications yet</p>
-    </div>
+  <div class="empty-state">
+    <img
+      [src]="image"
+      alt="No Applications"
+      style="height: 40vh; width: auto; object-fit: cover"
+    />
+    <!-- <img src="https://images.app.goo.gl/XvZc64fCWh1ZGnqf7" alt="not showing" /> -->
+    <p>No applications yet</p>
+  </div>
   }
 
   <ng-template #loading>
@@ -119,13 +186,67 @@
 </div> -->
 </div>
 <router-outlet />
+<!-- @if (showStatusModal) {
+  <div class="modal-backdrop"></div>
+  <div class="modal-popup">
+    <h3>Change Status to {{ selectedStatusForModal }}</h3>
+    <button (click)="confirmStatusChange()">Confirm</button>
+    <button (click)="showStatusModal = false">Cancel</button>
+  </div>
+} -->
 
-@if (viewMode === 'list') {
-  <div class="application-list-header application-card list-row" style="font-weight: bold; background: #181a2a;">
-    <div class="list-col company">Company</div>
-    <div class="list-col position">Position</div>
-    <div class="list-col status">Status</div>
-    <div class="list-col date">Date Created</div>
-    <div class="list-col actions">Actions</div>
+
+<!-- @if (showStatusModal) {
+<div class="modal-backdrop"></div>
+<div class="modal-popup">
+  <h4>Update Status to "{{selectedStatus}}"</h4>
+  <p style="color:gray">Add a note for the status change for {{application.position}} at {{application.company}}</p>
+  <h5>Note (Optional)</h5>
+  <textarea
+    [(ngModel)]="statusChangeReason"
+    placeholder="Enter details about the {{selectedStatus}} stage..."
+    rows="3"
+    style="
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #343650;
+      padding: 0.8rem;
+      background: #0F172A;
+      color: rgb(104, 102, 102);
+    "
+  ></textarea>
+  <div class="modal-actions">
+    <button class="btn btn-secondary" (click)="closeStatusModal()">
+      Cancel
+    </button>
+    <button
+      class="btn btn-primary"
+      (click)="confirmStatusChange()"
+      [disabled]="!statusChangeReason.trim()"
+    >
+      Save Status Update
+    </button>
+  </div>
+</div>
+}  -->
+
+@if (showStatusModal) {
+  <div class="modal-backdrop"></div>
+  <div class="modal-popup">
+    <h3>Change Status to {{ selectedStatusForModal }}</h3>
+    <p style="color:gray">
+      Add a note for the status change for {{ selectedAppForModal?.position }} at {{ selectedAppForModal?.company }}
+    </p>
+    <h5>Note (Optional)</h5>
+    <textarea
+      [(ngModel)]="statusChangeReason"
+      placeholder="Enter details about the {{ selectedStatusForModal }} stage..."
+      rows="3"
+      style="width: 100%; border-radius: 6px; border: 1px solid #343650; padding: 0.8rem; background: #0F172A; color: rgb(104, 102, 102);"
+    ></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="showStatusModal = false">Cancel</button>
+      <button class="btn btn-primary" (click)="confirmStatusChange()" [disabled]="!statusChangeReason.trim()">Save Status Update</button>
+    </div>
   </div>
 }

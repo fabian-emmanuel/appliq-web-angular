@@ -82,62 +82,91 @@
   display: inline-block;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  z-index: 1000;
-  background: #23243a;
-  border: 1px solid #333;
-  min-width: 160px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  padding: 0.5rem 0;
-  border-radius: 6px;
-}
-
-.dropdown-item {
-  padding: 8px 16px;
-  cursor: pointer;
-  display: block;
-  color: #fff;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-
-.dropdown-item:hover {
-  background: #343650;
-  color: #fff;
-}
-
 .filter-btn.filter-select{
   background: #343650;
   color: #fff;
   border: 1px solid #fff;
 }
 
-.date-range-menu label {
-  display: block;
-  color: #222;
-  margin: 0.5rem 1rem 0.2rem 1rem;
-  font-size: 0.95rem;
+/* Make Material form field height and padding match the select */
+.mat-form-field.w-full {
+  min-width: 180px;
+  max-width: 250px;
+  height: 1.2rem;
+  margin: 0;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
 }
 
-.date-range-menu input[type="date"] {
-  width: 100%;
-  padding: 0.3rem 0.5rem;
-  margin-bottom: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.mat-date-range-input{
+  border-width: 1.5px;
+
+}
+.mat-form-field-infix {
+  padding: 0.4rem 1.1rem !important;
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
 }
 
-.apply-btn {
-  margin: 0.5rem 1rem 0.5rem 1rem;
-  padding: 0.3rem 1rem;
-  background: #1c1e2f;
+/* .mat-date-range-input-inner {
+  display: flex;
+  align-items: center;
+} */
+
+.mat-date-range-input input {
+  background: transparent;
   color: #fff;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  outline: none;
+  min-width: 80px;
+  font-size: 1rem;
+  padding: 0;
+  margin: 0 2px;
+  height: 2.2rem;
+  line-height: 2.2rem;
+}
+
+:ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #333;
+  border-color: #2563eb !important;
+  border-width: 2px !important;
+  border-radius: 8px !important;
+}
+
+/* Make the datepicker popup match the input width */
+::ng-deep .mat-datepicker-content,
+::ng-deep .mat-datepicker-popup {
+  /* min-width: 220px !important; */
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* Custom Date Picker Styling */
+::ng-deep .mat-datepicker-panel {
+  background: #23243a !important;
+  border: 1px solid #374151 !important;
+  border-radius: 12px !important;
+}
+
+::ng-deep .mat-calendar {
+  background: #23243a !important;
+  color: var(--appliq-text-color) !important;
+}
+
+::ng-deep .mat-calendar-header {
+  background: #23243a !important;
+  color: var(--appliq-text-color) !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  color: var(--appliq-text-color) !important;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: #3B82F6 !important;
 }
 
 .add-application-btn {
@@ -287,3 +316,90 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.application-list-header {
+  font-weight: bold;
+  background: #181a2a;
+  color: #fff;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0.2rem;
+  padding: 0.7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  gap: 1rem;
+  box-shadow: none;
+}
+
+.application-list-header .list-col {
+  flex: 1 1 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.application-list-header .list-col.actions {
+  justify-content: flex-end;
+  display: flex;
+  min-width: 80px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
+}
+.modal-popup {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: #181a2a;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  padding: 2rem 2.5rem;
+  z-index: 2100;
+  min-width: 450px;
+  /* text-align: center; */
+}
+.modal-popup input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #343650;
+  background: #0F172A;
+  color: #fff;
+}
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.btn-primary {
+  background: #fff;
+  color: #1d1e2b;
+}
+.btn-primary:hover {
+  background: gainsboro;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid gainsboro;
+  color: #fff;
+}
+/* .btn-secondary:hover {
+  background: #1d1e2b
+} */
