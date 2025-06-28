@@ -8,6 +8,9 @@
   [separateDialCode]="separateDialCode"
   numberFormat="INTERNATIONAL"
   [searchCountryField]="searchCountryFields"
-  [formControl]="phone"
+  [ngModel]="phoneValue"
+  [disabled]="isDisabled"
+  (ngModelChange)="onPhoneInputChange($event)"
+  (countryChange)="onCountryChange($event)"
   (blur)="onBlur()">
 </p-intl-tel-input>

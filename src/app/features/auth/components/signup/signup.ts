@@ -13,6 +13,7 @@ import {SignupFormData} from '@core/models/auth';
 import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
 import {PhoneInput} from '@shared/components/phone-input/phone-input';
 import {AuthService} from '@app/services/auth-service';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-signup',
@@ -22,6 +23,7 @@ import {AuthService} from '@app/services/auth-service';
     RouterLink,
     RouterOutlet,
     PhoneInput,
+    JsonPipe,
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
@@ -37,12 +39,13 @@ export class Signup {
   get firstName() { return this.signupForm.get('firstName') as FormControl; }
   get lastName() { return this.signupForm.get('lastName') as FormControl; }
   get email() { return this.signupForm.get('email') as FormControl; }
-  get phone() { return this.signupForm.get('phone') as FormControl; }
+  get phoneNumber() { return this.signupForm.get('phoneNumber') as FormControl; }
   get password() { return this.signupForm.get('password') as FormControl; }
   get confirmPassword() { return this.signupForm.get('confirmPassword') as FormControl; }
   get acceptTerms() { return this.signupForm.get('acceptTerms') as FormControl; }
 
   onSubmit(): void {
+    console.log('Phone value:', this.signupForm.get('phone')?.value);
     if (!this.signupForm.valid) {
       this.markAllFieldsAsTouched();
       console.log('Form is not valid', this.getFormErrors());
@@ -81,7 +84,7 @@ export class Signup {
         Validators.maxLength(50),
         this.noWhitespaceValidator
       ]],
-      phone: [''], // Phone input is handled separately, no validators here
+      phoneNumber: ['',[Validators.required]], // Phone input is handled separately, no validators here
       email: ['', [
         Validators.required,
         Validators.email,

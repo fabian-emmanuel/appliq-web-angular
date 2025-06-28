@@ -2,7 +2,7 @@ export interface SignupFormData {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
   acceptTerms: boolean;

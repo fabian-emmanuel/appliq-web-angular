@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 import {ApiResponse, LoginRequest, LoginResponse, SignupFormData} from '@core/models/auth';
 import {Observable, tap} from 'rxjs';
+import {User} from '@core/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,10 @@ export class AuthService {
     );
   }
 
-  signup(userInfo: SignupFormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signup`, userInfo);
+  signup(signupFormData: SignupFormData): Observable<ApiResponse<User>> {
+   console.log('Signing up user with info:', signupFormData);
+   //implementation of signup logic
+    return new Observable<ApiResponse<User>>(observer => {});
   }
 
   logout(): void {
