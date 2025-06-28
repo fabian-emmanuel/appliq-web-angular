@@ -1,5 +1,62 @@
+@if (viewMode === 'list') {
+<div class="application-container list-row">
+  <div class="list-col company-link">
+    <span>{{ application.company }}</span>
+    @if (application.website) {
+    <a [href]="application.website" target="_blank" rel="noopener noreferrer">
+      <i class="bi bi-box-arrow-up-right"></i>
+    </a>
+    }
+  </div>
+
+  <div class="list-col position">{{ application.position }}</div>
+  <div class="list-col status">
+    <span
+      class="badge"
+      [ngClass]="currentStatusDetails.colorClass"
+      [title]="getCurrentStatusNote()"
+    >
+      <i [ngClass]="currentStatusDetails.iconClass"></i>
+      {{ application.status }}
+    </span>
+  </div>                                                                                  
+  <div class="list-col date">
+    {{ application.createdAt | date:'shortDate' }}
+  </div>
+  <div class="list-col actions">
+    <div class="dropdown">
+      <button
+        (click)="toggleStatusMenu()"
+        class="btn btn-sm text-white"
+      >
+        Change Status <i class="bi bi-chevron-down"></i>
+      </button>
+      <ul class="dropdown-menu-list" *ngIf="showStatusMenu">
+        @for (statusOption of statuses; track statusOption) {
+          <li
+            (click)="openStatusModal(statusOption)"
+            [ngClass]="statusDetailsMap[statusOption]?.textClass"
+          >
+            @if (application.status === statusOption) {
+              <span>✓</span>
+            }
+            {{ statusOption }}
+          </li>
+        }
+      </ul>
+    </div>
+    <button (click)="onEdit()" title="Edit">
+      <i class="bi bi-pencil text-gray"></i>
+    </button>
+    <button (click)="onDelete()" title="Delete">
+      <i class="bi bi-trash text-danger"></i>
+    </button>
+  </div>
+</div>
+} @else {
 <div class="application-card">
   <div class="card-header">
+    <!-- Status badge color and icon -->
     <span class="badge" [ngClass]="currentStatusDetails.colorClass">
       <i [ngClass]="currentStatusDetails.iconClass"></i>
       {{ application.status }}
@@ -11,17 +68,19 @@
   </div>
 
   <div class="company-position">
-    <div class="company-avatar" [ngClass]="currentStatusDetails.colorClass">
-      {{ getInitials(application.company) }}
-    </div>
+    <div class="company-avatar">{{ getInitials(application.company) }}</div>
     <div class="position-details">
       <h3>{{ application.position }}</h3>
       <div class="company-link">
         <span>{{ application.company }}</span>
         @if (application.website) {
-          <a [href]="application.website" target="_blank" rel="noopener noreferrer">
-            <i class="bi bi-box-arrow-up-right"></i>
-          </a>
+        <a
+          [href]="application.website"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="bi bi-box-arrow-up-right"></i>
+        </a>
         }
       </div>
     </div>
@@ -32,33 +91,41 @@
       <span>Progress</span>
       <span>{{ currentStatusDetails.progress }}%</span>
     </div>
+    <!-- Progress bar color and width -->
     <div class="progress-bar-bg">
-      <div class="progress-bar" [ngClass]="currentStatusDetails.colorClass"
-      [style.width.%]="currentStatusDetails.progress"></div>
+      <div
+        class="progress-bar"
+        [ngClass]="currentStatusDetails.colorClass"
+        [style.width.%]="currentStatusDetails.progress"
+      ></div>
     </div>
   </div>
 
   <div class="status-history">
     <h4>Status History</h4>
     <ul>
-      @for (status of application.statusHistory.slice().reverse(); track status; let sIndex = $index) {
-        <li>
-          <div class="timeline-indicator">
-            <div class="dot" [ngClass]="statusDetailsMap[status.status].colorClass"></div>
-            @if (sIndex !== application.statusHistory.length - 1) {
-              <div class="connector"></div>
-            }
+      @for (status of application.statusHistory.slice().reverse(); track status;
+      let sIndex = $index) {
+      <li>
+        <div class="timeline-indicator">
+          <div
+            class="bi bi-person-check"
+            [ngClass]="statusDetailsMap[status.status].textClass"
+          ></div>
+          @if (sIndex !== application.statusHistory.length - 1) {
+          <div class="connector"></div>
+          }
+        </div>
+        <div class="status-content">
+          <div class="status-row">
+            <span>{{ status.status }}</span>
+            <time>{{ status.createdAt | date:'shortDate' }}</time>
           </div>
-          <div class="status-content">
-            <div class="status-row">
-              <span>{{ status.status }}</span>
-              <time>{{ status.createdAt | date:'shortDate' }}</time>
-            </div>
-            @if (status.notes) {
-              <div class="status-notes">{{ status.notes }}</div>
-            }
-          </div>
-        </li>
+          @if (status.notes) {
+          <div class="status-notes">{{ status.notes }}</div>
+          }
+        </div>
+      </li>
       }
     </ul>
   </div>
@@ -69,22 +136,26 @@
         Change Status <i class="bi bi-chevron-down"></i>
       </button>
       @if (showStatusMenu) {
-        <ul class="dropdown-menu">
-          @for (statusOption of statuses; track statusOption) {
-            <li (click)="onRequestStatusChange(statusOption)">
-              @if (application.status === statusOption) {
-                <span>✓</span>
-              }
-              {{ statusOption }}
-            </li>
-          }
-        </ul>
+      <ul class="dropdown-menu">
+        @for (statusOption of statuses; track statusOption) {
+        <li (click)="openStatusModal(statusOption)" [ngClass]="statusDetailsMap[statusOption]?.textClass">
+          @if (application.status === statusOption) {
+          <span>✓</span>
+          } {{ statusOption }}
+        </li>
+        }
+      </ul>
       }
     </div>
     <div class="actions">
-      <button (click)="onEdit()" title="Edit"><i class="bi bi-pencil"></i></button>
-      <button (click)="onDelete()" title="Delete"><i class="bi bi-trash text-danger"></i></button>
+      <button (click)="onEdit()" title="Edit">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button (click)="onDelete()" title="Delete">
+        <i class="bi bi-trash text-danger"></i>
+      </button>
     </div>
   </div>
 </div>
+}
 
