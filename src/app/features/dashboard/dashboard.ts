@@ -14,7 +14,7 @@ import {
   MatDatepickerToggle,
   MatDateRangeInput
 } from '@angular/material/datepicker';
-import {DatePipe, NgClass} from '@angular/common';
+import {DatePipe, NgClass, NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatOption, MatSelect, MatSelectTrigger} from '@angular/material/select';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
@@ -29,7 +29,7 @@ import {ChartModule} from 'primeng/chart';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, MatFormField, MatDatepickerToggle, MatSelect, DatePipe, FormsModule, MatSelect, MatSelect, MatOption, MatSelect, MatSelect, MatOption, MatLabel, MatDateRangeInput, MatFormFieldModule, MatSelectTrigger, MatDatepickerModule, ChartModule, NgClass],
+  imports: [RouterOutlet, MatFormField, MatDatepickerToggle, MatSelect, DatePipe, FormsModule, MatSelect, MatSelect, MatOption, MatSelect, MatSelect, MatOption, MatLabel, MatDateRangeInput, MatFormFieldModule, MatSelectTrigger, MatDatepickerModule, ChartModule, NgClass, NgStyle],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   providers: [provideNativeDateAdapter()],
@@ -258,5 +258,78 @@ export class Dashboard implements OnInit {
   onSelect(event: any): void {
     console.log('Chart item selected:', event);
     // You can add navigation or more detail display here
+  }
+
+  getGradientFromColor(color: string): string {
+    // Extract the base color name from Tailwind classes like "text-blue-400"
+    const colorName = color.split('-')[1] || 'blue';
+
+    // Return appropriate gradient based on color name
+    switch(colorName) {
+      case 'blue':
+        return 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%)';
+      case 'green':
+        return 'linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.15) 100%)';
+      case 'red':
+        return 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%)';
+      case 'yellow':
+        return 'linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(202, 138, 4, 0.15) 100%)';
+      case 'purple':
+        return 'linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%)';
+      case 'pink':
+        return 'linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(219, 39, 119, 0.15) 100%)';
+      case 'indigo':
+        return 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(79, 70, 229, 0.15) 100%)';
+      default:
+        return 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%)';
+    }
+  }
+
+  getIconBgFromColor(color: string): string {
+    const colorName = color.split('-')[1] || 'blue';
+
+    // Return appropriate background for icon based on color name
+    switch(colorName) {
+      case 'blue':
+        return 'rgba(59, 130, 246, 0.2)';
+      case 'green':
+        return 'rgba(34, 197, 94, 0.2)';
+      case 'red':
+        return 'rgba(239, 68, 68, 0.2)';
+      case 'yellow':
+        return 'rgba(234, 179, 8, 0.2)';
+      case 'purple':
+        return 'rgba(168, 85, 247, 0.2)';
+      case 'pink':
+        return 'rgba(236, 72, 153, 0.2)';
+      case 'indigo':
+        return 'rgba(99, 102, 241, 0.2)';
+      default:
+        return 'rgba(59, 130, 246, 0.2)';
+    }
+  }
+
+  getGlowFromColor(color: string): string {
+    const colorName = color.split('-')[1] || 'blue';
+
+    // Return appropriate glow color based on color name
+    switch(colorName) {
+      case 'blue':
+        return 'rgba(59, 130, 246, 0.3)';
+      case 'green':
+        return 'rgba(34, 197, 94, 0.3)';
+      case 'red':
+        return 'rgba(239, 68, 68, 0.3)';
+      case 'yellow':
+        return 'rgba(234, 179, 8, 0.3)';
+      case 'purple':
+        return 'rgba(168, 85, 247, 0.3)';
+      case 'pink':
+        return 'rgba(236, 72, 153, 0.3)';
+      case 'indigo':
+        return 'rgba(99, 102, 241, 0.3)';
+      default:
+        return 'rgba(59, 130, 246, 0.3)';
+    }
   }
 }
