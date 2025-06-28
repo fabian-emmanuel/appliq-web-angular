@@ -21,7 +21,6 @@ export class AuthService {
     return this.http.post<ApiResponse<LoginResponse>>(`${this.apiUrl}/auth/login`, credentials).pipe(
       tap((response: ApiResponse<LoginResponse>) => {
         if (response && response.data.accessToken) {
-          console.log(`Setting token: ${response.data.accessToken}`);
           this.setToken(response.data.accessToken);
         }
       })
@@ -40,9 +39,7 @@ export class AuthService {
 
   getToken(): string | null {
     if (this.isBrowser) {
-      const token = localStorage.getItem(this.TOKEN_KEY);
-      console.log(`Retrieved token: ${token}`);
-      return token;
+      return localStorage.getItem(this.TOKEN_KEY);
     }
     return null;
   }

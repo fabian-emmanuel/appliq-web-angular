@@ -1,5 +1,5 @@
 import {Component, OnInit, PLATFORM_ID, Inject} from '@angular/core';
-import {ActivatedRoute, Router, RouterOutlet} from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import {AuthService} from '@app/services/auth-service';
 import {UserService} from '@app/services/user-service';
@@ -25,28 +25,25 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.show(); // Show loading spinner
-    console.log(`App: isBrowser: ${this.isBrowser}`);
     const isAuthenticated = this.authService.isAuthenticated();
-    console.log(`App: isAuthenticated: ${isAuthenticated}`);
+
     if (this.isBrowser && isAuthenticated) {
       this.userService.loadCurrentUser().subscribe({
         next: () => {
-          console.log('User data loaded successfully', this.userService.getCurrentUser());
           // If user is authenticated and on the root path, redirect to dashboard
           if (this.router.url === '/') {
-            this.router.navigate(['/dashboard']).then(r => {});
+            this.router.navigate(['/dashboard']).then();
           }
           this.isAppReady = true;
           this.loadingService.hide(); // Hide loading spinner on success
         },
         error: (err) => {
-          console.error('Failed to load user data', err);
           this.messageService.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to load user data' });
           this.isAppReady = true;
           this.loadingService.hide(); // Hide loading spinner on error
           // Optionally, log out the user if user data cannot be loaded
           this.authService.logout();
-          this.router.navigate(['/login']).then(r => {});
+          this.router.navigate(['/login']).then();
         }
       });
     } else {

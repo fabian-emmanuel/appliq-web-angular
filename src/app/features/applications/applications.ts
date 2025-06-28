@@ -1,29 +1,27 @@
-import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { MatInputModule, MatLabel } from '@angular/material/input';
+import { MatDateRangeInput, MatDateRangePicker, MatDatepickerToggle, MatDatepickerModule } from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import { MatOption, MatSelect, MatSelectTrigger } from '@angular/material/select';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import {RouterOutlet} from '@angular/router';
+import {CommonModule} from '@angular/common';
 import {ApplicationCard} from '@layout/card/application-card/application-card';
 import {Application, Status, statusDetailsMap, statuses} from '@core/models/application';
+import {Component, OnInit} from '@angular/core';
 import {applicationList} from '@core/models/store';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatDateRangeInput, MatDateRangePicker, MatDatepickerToggle } from '@angular/material/datepicker';
-import { FormsModule } from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-applications',
   imports: [RouterOutlet, CommonModule, FormsModule,
     ApplicationCard, MatFormFieldModule, MatDatepickerModule,
-    MatInputModule, MatDateRangeInput, MatDateRangePicker, MatDatepickerToggle],
+    MatInputModule, MatDateRangeInput, MatDateRangePicker, MatDatepickerToggle, MatSelect, MatOption, MatLabel, MatSelectTrigger],
   templateUrl: './applications.html',
   styleUrl: './applications.css',
+  providers: [provideNativeDateAdapter()],
 })
 
 export class Applications implements OnInit {
-  statusDropdownOpen = true;
-  dateDropdownOpen = true;
-  startDate: string | null = null;
-  endDate: string | null = null;
   image : string = "https://images.unsplash.com/photo-1575936123452-b67c3203c357?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D";
   viewMode: 'grid' | 'list' = 'grid';
   showAddModal = false;
@@ -32,9 +30,8 @@ export class Applications implements OnInit {
     website: '',
     position: '',
   };
-  // statusOptions = statuses;
 
-  selectedStatus: string = '';
+  selectedStatuses: Status[] = statuses; // Default to all statuses selected
   searchTerm: string = '';
   statusDetailsMap = statusDetailsMap;
   statuses = statuses;
@@ -57,35 +54,21 @@ export class Applications implements OnInit {
 
   dateRange: { begin: Date | null, end: Date | null } = { begin: null, end: null };
 
-  toggleStatusDropdown() {
-    console.log('Toggling status dropdown before:: ', this.statusDropdownOpen);
-    this.statusDropdownOpen = !this.statusDropdownOpen;
-    console.log('Toggling status dropdown after click:', this.statusDropdownOpen);
-    if( this.statusDropdownOpen) {
-      this.dateDropdownOpen = false;
+  get StatusDisplayText(): string {
+    if (!this.selectedStatuses || this.selectedStatuses.length === 0) {
+      return 'All Statuses';
     }
-  }
 
-  toggleDateDropdown() {
-    this.dateDropdownOpen = !this.dateDropdownOpen;
-    if( this.dateDropdownOpen) {
-      this.statusDropdownOpen = false;
+    if (this.selectedStatuses.length === 1) {
+      return this.selectedStatuses[0];
     }
-  }
 
-  applyDateRange() {
-    // Logic to apply the selected date range
-    console.log('Applying date range:', this.startDate, this.endDate);
-    this.dateDropdownOpen = false;
-  }
+    if (this.selectedStatuses.length === this.statuses.length) {
+      return 'All Statuses';
+    }
 
-  onDateRangeChange(range: { begin: Date | null, end: Date | null }) {
-    this.dateRange = range;
-    this.filterApplications();
+    return `${this.selectedStatuses.at(0)} (+${this.selectedStatuses.length - 1} ${this.selectedStatuses.length === 2 ? 'other' : 'others'})`;
   }
-//   ngDoCheck() {
-//   console.log('dateRange:', this.dateRange);
-// }
 
   // add application modal
   addApplication() {
@@ -122,8 +105,8 @@ export class Applications implements OnInit {
   filterApplications() {
     let filtered = this.applications;
 
-    if (this.selectedStatus) {
-      filtered = filtered.filter(app => app.status === this.selectedStatus);
+    if (this.selectedStatuses && this.selectedStatuses.length > 0 && this.selectedStatuses.length < this.statuses.length) {
+      filtered = filtered.filter(app => this.selectedStatuses.includes(app.status));
     }
 
     if (this.searchTerm) {
@@ -141,7 +124,6 @@ export class Applications implements OnInit {
     this.filteredApplications = filtered;
     this.currentPage = 1;
     console.log('Filtered applications:', this.filteredApplications);
-    // console.log('app.createdAt:', app.createdAt, 'begin:', this.dateRange.begin, 'end:', this.dateRange.end);
   }
 
   get displayedApplications() {

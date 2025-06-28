@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
 import {PhoneInput} from '@shared/components/phone-input/phone-input';
+import {UserService} from '@app/services/user-service';
+import {User} from '@core/models/user';
 
 @Component({
   selector: 'app-settings',
@@ -27,11 +29,13 @@ export class Settings {
   isAccountEditing = false;
   profileImageUrl = 'https://github.com/shadcn.png';
   isLoading = false;
+  userInfo: User | null = null;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.profileForm = this.createProfileForm();
     this.accountForm = this.createAccountForm();
+    this.userInfo = this.userService.getCurrentUser();
     this.loadUserData();
   }
 
@@ -121,16 +125,15 @@ export class Settings {
 
   loadUserData(): void {
     this.profileForm.patchValue({
-      firstName: 'John',
-      lastName: 'Doe',
-      username: 'johndoe',
+      firstName: this.userInfo?.firstName,
+      lastName: this.userInfo?.lastName,
       bio: 'Software developer passionate about creating amazing user experiences.',
-      phone: '+2348066504447', // If available, use IntlTelPhoneNumber structure
+      phone: this.userInfo?.phoneNumber, // If available, use IntlTelPhoneNumber structure
       location: 'San Francisco, CA'
     });
 
     this.accountForm.patchValue({
-      email: 'john.doe@example.com',
+      email: this.userInfo?.email,
       currentPassword: '',
       newPassword: '',
       confirmPassword: ''
@@ -144,22 +147,6 @@ export class Settings {
     return newPassword && confirmPassword && newPassword !== confirmPassword
       ? { passwordMismatch: true }
       : null;
-  }
-
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.profileImageUrl = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  triggerFileInput(): void {
-    const fileInput = document.getElementById('profileImage') as HTMLInputElement;
-    fileInput.click();
   }
 
   toggleProfileEdit(): void {

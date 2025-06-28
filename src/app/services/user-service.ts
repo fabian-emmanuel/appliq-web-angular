@@ -18,7 +18,6 @@ export class UserService {
   loadCurrentUser(): Observable<ApiResponse<User>> {
     return this.http.get<ApiResponse<User>>(`${this.apiUrl}/user/me`).pipe(
       tap(response => {
-        console.log(`User Info :: ${response.data}}`)
         this.currentUserSubject.next(response.data);
       })
     );

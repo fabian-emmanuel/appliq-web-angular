@@ -25,11 +25,6 @@
               <p class="text-xs md:text-sm text-slate-400 font-medium leading-tight">{{ item.name }}</p>
             </div>
 
-            <!-- Trend -->
-            <div class="mt-2 flex items-center gap-1">
-              <i class="bi bi-trending-up text-green-400 text-xs"></i>
-              <span class="text-xs text-green-400">+12%</span>
-            </div>
           </div>
         </div>
       }
@@ -49,112 +44,57 @@
           <h3 class="text-lg md:text-xl font-bold mb-2">Application Trends</h3>
         </div>
 
-        <!-- Mobile Controls -->
-        <div class="block md:hidden mb-4 space-y-3">
-          <!-- Date Range - Mobile -->
-          <div class="w-full">
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label class="">Date Range</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start" class="">
-                <input matEndDate placeholder="End" class="">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-          </div>
+        <!-- Redesigned Filters -->
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
 
-          <!-- Status Filter - Mobile -->
-          <div class="w-full">
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()" class="">
-                <mat-select-trigger class="">
-                  {{ StatusDisplayText }}
-                </mat-select-trigger>
-                @for (status of allStatuses; track status) {
-                  <mat-option [value]="status" class="">{{ status }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <!-- Chart Type - Mobile -->
-          <div class="flex bg-slate-700/50 rounded-xl p-1">
-            <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
-              <mat-radio-button value="bar" class="flex-1">
-                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
-                      [style.background]="chartType === 'bar' ? '#3B82F6' : 'transparent'"
-                      [style.color]="chartType === 'bar' ? 'white' : '#94A3B8'">
-                  Bar
-                </span>
-              </mat-radio-button>
-              <mat-radio-button value="line" class="flex-1">
-                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
-                      [style.background]="chartType === 'line' ? '#3B82F6' : 'transparent'"
-                      [style.color]="chartType === 'line' ? 'white' : '#94A3B8'">
-                  Line
-                </span>
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-
-        <!-- Desktop Controls -->
-        <div class="hidden md:block mb-6">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <!-- Date Range - Desktop -->
-            <div class="lg:col-span-1">
-              <mat-form-field appearance="outline" class="w-full">
-                <mat-label class="text-slate-300">Date Range</mat-label>
-                <mat-date-range-input [rangePicker]="picker2" class="">
-                  <input matStartDate placeholder="Start date" class="">
-                  <input matEndDate placeholder="End date" class="">
+            <!-- Date Range -->
+            <div class="md:col-span-2">
+              <mat-form-field appearance="fill" class="w-full custom-form-field">
+                <mat-label class="text-slate-400">Filter by Date</mat-label>
+                <i matPrefix class="bi bi-calendar-range text-slate-400 mr-3"></i>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Start date">
+                  <input matEndDate placeholder="End date">
                 </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker2" class="text-slate-300"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker2></mat-date-range-picker>
+                <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
             </div>
 
-            <!-- Status Filter - Desktop -->
-            <div class="lg:col-span-1">
-              <mat-form-field appearance="outline" class="w-full">
-                <mat-label class="text-slate-300">Status Filter</mat-label>
-                <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()" class="">
-                  <mat-select-trigger class="">
+            <!-- Status Filter -->
+            <div class="md:col-span-2">
+              <mat-form-field appearance="fill" class="w-full custom-form-field">
+                <mat-label class="text-slate-400">Filter by Status</mat-label>
+                <i matPrefix class="bi bi-tags-fill text-slate-400 mr-3"></i>
+                <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()">
+                  <mat-select-trigger>
                     {{ StatusDisplayText }}
                   </mat-select-trigger>
                   @for (status of allStatuses; track status) {
-                    <mat-option [value]="status" class="">{{ status }}</mat-option>
+                    <mat-option [value]="status">{{ status }}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
             </div>
 
-            <!-- Chart Type - Desktop -->
-            <div class="lg:col-span-1">
-              <div class="flex rounded-xl p-1 w-full">
-                <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
-                  <mat-radio-button value="bar" class="flex-1">
-                    <span class="py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center">
-                      Bar
-                    </span>
-                  </mat-radio-button>
-                  <mat-radio-button value="line" class="flex-1">
-                    <span class="py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center">
-                      Line
-                    </span>
-                  </mat-radio-button>
-                </mat-radio-group>
+            <!-- Chart Type Toggle -->
+            <div class="md:col-span-1">
+              <div class="chart-toggle-group rounded-lg p-1 flex justify-center">
+                <button (click)="chartType = 'bar'; onFilterChange()" [ngClass]="{'active': chartType === 'bar'}" class="toggle-btn">
+                  <i class="bi bi-bar-chart-line-fill"></i>
+                </button>
+                <button (click)="chartType = 'line'; onFilterChange()" [ngClass]="{'active': chartType === 'line'}" class="toggle-btn">
+                  <i class="bi bi-graph-up"></i>
+                </button>
               </div>
             </div>
+
           </div>
-        </div>
 
         <!-- Chart Container -->
-        <div class="bg-slate-900/50 rounded-xl p-3 md:p-4 h-64 md:h-80 lg:h-96"
+        <div class="flex flex-col justify-end bg-slate-900/50 rounded-xl p-3 md:p-4 h-64 md:h-80 lg:h-96"
              style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);">
-          @if (barChartData.length === 0 && lineChartData.length === 0) {
+          @if (!chartData) {
             <div class="flex flex-col items-center justify-center h-full text-center">
               <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4"
                    style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
@@ -165,47 +105,8 @@
             </div>
           }
 
-          @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
-            <ngx-charts-bar-vertical
-              [results]="barChartData"
-              [xAxis]="true"
-              [yAxis]="true"
-              [showGridLines]="false"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              xAxisLabel="Status"
-              yAxisLabel="Count"
-              [gradient]="true"
-              [scheme]="appliqScheme"
-              [barPadding]="50"
-              [roundDomains]="false"
-              [showDataLabel]="true"
-              [legend]="false"
-              [roundEdges]="true"
-              [tooltipDisabled]="false"
-              (select)="onSelect($event)"
-              class="w-full h-full">
-            </ngx-charts-bar-vertical>
-          }
-
-          @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
-            <ngx-charts-line-chart
-              [results]="lineChartData"
-              [xAxis]="true"
-              [yAxis]="true"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              xAxisLabel="Date"
-              yAxisLabel="Count"
-              [scheme]="appliqScheme"
-              [gradient]="true"
-              [legend]="false"
-              [showGridLines]="false"
-              [roundDomains]="false"
-              [tooltipDisabled]="false"
-              (select)="onSelect($event)"
-              class="w-full h-full">
-            </ngx-charts-line-chart>
+          @if (isBrowser) {
+            <p-chart [type]="chartType" [data]="chartData" [options]="chartOptions"></p-chart>
           }
         </div>
       </div>

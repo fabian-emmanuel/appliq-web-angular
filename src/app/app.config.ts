@@ -9,7 +9,7 @@ import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import {provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
-import {authInterceptor} from '@core/interceptors/auth.interceptor';
+import {authInterceptor} from '@core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
