@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {PageTitle} from '../../shared/services/page-title/page-title';
+import {PageTitle} from '@shared/services/page-title/page-title';
 
 @Component({
   selector: 'app-sidebar',

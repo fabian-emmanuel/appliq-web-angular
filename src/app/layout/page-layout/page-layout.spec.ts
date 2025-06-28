@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageLayout } from './page-layout';
+import { PageLayout } from '@layout/page-layout/page-layout';
 
 describe('PageLayout', () => {
   let component: PageLayout;

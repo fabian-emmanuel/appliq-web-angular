@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ThemeSwitch } from './theme-switch';
+import { ThemeSwitch } from '@components/theme-switch/theme-switch';
 
 describe('ThemeSwitch', () => {
   let component: ThemeSwitch;

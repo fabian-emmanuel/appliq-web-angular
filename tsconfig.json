@@ -4,6 +4,33 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@features/*": [
+        "src/app/features/*"
+      ],
+      "@layout/*": [
+        "src/app/layout/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@environment/*": [
+        "src/environment/*"
+      ]
+    },
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,

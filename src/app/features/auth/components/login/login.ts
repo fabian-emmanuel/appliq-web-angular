@@ -9,9 +9,12 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
-import {getFormErrors} from '../../../../core/models/errors';
-import {LoginRequest} from '../../../../core/models/auth';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
+import {getFormErrors} from '@core/models/errors';
+import {LoginRequest} from '@core/models/auth';
+import {AuthService} from '@app/services/auth-service';
+import {MessageService} from 'primeng/api';
+import {Toast} from 'primeng/toast';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +22,8 @@ import {LoginRequest} from '../../../../core/models/auth';
     RouterOutlet,
     ReactiveFormsModule,
     RouterLink,
-    InputWithIcon
+    InputWithIcon,
+    Toast
   ],
   templateUrl: './login.html',
   styleUrl: './login.css'
@@ -27,8 +31,9 @@ import {LoginRequest} from '../../../../core/models/auth';
 export class Login {
 
   loginForm!: FormGroup;
+  isLoading: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private messageService: MessageService) {
     this.loginForm = this.createForm();
   }
 
@@ -42,14 +47,21 @@ export class Login {
     if (!this.loginForm.valid) {
       this.markAllFieldsAsTouched();
       console.log('Form is not valid', getFormErrors(this.loginForm));
-      this.router.navigate(['/dashboard']).then();
       return;
     }
 
     const formData = this.loginForm.value as LoginRequest;
-    console.log('Submitting form', formData);
-
-    // this.authService.signup(formData).subscribe(...)
+    this.isLoading = true;
+    this.authService.login(formData).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/dashboard']).then(r => {});
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.messageService.add({ severity: 'error', summary: 'Login Failed', detail: err.error?.message || 'An unexpected error occurred.' });
+      }
+    });
   }
 
   onCheckboxChange(event: Event): void {

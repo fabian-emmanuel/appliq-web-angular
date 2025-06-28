@@ -15,3 +15,15 @@ export interface LoginRequest {
   password: string;
   rememberMe?: boolean;
 }
+
+export interface LoginResponse {
+  accessToken: string;
+  expiresIn: number;
+  refreshToken: string;
+  refreshExpiresIn: number;
+}
+
+export interface ApiResponse<T> {
+  message: string;
+  data: T;
+}

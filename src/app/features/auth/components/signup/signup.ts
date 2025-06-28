@@ -7,11 +7,12 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
-import {SignupFormData} from '../../../../core/models/auth';
-import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
-import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
+import {SignupFormData} from '@core/models/auth';
+import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
+import {PhoneInput} from '@shared/components/phone-input/phone-input';
+import {AuthService} from '@app/services/auth-service';
 
 @Component({
   selector: 'app-signup',
@@ -28,7 +29,7 @@ import {PhoneInput} from '../../../../shared/components/phone-input/phone-input'
 export class Signup {
   signupForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.signupForm = this.createForm();
   }
 
@@ -49,10 +50,10 @@ export class Signup {
     }
 
     const formData = this.signupForm.value as SignupFormData;
-    console.log('Submitting form', formData);
-
-    // TODO: Call your signup service here
-    // this.authService.signup(formData).subscribe(...)
+    this.authService.signup(formData).subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: (err) => console.error('Signup failed', err)
+    });
   }
 
   onCheckboxChange(event: Event): void {

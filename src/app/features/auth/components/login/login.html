@@ -1,4 +1,5 @@
 <div class="bg-appliq d-flex align-items-center align-content-center vh-100 vw-100 overflow-hidden">
+  <p-toast />
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-4 col-lg-5">
@@ -49,7 +50,7 @@
             </label>
           </div>
 
-          <button type="submit" class="btn bg-appliq-white w-100 mb-3" [disabled]="loginForm.invalid">Sign In</button>
+          <button type="submit" class="btn bg-appliq-white w-100 mb-3" [disabled]="!loginForm.touched || isLoading">{{ isLoading ? "Signing in..." : "Sign In" }}</button>
         </form>
 
 

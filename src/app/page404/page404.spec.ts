@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Page404 } from './page404';
+import { Page404 } from '@/page404/page404';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 

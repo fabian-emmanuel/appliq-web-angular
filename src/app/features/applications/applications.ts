@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import {ApplicationCard} from '../../layout/card/application-card/application-card';
-import {Application, statusDetailsMap, statuses} from '../../core/models/application';
-import {applicationList} from '../../core/models/store';
+import {ApplicationCard} from '@layout/card/application-card/application-card';
+import {Application, statusDetailsMap, statuses} from '@core/models/application';
+import {applicationList} from '@core/models/store';
 
 @Component({
   selector: 'app-applications',

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Brand } from './brand';
+import { Brand } from '@shared/components/brand/brand';
 
 describe('Brand', () => {
   let component: Brand;

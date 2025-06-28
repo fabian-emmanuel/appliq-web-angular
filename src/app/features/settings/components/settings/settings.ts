@@ -7,8 +7,8 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
-import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
+import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
+import {PhoneInput} from '@shared/components/phone-input/phone-input';
 
 @Component({
   selector: 'app-settings',

@@ -6,11 +6,7 @@ import {
   Inject,
 } from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {
-  Application,
-  Status, statusDetailsMap,
-  statuses,
-} from '../../core/models/application';
+import { Application, Status, statusDetailsMap, statuses } from '@core/models/application';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {applicationList} from '../../core/models/store';
 import {

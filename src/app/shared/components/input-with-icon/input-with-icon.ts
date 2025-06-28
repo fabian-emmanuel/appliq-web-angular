@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {getPasswordStrength, getPasswordStrengthLabel, passwordRequirements} from '../../utils/PasswordUtil';
+import {getPasswordStrength, getPasswordStrengthLabel, passwordRequirements} from '@shared/utils/PasswordUtil';
 import {CommonModule} from '@angular/common';
 
 

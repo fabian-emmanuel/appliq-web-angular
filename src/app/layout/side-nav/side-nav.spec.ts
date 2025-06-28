@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SideNav } from './side-nav';
+import { SideNav } from '@layout/side-nav/side-nav';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 

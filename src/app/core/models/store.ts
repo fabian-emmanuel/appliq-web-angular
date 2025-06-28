@@ -1,4 +1,4 @@
-import {Application} from './application';
+import {Application} from '@core/models/application';
 
 export const applicationList : Application[] = [
   {

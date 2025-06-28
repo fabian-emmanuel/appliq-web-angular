@@ -1,1 +1,5 @@
-<router-outlet />
+<app-loading-spinner/>
+<p-toast/>
+@if (isAppReady) {
+<router-outlet/>
+}
