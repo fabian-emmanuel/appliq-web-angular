@@ -6,7 +6,7 @@
           <mat-form-field appearance="fill" class="w-full custom-form-field">
             <mat-label class="text-slate-400">Search</mat-label>
             <i matPrefix class="bi bi-search text-slate-400 mr-3"></i>
-            <input matInput placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="filterApplications()">
+            <input matInput placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)">
           </mat-form-field>
         </div>
 
@@ -15,9 +15,9 @@
           <mat-form-field appearance="fill" class="w-full custom-form-field">
             <mat-label class="text-slate-400">Filter by Date</mat-label>
             <i matPrefix class="bi bi-calendar-range text-slate-400 mr-3"></i>
-            <mat-date-range-input [rangePicker]="picker" [(ngModel)]="dateRange" (ngModelChange)="filterApplications()">
-              <input matStartDate placeholder="Start date">
-              <input matEndDate placeholder="End date">
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.begin" name="startDate" (ngModelChange)="onDateRangeChange()">
+              <input matEndDate placeholder="End date" [(ngModel)]="dateRange.end" name="endDate" (ngModelChange)="onDateRangeChange()">
             </mat-date-range-input>
             <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
@@ -29,7 +29,7 @@
           <mat-form-field appearance="fill" class="w-full custom-form-field">
             <mat-label class="text-slate-400">Filter by Status</mat-label>
             <i matPrefix class="bi bi-tags-fill text-slate-400 mr-3"></i>
-            <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="filterApplications()">
+            <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onStatusFilterChange()">
               <mat-select-trigger>
                 {{ StatusDisplayText }}
               </mat-select-trigger>
@@ -128,7 +128,11 @@
       </div>
     </div>
   </div>
-  @if (applications && applications.length > 0) {
+  @if (loading) {
+    <div class="loading-spinner">
+      <i class="bi bi-arrow-clockwise"></i> Loading applications...
+    </div>
+  } @else if (applications && applications.length > 0) {
   <div class="applications-content">
     <div
       class="applications-list"
@@ -172,16 +176,9 @@
       alt="No Applications"
       style="height: 40vh; width: auto; object-fit: cover"
     />
-    <!-- <img src="https://images.app.goo.gl/XvZc64fCWh1ZGnqf7" alt="not showing" /> -->
     <p>No applications yet</p>
   </div>
   }
-
-  <ng-template #loading>
-    <div class="loading-spinner">
-      <i class="bi bi-arrow-clockwise"></i> Loading applications...
-    </div>
-  </ng-template>
   <!-- <div class="applications-container">
 </div> -->
 </div>

@@ -3,13 +3,21 @@ import { MatDateRangeInput, MatDateRangePicker, MatDatepickerToggle, MatDatepick
 import { FormsModule } from '@angular/forms';
 import { MatOption, MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import {RouterOutlet} from '@angular/router';
-import {CommonModule} from '@angular/common';
-import {ApplicationCard} from '@layout/card/application-card/application-card';
-import {Application, Status, statusDetailsMap, statuses} from '@core/models/application';
-import {Component, OnInit} from '@angular/core';
-import {applicationList} from '@core/models/store';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ApplicationCard } from '@layout/card/application-card/application-card';
+import {
+  Application,
+  Status,
+  statusDetailsMap,
+  statuses,
+  ApplicationFilter
+} from '@core/models/application';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import {ApplicationService} from '@app/services/application-service';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-applications',
@@ -21,8 +29,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   providers: [provideNativeDateAdapter()],
 })
 
-export class Applications implements OnInit {
-  image : string = "https://images.unsplash.com/photo-1575936123452-b67c3203c357?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D";
+export class Applications implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  private searchSubject = new Subject<string>();
+
+  image: string = "https://images.unsplash.com/photo-1575936123452-b67c3203c357?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D";
   viewMode: 'grid' | 'list' = 'grid';
   showAddModal = false;
   newApp = {
@@ -41,18 +52,42 @@ export class Applications implements OnInit {
   showStatusModal = false;
   statusChangeReason: string = '';
 
-  toggleView (mode: 'grid' | 'list') {
-    this.viewMode = mode;
-  }
-
-  applications: Application[] = applicationList;
-
-  filteredApplications: Application[] = [];
+  applications: Application[] = [];
+  loading = false;
+  error: string | null = null;
 
   currentPage = 1;
-  pageSize = 12;
+  pageSize = 16;
+  totalItems = 0;
+  totalPages = 0;
 
   dateRange: { begin: Date | null, end: Date | null } = { begin: null, end: null };
+
+  constructor(private applicationService: ApplicationService, private messageService: MessageService) {
+    // Setup search debouncing
+    this.searchSubject.pipe(
+      debounceTime(10),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    ).subscribe(searchTerm => {
+      this.searchTerm = searchTerm;
+      this.currentPage = 1;
+      this.loadApplications();
+    });
+  }
+
+  ngOnInit() {
+    this.loadApplications();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  toggleView(mode: 'grid' | 'list') {
+    this.viewMode = mode;
+  }
 
   get StatusDisplayText(): string {
     if (!this.selectedStatuses || this.selectedStatuses.length === 0) {
@@ -70,82 +105,112 @@ export class Applications implements OnInit {
     return `${this.selectedStatuses.at(0)} (+${this.selectedStatuses.length - 1} ${this.selectedStatuses.length === 2 ? 'other' : 'others'})`;
   }
 
-  // add application modal
+  // Load applications from service
+  loadApplications() {
+    this.loading = true;
+    this.error = null;
+
+    const filter: ApplicationFilter = {
+      search: this.searchTerm || undefined,
+      status: this.getSelectedStatus(),
+      from: this.dateRange.begin || undefined,
+      to: this.dateRange.end || undefined,
+      page: this.currentPage,
+      size: this.pageSize
+    };
+
+    this.applicationService.fetchApplications(filter).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          this.applications = response.data.applications;
+          this.totalItems = response.data.pagination.total;
+          this.totalPages = response.data.pagination.totalPages;
+          this.currentPage = response.data.pagination.page;
+          this.loading = false;
+        }
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Applications loaded successfully' });
+      },
+      error: (error) => {
+        console.error('Error loading applications:', error);
+        this.error = 'Failed to load applications';
+        this.loading = false;
+      }
+    });
+
+  }
+
+  private getSelectedStatus(): Status | undefined {
+    if (!this.selectedStatuses || this.selectedStatuses.length === 0 || this.selectedStatuses.length === this.statuses.length) {
+      return undefined; // All statuses selected or none selected
+    }
+
+    if (this.selectedStatuses.length === 1) {
+      return this.selectedStatuses[0];
+    }
+
+    // If multiple specific statuses are selected, you might need to modify your backend
+    // to handle multiple status filters, or handle this differently
+    return undefined;
+  }
+
+  // Search handling with debouncing
+  onSearchChange(searchTerm: string) {
+    this.searchSubject.next(searchTerm);
+  }
+
+  // Status filter change
+  onStatusFilterChange() {
+    this.currentPage = 1;
+    this.loadApplications();
+  }
+
+  // Date range change
+  onDateRangeChange() {
+    this.currentPage = 1;
+    this.loadApplications();
+  }
+
+  // Add application modal
   addApplication() {
     const now = new Date();
-    this.applications.unshift({
+    const newApplication = {
       id: Date.now(),
       company: this.newApp.company,
       website: this.newApp.website,
       position: this.newApp.position,
-      status: 'Applied',
+      status: 'Applied' as Status,
       statusHistory: [
         {
           id: Date.now(),
           applicationId: Date.now(),
           createdBy: 1,
-          status: 'Applied',
+          status: 'Applied' as Status,
           createdAt: now,
           notes: 'Application submitted'
         }
       ],
       createdAt: now,
       createdBy: 1
-    });
+    };
+
+    // You might want to call an API to create the application
+    // For now, just refresh the list
     this.showAddModal = false;
     this.newApp = { company: '', website: '', position: '' };
-  }
-
-
-// filter Applications
-  ngOnInit() {
-    this.filterApplications();
-  }
-
-  filterApplications() {
-    let filtered = this.applications;
-
-    if (this.selectedStatuses && this.selectedStatuses.length > 0 && this.selectedStatuses.length < this.statuses.length) {
-      filtered = filtered.filter(app => this.selectedStatuses.includes(app.status));
-    }
-
-    if (this.searchTerm) {
-    const term = this.searchTerm.toLowerCase();
-    filtered = filtered.filter(app => app.company.toLowerCase().includes(term));
-  }
-
-    if (this.dateRange.begin) {
-      filtered = filtered.filter(app => new Date(app.createdAt) >= this.dateRange.begin!);
-    }
-    if (this.dateRange.end) {
-      filtered = filtered.filter(app => new Date(app.createdAt) <= this.dateRange.end!);
-    }
-
-    this.filteredApplications = filtered;
-    this.currentPage = 1;
-    console.log('Filtered applications:', this.filteredApplications);
+    this.loadApplications(); // Refresh the list
   }
 
   get displayedApplications() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredApplications.slice(start, start + this.pageSize);
+    return this.applications; // Applications are already paginated from the server
   }
 
-  // pagination
-  get totalPages(): number {
-    return Math.ceil(this.filteredApplications.length / this.pageSize) || 1;
-  }
-
-  get paginatedApplications() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.applications.slice(start, start + this.pageSize);
-  }
-
+  // Pagination methods
   get paginationArray() {
-    const total = this.totalPages;
     const maxPages = 5;
     let start = Math.max(1, this.currentPage - Math.floor(maxPages / 2));
-    let end = Math.min(total, start + maxPages - 1);
+    let end = Math.min(this.totalPages, start + maxPages - 1);
 
     if (end - start < maxPages - 1) {
       start = Math.max(1, end - maxPages + 1);
@@ -155,77 +220,86 @@ export class Applications implements OnInit {
   }
 
   goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
       this.currentPage = page;
+      this.loadApplications();
     }
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.loadApplications();
     }
   }
 
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
+      this.loadApplications();
     }
   }
 
-  // change status
+  // Status change methods
   handleStatusChange(event: { appId: number, newStatus: string, reason: string }) {
-    // Find the application and update its status and statusHistory
+    // Find the application and update its status locally
     const app = this.applications.find((a: any) => a.id === event.appId);
-    // console.log(app.id);
     if (app) {
       app.status = event.newStatus as Status;
       app.statusHistory.push({
-        id: 1,
+        id: Date.now(),
         applicationId: app.id,
         createdBy: 1,
         status: event.newStatus as Status,
         createdAt: new Date(),
         notes: event.reason
       });
+
+      // You might want to call an API to update the application status
+      // this.applicationService.updateApplicationStatus(event.appId, event.newStatus, event.reason)
     }
   }
 
- openStatusModal(event: { appId: number; newStatus: string; reason?: string }) {
-  console.log('Modal event:', event);
-  this.selectedStatusForModal = event.newStatus;
-  this.selectedAppForModal = this.applications.find(app => app.id === event.appId) || null;
-   this.statusChangeReason = '';
-  this.showStatusModal = true;
-}
-
-    // Update the application's status and status-history
-  confirmStatusChange() {
-  if (this.selectedAppForModal && this.selectedStatusForModal) {
-    this.selectedAppForModal.status = this.selectedStatusForModal as Status;
-    this.selectedAppForModal.statusHistory.push({
-      id: Date.now(),
-      applicationId: this.selectedAppForModal.id,
-      createdBy: 1,
-      status: this.selectedStatusForModal as Status,
-      createdAt: new Date(),
-      notes: this.statusChangeReason
-    });
-    this.showStatusModal = false;
+  openStatusModal(event: { appId: number; newStatus: string; reason?: string }) {
+    console.log('Modal event:', event);
+    this.selectedStatusForModal = event.newStatus;
+    this.selectedAppForModal = this.applications.find(app => app.id === event.appId) || null;
+    this.statusChangeReason = '';
+    this.showStatusModal = true;
   }
-}
 
-  // edit and delete application
+  confirmStatusChange() {
+    if (this.selectedAppForModal && this.selectedStatusForModal) {
+      this.selectedAppForModal.status = this.selectedStatusForModal as Status;
+      this.selectedAppForModal.statusHistory.push({
+        id: Date.now(),
+        applicationId: this.selectedAppForModal.id,
+        createdBy: 1,
+        status: this.selectedStatusForModal as Status,
+        createdAt: new Date(),
+        notes: this.statusChangeReason
+      });
+      this.showStatusModal = false;
+
+      // You might want to call an API to update the application status
+      // this.applicationService.updateApplicationStatus(this.selectedAppForModal.id, this.selectedStatusForModal, this.statusChangeReason)
+    }
+  }
+
+  // Edit and delete application
   editApplication(appId: number) {
-    // Implement logic to edit application
-    // For example, open a modal or navigate to an edit page
     console.log('Edit application', appId);
+    // Implement logic to edit application
   }
 
   deleteApplication(appId: number) {
-    // Implement logic to delete application
-    // For example, remove from array or call an API
+    // You might want to call an API to delete the application
+    // For now, just refresh the list
+    // this.applicationService.deleteApplication(appId).subscribe(() => {
+    //   this.loadApplications();
+    // });
+
+    // Temporary local deletion
     this.applications = this.applications.filter((a: any) => a.id !== appId);
   }
-
-
 }

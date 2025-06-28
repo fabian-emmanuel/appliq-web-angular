@@ -4,11 +4,12 @@ import {
   OnInit,
   PLATFORM_ID,
   Inject,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import { Application, Status, statusDetailsMap, statuses } from '@core/models/application';
+import {Application, Status, statusDetailsMap, statuses} from '@core/models/application';
 import {MatFormField, MatLabel} from '@angular/material/input';
-import {applicationList} from '../../core/models/store';
+import {applicationList} from '@core/models/store';
 import {
   MatDatepickerModule,
   MatDatepickerToggle,
@@ -17,14 +18,14 @@ import {
 import {DatePipe, NgClass, NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatOption, MatSelect, MatSelectTrigger} from '@angular/material/select';
-import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {isPlatformBrowser} from '@angular/common';
-import {DashboardCount} from '../../core/models/dashboard';
+import {DashboardCount} from '@core/models/dashboard';
 import {User} from '@core/models/user';
 import {UserService} from '@app/services/user-service';
 import {ChartModule} from 'primeng/chart';
+import {DashboardService} from '@app/services/dashboard-service';
 
 
 @Component({
@@ -38,12 +39,6 @@ import {ChartModule} from 'primeng/chart';
 export class Dashboard implements OnInit {
 
   isBrowser: boolean;
-  totalApplicationsCount: number = 0;
-  interviewsCount: number = 0;
-  testsCount: number = 0;
-  offersCount: number = 0;
-  withdrawalsCount: number = 0;
-  rejectedCount: number = 0;
   items: DashboardCount[] = [];
   recentActivities: any[] = [];
 
@@ -60,9 +55,8 @@ export class Dashboard implements OnInit {
 
   private dummyApplications: Application[] = applicationList;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private userService: UserService) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private userService: UserService, private dashboardService: DashboardService, private cdr: ChangeDetectorRef) {
     this.isBrowser = isPlatformBrowser(this.platformId);
-    this.calculateStats();
     this.userInfo = userService.getCurrentUser();
   }
 
@@ -71,15 +65,6 @@ export class Dashboard implements OnInit {
     this.initializeFilters();
     this.getRecentActivities();
     this.updateChartData(); // Initial chart data load
-  }
-
-  private calculateStats(): void {
-    this.totalApplicationsCount = this.dummyApplications.length;
-    this.interviewsCount = this.dummyApplications.filter(app => app.status === 'Interview').length;
-    this.testsCount = this.dummyApplications.filter(app => app.status === 'Test').length;
-    this.offersCount = this.dummyApplications.filter(app => app.status === 'OfferAwarded').length;
-    this.withdrawalsCount = this.dummyApplications.filter(app => app.status === 'Withdrawn').length;
-    this.rejectedCount = this.dummyApplications.filter(app => app.status === 'Rejected').length;
   }
 
   private initializeFilters(): void {
@@ -141,19 +126,24 @@ export class Dashboard implements OnInit {
   }
 
   private initializeDashboardItems(): void {
-    const baseItems: Omit<DashboardCount, 'icon' | 'color'>[] = [
-      {name: 'Total Applications', count: this.totalApplicationsCount},
-      {name: 'Interviews', count: this.interviewsCount},
-      {name: 'Tests', count: this.testsCount},
-      {name: 'Offers', count: this.offersCount},
-      {name: 'Withdrawn', count: this.withdrawalsCount},
-      {name: 'Rejected', count: this.rejectedCount}
-    ];
+    this.dashboardService.stats().subscribe(response => {
+      if (response && response.data) {
+        const baseItems: Omit<DashboardCount, 'icon' | 'color'>[] = [
+          {name: 'Total Applications', count: response.data.totalApplications},
+          {name: 'Interviews', count: response.data.interviews},
+          {name: 'Tests', count: response.data.tests},
+          {name: 'Offers', count: response.data.offersAwarded},
+          {name: 'Withdrawn', count: response.data.withdrawn},
+          {name: 'Rejected', count: response.data.rejected}
+        ];
 
-    this.items = baseItems.map(item => {
-      const {icon, color} = this.getStatusDetailsForDashboardItem(item.name);
-      return {...item, icon, color};
-    });
+        this.items = baseItems.map(item => {
+          const {icon, color} = this.getStatusDetailsForDashboardItem(item.name);
+          return {...item, icon, color};
+        });
+        this.cdr.markForCheck();
+      }
+    })
   }
 
   private getRecentActivities(): void {
@@ -265,7 +255,7 @@ export class Dashboard implements OnInit {
     const colorName = color.split('-')[1] || 'blue';
 
     // Return appropriate gradient based on color name
-    switch(colorName) {
+    switch (colorName) {
       case 'blue':
         return 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%)';
       case 'green':
@@ -289,7 +279,7 @@ export class Dashboard implements OnInit {
     const colorName = color.split('-')[1] || 'blue';
 
     // Return appropriate background for icon based on color name
-    switch(colorName) {
+    switch (colorName) {
       case 'blue':
         return 'rgba(59, 130, 246, 0.2)';
       case 'green':
@@ -313,7 +303,7 @@ export class Dashboard implements OnInit {
     const colorName = color.split('-')[1] || 'blue';
 
     // Return appropriate glow color based on color name
-    switch(colorName) {
+    switch (colorName) {
       case 'blue':
         return 'rgba(59, 130, 246, 0.3)';
       case 'green':
