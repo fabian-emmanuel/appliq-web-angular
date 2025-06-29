@@ -27,7 +27,6 @@ export class Settings {
 
   isProfileEditing = false;
   isAccountEditing = false;
-  profileImageUrl = 'https://github.com/shadcn.png';
   isLoading = false;
   userInfo: User | null = null;
 
@@ -40,16 +39,41 @@ export class Settings {
   }
 
   //getters for form controls
-  get firstName() { return this.profileForm.get('firstName') as FormControl; }
-  get lastName() { return this.profileForm.get('lastName') as FormControl; }
-  get bio() { return this.profileForm.get('bio') as FormControl; }
-  get phone() { return this.profileForm.get('phone') as FormControl; }
-  get location() { return this.profileForm.get('location') as FormControl; }
+  get firstName() {
+    return this.profileForm.get('firstName') as FormControl;
+  }
 
-  get email() { return this.accountForm.get('email') as FormControl; }
-  get currentPassword() { return this.accountForm.get('newPassword') as FormControl; }
-  get password() { return this.accountForm.get('newPassword') as FormControl; }
-  get confirmPassword() { return this.accountForm.get('confirmPassword') as FormControl; }
+  get lastName() {
+    return this.profileForm.get('lastName') as FormControl;
+  }
+
+  get bio() {
+    return this.profileForm.get('bio') as FormControl;
+  }
+
+  get phoneNumber() {
+    return this.profileForm.get('phoneNumber') as FormControl;
+  }
+
+  get location() {
+    return this.profileForm.get('location') as FormControl;
+  }
+
+  get email() {
+    return this.accountForm.get('email') as FormControl;
+  }
+
+  get currentPassword() {
+    return this.accountForm.get('newPassword') as FormControl;
+  }
+
+  get password() {
+    return this.accountForm.get('newPassword') as FormControl;
+  }
+
+  get confirmPassword() {
+    return this.accountForm.get('confirmPassword') as FormControl;
+  }
 
 
   private createProfileForm(): FormGroup {
@@ -69,9 +93,9 @@ export class Settings {
       bio: ['', [
         Validators.maxLength(500)
       ]],
-      phone: ['', [
+      phoneNumber: ['', [
         Validators.required,
-        Validators.maxLength(500)
+        Validators.maxLength(14)
       ]],
       location: ['', [
         Validators.required,
@@ -119,7 +143,7 @@ export class Settings {
       return null;
     }
 
-    return value.trim().length === 0 ? { whitespace: true } : null;
+    return value.trim().length === 0 ? {whitespace: true} : null;
   };
 
 
@@ -145,7 +169,7 @@ export class Settings {
     const confirmPassword = form.get('confirmPassword')?.value;
 
     return newPassword && confirmPassword && newPassword !== confirmPassword
-      ? { passwordMismatch: true }
+      ? {passwordMismatch: true}
       : null;
   }
 

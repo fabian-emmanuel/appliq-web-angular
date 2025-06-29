@@ -1,13 +1,15 @@
 import {Component, EventEmitter, forwardRef, Input, Output} from '@angular/core';
 import {ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
 import {CountryISO, IntlInputTelComponent, SearchCountryField} from "p-intl-input-tel";
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-phone-input',
   imports: [
     FormsModule,
     IntlInputTelComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterOutlet
   ],
   templateUrl: './phone-input.html',
   styleUrl: './phone-input.css',
@@ -28,6 +30,7 @@ export class PhoneInput implements ControlValueAccessor {
   @Input() phoneValidation: boolean = true;
   @Input() separateDialCode: boolean = true;
   @Input() searchCountryFields: SearchCountryField[] = [SearchCountryField.NAME, SearchCountryField.DIALCODE];
+  @Input() formControl: FormControl = new FormControl();
   // Output for value changes
   @Output() phoneNumberChange = new EventEmitter<any>();
 
@@ -48,84 +51,50 @@ export class PhoneInput implements ControlValueAccessor {
 
   constructor() {}
 
-  // Handle phone number input changes
-  onPhoneInputChange(event: any): void {
-    const value = event.target?.value || event;
-    console.log("Phone input changed:", value);
-
-
-    // Build the international format manually
-    const internationalNumber = this.buildInternationalNumber(value);
-    console.log("International number:", internationalNumber);
-    this.phoneValue = value;
-
-    this.onChange(internationalNumber);
-    this.phoneNumberChange.emit(internationalNumber);
+  get isInvalid(): boolean {
+    return this.formControl?.invalid && this.formControl?.dirty;
   }
+  // Handle phone number input changes
+  onPhoneInputChange(value: string): void {
+    this.phoneValue = value;
+    const internationalNumber = this.buildInternationalNumber(value);
+    this.onChange(internationalNumber);
+    this.onTouched();
+  }
+
 
   // Handle country changes from p-intl-tel-input
   onCountryChange(country: any): void {
-    console.log("Country changed:", country);
-    // Only update if this is a real country change, not just a keystroke event
-    if (country && country.iso2 && country.iso2 !== this.currentCountry?.iso2) {
+    if (country?.iso2 !== this.currentCountry?.iso2) {
       this.currentCountry = country;
-      console.log("Country actually changed to:", country.name);
-
-      // Re-emit the current value with the new country code
       if (this.phoneValue) {
         const internationalNumber = this.buildInternationalNumber(this.phoneValue);
-        console.log("International number after country change:", internationalNumber);
         this.onChange(internationalNumber);
-        this.phoneNumberChange.emit(internationalNumber);
       }
     }
   }
 
   // Build international format: +{countryCode} {nationalNumber}
   private buildInternationalNumber(nationalNumber: string): string {
-    if (!nationalNumber || !this.currentCountry) {
-      return nationalNumber || '';
-    }
-
-    // Remove any existing formatting/spaces to get clean number
-    const cleanNumber = nationalNumber.replace(/\s+/g, '');
-
-    // If number is empty, return empty
-    if (!cleanNumber) {
-      return '';
-    }
-
-    // Build international format
-    return `+${this.currentCountry.dialCode} ${nationalNumber}`;
+    if (!nationalNumber || !this.currentCountry) return '';
+    return `+${this.currentCountry.dialCode}${nationalNumber}`.replaceAll(' ', '');
   }
 
   // Writes a new value from the form model into the view
-  writeValue(value: any): void {
-    console.log("writeValue called with:", value);
+  writeValue(value: string): void {
+    if (value === this.phoneValue) return;
 
-    // Handle all cases including empty strings
-    if (value === undefined || value === null) {
+    if (!value) {
       this.phoneValue = '';
       return;
     }
 
-    // If the value is in international format (+234 xxx xxx), extract the national part
-    let nationalValue = value;
-    if (typeof value === 'string' && value.startsWith('+')) {
-      // Extract national number from international format
+    // Convert international format to national number
+    if (value.startsWith('+')) {
       const parts = value.split(' ');
-      if (parts.length > 1) {
-        nationalValue = parts.slice(1).join(' ');
-      }
-    }
-
-    this.phoneValue = nationalValue;
-
-    // If we receive a value, we should update the internal state
-    // and potentially call onChange to sync with the form
-    if (value && this.onChange) {
-      const internationalNumber = this.buildInternationalNumber(nationalValue);
-      this.onChange(internationalNumber);
+      this.phoneValue = parts.length > 1 ? parts.slice(1).join(' ') : value.replace(`+${this.currentCountry.dialCode}`, '');
+    } else {
+      this.phoneValue = value;
     }
   }
 

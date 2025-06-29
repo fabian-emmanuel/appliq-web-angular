@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {
   AbstractControl,
-  FormBuilder, FormControl,
+  FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   ValidationErrors,
@@ -13,7 +14,6 @@ import {SignupFormData} from '@core/models/auth';
 import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
 import {PhoneInput} from '@shared/components/phone-input/phone-input';
 import {AuthService} from '@app/services/auth-service';
-import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +23,7 @@ import {JsonPipe} from '@angular/common';
     RouterLink,
     RouterOutlet,
     PhoneInput,
-    JsonPipe,
+
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
@@ -36,16 +36,35 @@ export class Signup {
   }
 
   // Getter properties for form controls
-  get firstName() { return this.signupForm.get('firstName') as FormControl; }
-  get lastName() { return this.signupForm.get('lastName') as FormControl; }
-  get email() { return this.signupForm.get('email') as FormControl; }
-  get phoneNumber() { return this.signupForm.get('phoneNumber') as FormControl; }
-  get password() { return this.signupForm.get('password') as FormControl; }
-  get confirmPassword() { return this.signupForm.get('confirmPassword') as FormControl; }
-  get acceptTerms() { return this.signupForm.get('acceptTerms') as FormControl; }
+  get firstName() {
+    return this.signupForm.get('firstName') as FormControl;
+  }
+
+  get lastName() {
+    return this.signupForm.get('lastName') as FormControl;
+  }
+
+  get email() {
+    return this.signupForm.get('email') as FormControl;
+  }
+
+  get phoneNumber() {
+    return this.signupForm.get('phoneNumber') as FormControl;
+  }
+
+  get password() {
+    return this.signupForm.get('password') as FormControl;
+  }
+
+  get confirmPassword() {
+    return this.signupForm.get('confirmPassword') as FormControl;
+  }
+
+  get acceptTerms() {
+    return this.signupForm.get('acceptTerms') as FormControl;
+  }
 
   onSubmit(): void {
-    console.log('Phone value:', this.signupForm.get('phone')?.value);
     if (!this.signupForm.valid) {
       this.markAllFieldsAsTouched();
       console.log('Form is not valid', this.getFormErrors());
@@ -63,11 +82,7 @@ export class Signup {
     const target = event.target as HTMLInputElement;
     this.acceptTerms.setValue(target.checked);
     this.acceptTerms.markAsTouched();
-
-    // Force change detection if needed
-    console.log('Checkbox changed:', target.checked);
   }
-
 
 
   private createForm(): FormGroup {
@@ -84,7 +99,7 @@ export class Signup {
         Validators.maxLength(50),
         this.noWhitespaceValidator
       ]],
-      phoneNumber: ['',[Validators.required]], // Phone input is handled separately, no validators here
+      phoneNumber: ['', [Validators.required, Validators.maxLength(14)]],
       email: ['', [
         Validators.required,
         Validators.email,
@@ -116,7 +131,7 @@ export class Signup {
 
     return password.value === confirmPassword.value
       ? null
-      : { passwordMismatch: true };
+      : {passwordMismatch: true};
   };
 
   private noWhitespaceValidator = (control: AbstractControl): ValidationErrors | null => {
@@ -126,7 +141,7 @@ export class Signup {
       return null;
     }
 
-    return value.trim().length === 0 ? { whitespace: true } : null;
+    return value.trim().length === 0 ? {whitespace: true} : null;
   };
 
   private markAllFieldsAsTouched(): void {

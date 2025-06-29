@@ -55,7 +55,7 @@ export class Login {
     this.authService.login(formData).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/dashboard']).then(r => {});
+        this.router.navigate(['/dashboard']).then();
       },
       error: (err) => {
         this.isLoading = false;

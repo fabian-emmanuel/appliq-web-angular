@@ -1,16 +1,30 @@
-<p-intl-tel-input
-  inputId="phone"
-  [favoriteCountries]="preferredCountries"
-  [enableAutoCountrySelect]="enableAutoCountrySelect"
-  [displayPlaceholder]="displayPlaceholder"
-  [selectedCountryISO]="selectedCountryISO"
-  [phoneValidation]="phoneValidation"
-  [separateDialCode]="separateDialCode"
-  numberFormat="INTERNATIONAL"
-  [searchCountryField]="searchCountryFields"
-  [ngModel]="phoneValue"
-  [disabled]="isDisabled"
-  (ngModelChange)="onPhoneInputChange($event)"
-  (countryChange)="onCountryChange($event)"
-  (blur)="onBlur()">
-</p-intl-tel-input>
+<div>
+  <p-intl-tel-input
+    inputId="phone"
+    [favoriteCountries]="preferredCountries"
+    [enableAutoCountrySelect]="enableAutoCountrySelect"
+    [displayPlaceholder]="displayPlaceholder"
+    [selectedCountryISO]="selectedCountryISO"
+    [phoneValidation]="phoneValidation"
+    [separateDialCode]="separateDialCode"
+    numberFormat="INTERNATIONAL"
+    [searchCountryField]="searchCountryFields"
+    [ngModel]="phoneValue"
+    [disabled]="isDisabled"
+    (ngModelChange)="onPhoneInputChange($event)"
+    (countryChange)="onCountryChange($event)"
+    (blur)="onBlur()">
+  </p-intl-tel-input>
+
+  @if (isInvalid) {
+    <div class="text-danger small mt-1">
+      @if (formControl.errors?.['maxlength']) {
+        <div class="d-flex align-items-center">
+          <i class="bi bi-x-circle me-1" style="font-size: 0.75rem;"></i>
+          PhoneNumber must be no more than {{ formControl.errors?.['maxlength']?.requiredLength }} characters
+        </div>
+      }
+    </div>
+  }
+</div>
+<router-outlet/>

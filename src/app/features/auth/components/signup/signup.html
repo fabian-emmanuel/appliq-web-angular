@@ -41,7 +41,7 @@
 
           <div class="mb-3">
             <label for="phone" class="form-label appliq-text-white mb-1">Phone Number</label>
-            <app-phone-input formControlName="phoneNumber"/>
+            <app-phone-input [formControl]="phoneNumber"/>
           </div>
 
 
@@ -88,8 +88,6 @@
 
           <button type="submit" class="btn bg-appliq-white w-100 mb-3" [disabled]="signupForm.invalid">Create Account
           </button>
-
-          <p class="text-amber-50">{{signupForm.value | json}}</p>
         </form>
 
 
