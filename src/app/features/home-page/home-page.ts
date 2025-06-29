@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterOutlet} from "@angular/router";
-import {Footer} from '../../shared/components/footer/footer';
-import {HowItWorks} from '../../shared/components/how-it-works/how-it-works';
-import {Features} from '../../shared/components/features/features';
+import {Footer} from '@shared/components/footer/footer';
+import {HowItWorks} from '@shared/components/how-it-works/how-it-works';
+import {Features} from '@shared/components/features/features';
 
 @Component({
   selector: 'app-home-page',

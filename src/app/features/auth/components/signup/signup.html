@@ -20,7 +20,7 @@
           <p class="appliq-text-white-50 mb-0">Enter your details to onboard on AppliQ</p>
         </div>
 
-        <!--Login Form-->
+        <!--SignUp Form-->
         <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
           <app-input-with-icon
@@ -41,7 +41,7 @@
 
           <div class="mb-3">
             <label for="phone" class="form-label appliq-text-white mb-1">Phone Number</label>
-            <app-phone-input [formControl]="phone"/>
+            <app-phone-input [formControl]="phoneNumber"/>
           </div>
 
 

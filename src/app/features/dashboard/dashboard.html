@@ -3,32 +3,45 @@
   <div class="px-4 md:px-6 mb-6">
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
       @for (item of items; track item) {
-        <div class="group relative bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-xl p-3 md:p-4 hover:bg-slate-800/60 hover:border-slate-600/50 transition-all duration-300 hover:scale-105"
-             style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);">
+        <div class="group relative overflow-hidden bg-slate-800/40 backdrop-blur-sm rounded-xl p-4 hover:bg-slate-800/60 transition-all duration-300 transform-gpu hover:translate-y-[-4px]"
+             style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.1);">
 
-          <!-- Gradient overlay -->
-          <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <!-- Dynamic gradient based on color -->
+          <div class="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out rounded-xl"
+               [ngStyle]="{'background': getGradientFromColor(item.color)}"></div>
 
-          <div class="relative z-10">
-            <!-- Icon and Status -->
+          <!-- Subtle top highlight -->
+          <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+          <div class="relative z-10 flex flex-col h-full">
+            <!-- Label at the top for better information hierarchy -->
             <div class="flex items-center justify-between mb-2">
-              <div class="p-1.5 md:p-2 bg-slate-700/50 rounded-lg group-hover:bg-slate-600/50 transition-colors duration-300"
-                   style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
-                <i class="{{ item.icon }} text-sm md:text-base {{ item.color }}"></i>
+              <p class="text-sm text-slate-300 font-medium leading-tight group-hover:text-white transition-colors duration-300">{{ item.name }}</p>
+
+              <!-- Live status indicator moved to top right -->
+              <div class="relative flex items-center" title="Live updating">
+                <div class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
               </div>
-              <div class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
             </div>
 
-            <!-- Count and Label -->
-            <div class="space-y-1">
-              <p class="text-lg md:text-2xl font-bold {{ item.color }}">{{ item.count }}</p>
-              <p class="text-xs md:text-sm text-slate-400 font-medium leading-tight">{{ item.name }}</p>
+            <!-- Count and icon side by side for better visual balance -->
+            <div class="flex items-center justify-between mt-1">
+              <!-- Count with transition effect - now larger and more prominent -->
+              <p class="text-2xl md:text-3xl font-bold {{ item.color }} transition-all duration-300 group-hover:scale-105 origin-left">{{ item.count }}</p>
+
+              <!-- Icon container moved to right side -->
+              <div class="relative p-2.5 rounded-lg transition-all duration-300"
+                   [ngStyle]="{'background': getIconBgFromColor(item.color)}">
+                <i class="{{ item.icon }} {{ item.color }} text-base"></i>
+                <!-- Subtle glow effect -->
+                <div class="absolute inset-0 rounded-lg blur-sm opacity-0 group-hover:opacity-70 transition-opacity duration-300"
+                     [ngStyle]="{'background': getGlowFromColor(item.color)}"></div>
+              </div>
             </div>
 
-            <!-- Trend -->
-            <div class="mt-2 flex items-center gap-1">
-              <i class="bi bi-trending-up text-green-400 text-xs"></i>
-              <span class="text-xs text-green-400">+12%</span>
+            <!-- Optional extra info at the bottom -->
+            <div class="mt-2 text-xs text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Updated just now
             </div>
           </div>
         </div>
@@ -41,7 +54,7 @@
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-6">
 
       <!-- Chart Section -->
-      <div class="xl:col-span-2 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+      <div class="xl:col-span-2 bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 md:p-6"
            style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
 
         <!-- Chart Header -->
@@ -49,112 +62,57 @@
           <h3 class="text-lg md:text-xl font-bold mb-2">Application Trends</h3>
         </div>
 
-        <!-- Mobile Controls -->
-        <div class="block md:hidden mb-4 space-y-3">
-          <!-- Date Range - Mobile -->
-          <div class="w-full">
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label class="">Date Range</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate placeholder="Start" class="">
-                <input matEndDate placeholder="End" class="">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-          </div>
+        <!-- Redesigned Filters -->
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
 
-          <!-- Status Filter - Mobile -->
-          <div class="w-full">
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()" class="">
-                <mat-select-trigger class="">
-                  {{ StatusDisplayText }}
-                </mat-select-trigger>
-                @for (status of allStatuses; track status) {
-                  <mat-option [value]="status" class="">{{ status }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <!-- Chart Type - Mobile -->
-          <div class="flex bg-slate-700/50 rounded-xl p-1">
-            <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
-              <mat-radio-button value="bar" class="flex-1">
-                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
-                      [style.background]="chartType === 'bar' ? '#3B82F6' : 'transparent'"
-                      [style.color]="chartType === 'bar' ? 'white' : '#94A3B8'">
-                  Bar
-                </span>
-              </mat-radio-button>
-              <mat-radio-button value="line" class="flex-1">
-                <span class="px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center w-full"
-                      [style.background]="chartType === 'line' ? '#3B82F6' : 'transparent'"
-                      [style.color]="chartType === 'line' ? 'white' : '#94A3B8'">
-                  Line
-                </span>
-              </mat-radio-button>
-            </mat-radio-group>
-          </div>
-        </div>
-
-        <!-- Desktop Controls -->
-        <div class="hidden md:block mb-6">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <!-- Date Range - Desktop -->
-            <div class="lg:col-span-1">
-              <mat-form-field appearance="outline" class="w-full">
-                <mat-label class="text-slate-300">Date Range</mat-label>
-                <mat-date-range-input [rangePicker]="picker2" class="">
-                  <input matStartDate placeholder="Start date" class="">
-                  <input matEndDate placeholder="End date" class="">
+            <!-- Date Range -->
+            <div class="md:col-span-2">
+              <mat-form-field appearance="fill" class="w-full custom-form-field">
+                <mat-label class="text-slate-400">Filter by Date</mat-label>
+                <i matPrefix class="bi bi-calendar-range text-slate-400 mr-3"></i>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Start date">
+                  <input matEndDate placeholder="End date">
                 </mat-date-range-input>
-                <mat-datepicker-toggle matIconSuffix [for]="picker2" class="text-slate-300"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker2></mat-date-range-picker>
+                <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
             </div>
 
-            <!-- Status Filter - Desktop -->
-            <div class="lg:col-span-1">
-              <mat-form-field appearance="outline" class="w-full">
-                <mat-label class="text-slate-300">Status Filter</mat-label>
-                <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()" class="">
-                  <mat-select-trigger class="">
+            <!-- Status Filter -->
+            <div class="md:col-span-2">
+              <mat-form-field appearance="fill" class="w-full custom-form-field">
+                <mat-label class="text-slate-400">Filter by Status</mat-label>
+                <i matPrefix class="bi bi-tags-fill text-slate-400 mr-3"></i>
+                <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onFilterChange()">
+                  <mat-select-trigger>
                     {{ StatusDisplayText }}
                   </mat-select-trigger>
                   @for (status of allStatuses; track status) {
-                    <mat-option [value]="status" class="">{{ status }}</mat-option>
+                    <mat-option [value]="status">{{ status }}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
             </div>
 
-            <!-- Chart Type - Desktop -->
-            <div class="lg:col-span-1">
-              <div class="flex rounded-xl p-1 w-full">
-                <mat-radio-group [(ngModel)]="chartType" (change)="onFilterChange()" class="flex w-full">
-                  <mat-radio-button value="bar" class="flex-1">
-                    <span class="py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center">
-                      Bar
-                    </span>
-                  </mat-radio-button>
-                  <mat-radio-button value="line" class="flex-1">
-                    <span class="py-2 text-sm font-medium rounded-lg transition-colors duration-200 block text-center">
-                      Line
-                    </span>
-                  </mat-radio-button>
-                </mat-radio-group>
+            <!-- Chart Type Toggle -->
+            <div class="md:col-span-1">
+              <div class="chart-toggle-group rounded-lg p-1 flex justify-center">
+                <button (click)="chartType = 'bar'; onFilterChange()" [ngClass]="{'active': chartType === 'bar'}" class="toggle-btn">
+                  <i class="bi bi-bar-chart-line-fill"></i>
+                </button>
+                <button (click)="chartType = 'line'; onFilterChange()" [ngClass]="{'active': chartType === 'line'}" class="toggle-btn">
+                  <i class="bi bi-graph-up"></i>
+                </button>
               </div>
             </div>
+
           </div>
-        </div>
 
         <!-- Chart Container -->
-        <div class="bg-slate-900/50 rounded-xl p-3 md:p-4 h-64 md:h-80 lg:h-96"
+        <div class="flex flex-col justify-end bg-slate-900/50 rounded-xl p-3 md:p-4 h-64 md:h-80 lg:h-96"
              style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);">
-          @if (barChartData.length === 0 && lineChartData.length === 0) {
+          @if (!chartData) {
             <div class="flex flex-col items-center justify-center h-full text-center">
               <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4"
                    style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
@@ -165,47 +123,8 @@
             </div>
           }
 
-          @if (isBrowser && chartType === 'bar' && barChartData.length > 0) {
-            <ngx-charts-bar-vertical
-              [results]="barChartData"
-              [xAxis]="true"
-              [yAxis]="true"
-              [showGridLines]="false"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              xAxisLabel="Status"
-              yAxisLabel="Count"
-              [gradient]="true"
-              [scheme]="appliqScheme"
-              [barPadding]="50"
-              [roundDomains]="false"
-              [showDataLabel]="true"
-              [legend]="false"
-              [roundEdges]="true"
-              [tooltipDisabled]="false"
-              (select)="onSelect($event)"
-              class="w-full h-full">
-            </ngx-charts-bar-vertical>
-          }
-
-          @if (isBrowser && chartType === 'line' && lineChartData.length > 0) {
-            <ngx-charts-line-chart
-              [results]="lineChartData"
-              [xAxis]="true"
-              [yAxis]="true"
-              [showXAxisLabel]="true"
-              [showYAxisLabel]="true"
-              xAxisLabel="Date"
-              yAxisLabel="Count"
-              [scheme]="appliqScheme"
-              [gradient]="true"
-              [legend]="false"
-              [showGridLines]="false"
-              [roundDomains]="false"
-              [tooltipDisabled]="false"
-              (select)="onSelect($event)"
-              class="w-full h-full">
-            </ngx-charts-line-chart>
+          @if (isBrowser) {
+            <p-chart [type]="chartType" [data]="chartData" [options]="chartOptions"></p-chart>
           }
         </div>
       </div>
@@ -213,7 +132,7 @@
       <!-- Sidebar Stats -->
       <div class="space-y-4">
         <!-- Success Rate Card -->
-        <div class="mb-4 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+        <div class="mb-4 bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 md:p-6"
              style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); border-color: rgba(34, 197, 94, 0.2); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
           <div class="flex items-center justify-between mb-3 md:mb-4">
             <h4 class="text-base md:text-lg font-semibold">Success Rate</h4>
@@ -233,7 +152,7 @@
         </div>
 
         <!-- Response Time Card -->
-        <div class="mb-4 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+        <div class="mb-4 bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 md:p-6"
              style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); border-color: rgba(59, 130, 246, 0.2); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
           <div class="flex items-center justify-between mb-3 md:mb-4">
             <h4 class="text-base md:text-lg font-semibold">Avg Response</h4>
@@ -253,7 +172,7 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="pt-4 bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+        <div class="pt-4 bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 md:p-6"
              style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
           <h4 class="text-base md:text-lg font-semibold  mb-3 md:mb-4">Quick Actions</h4>
           <div class="space-y-2 md:space-y-3">
@@ -274,7 +193,7 @@
 
   <!-- Recent Activities Section -->
   <div class="pt-4 px-4 md:px-6 pb-6">
-    <div class="bg-slate-800/40 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 md:p-6"
+    <div class="bg-slate-800/40 backdrop-blur-sm rounded-2xl p-4 md:p-6"
          style="box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);">
 
       <!-- Section Header -->
@@ -291,7 +210,7 @@
         <!-- Mobile Activities List -->
         <div class="block md:hidden space-y-3">
           @for (activity of recentActivities.slice(0, 4); track activity) {
-            <div class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30"
+            <div class="bg-slate-900/50 rounded-xl p-4"
                  style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);">
               <div class="flex items-start justify-between mb-2">
                 <div class="flex-1 min-w-0">
@@ -334,7 +253,7 @@
         <!-- Desktop Activities Grid -->
         <div class="hidden md:grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           @for (activity of recentActivities.slice(0, 6); track activity) {
-            <div class="bg-slate-900/50 rounded-xl p-4 md:p-6 border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 hover:scale-105"
+            <div class="bg-slate-900/50 rounded-xl p-4 md:p-6 hover:border-slate-600/50 transition-all duration-300 hover:scale-105"
                  style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
               <div class="flex items-start justify-between mb-3 md:mb-4">
                 <div class="flex-1 min-w-0">

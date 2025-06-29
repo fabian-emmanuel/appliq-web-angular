@@ -1,45 +1,45 @@
 <div class="applications-container">
   <div class="apps-header">
-    <div class="search-and-filters">
-      <div class="search-input-wrapper">
-        <input type="text" placeholder="Search..." class="search-bar" [(ngModel)]="searchTerm" (ngModelChange)="filterApplications()" />
-        <i class="bi bi-search search-icon"></i>
-      </div>
-      <div class="filters">
-        <div class="dropdown">
-          <select
-            class="filter-btn"
-            [(ngModel)]="selectedStatus"
-            (ngModelChange)="filterApplications()"
-          >
-            <option value="">All Statuses</option>
-            @for (status of statuses; track status) {
-            <option [value]="status" class="filter-select">{{ status }}</option>
-            }
-          </select>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+        <!-- Search Input -->
+        <div class="md:col-span-1">
+          <mat-form-field appearance="fill" class="w-full custom-form-field">
+            <mat-label class="text-slate-400">Search</mat-label>
+            <i matPrefix class="bi bi-search text-slate-400 mr-3"></i>
+            <input matInput placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)">
+          </mat-form-field>
         </div>
-        <div class="lg:col-span-1">
-          <mat-form-field appearance="outline" class="mat-form-field w-full">
-            <mat-label>Date Range</mat-label>
-            <mat-date-range-input
-              [rangePicker]="picker"
-              [(ngModel)]="dateRange"
-              name="dateRange" class="mat-date-range-input"
-            >
-              <input matStartDate placeholder="Start date" />
-              <input matEndDate placeholder="End date" />
+
+        <!-- Date Range -->
+        <div class="md:col-span-1">
+          <mat-form-field appearance="fill" class="w-full custom-form-field">
+            <mat-label class="text-slate-400">Filter by Date</mat-label>
+            <i matPrefix class="bi bi-calendar-range text-slate-400 mr-3"></i>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.begin" name="startDate" (ngModelChange)="onDateRangeChange()">
+              <input matEndDate placeholder="End date" [(ngModel)]="dateRange.end" name="endDate" (ngModelChange)="onDateRangeChange()">
             </mat-date-range-input>
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>
           </mat-form-field>
-          <!-- <pre>{{ dateRange | json }}</pre>
-          <div>
-            Date range: {{ dateRange.begin }} - {{ dateRange.end }}<br />
-            Filtered count: {{ filteredApplications.length }}
-          </div> -->
+        </div>
+
+        <!-- Status Filter -->
+        <div class="md:col-span-1">
+          <mat-form-field appearance="fill" class="w-full custom-form-field">
+            <mat-label class="text-slate-400">Filter by Status</mat-label>
+            <i matPrefix class="bi bi-tags-fill text-slate-400 mr-3"></i>
+            <mat-select [(ngModel)]="selectedStatuses" multiple (selectionChange)="onStatusFilterChange()">
+              <mat-select-trigger>
+                {{ StatusDisplayText }}
+              </mat-select-trigger>
+              @for (status of statuses; track status) {
+                <mat-option [value]="status">{{ status }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
-    </div>
     <div class="view-toggle-application">
       <div class="view-toggle">
         <button
@@ -96,7 +96,7 @@
               placeholder="Status"
               [(ngModel)]="newApp.status"
               name="status"
-              
+
             /> -->
             <!-- <p>Applied Via</p>
             <select name="applied" id="" [(ngModel)]="newApp.appliedVia"
@@ -128,7 +128,11 @@
       </div>
     </div>
   </div>
-  @if (applications && applications.length > 0) {
+  @if (loading) {
+    <div class="loading-spinner">
+      <i class="bi bi-arrow-clockwise"></i> Loading applications...
+    </div>
+  } @else if (applications && applications.length > 0) {
   <div class="applications-content">
     <div
       class="applications-list"
@@ -137,7 +141,7 @@
           'list-view': viewMode === 'list',
         }"
     >
-  
+
       @for (app of displayedApplications; track app) {
       <app-application-card
         [application]="app"
@@ -167,21 +171,9 @@
   </div>
   } @else {
   <div class="empty-state">
-    <img
-      [src]="image"
-      alt="No Applications"
-      style="height: 40vh; width: auto; object-fit: cover"
-    />
-    <!-- <img src="https://images.app.goo.gl/XvZc64fCWh1ZGnqf7" alt="not showing" /> -->
     <p>No applications yet</p>
   </div>
   }
-
-  <ng-template #loading>
-    <div class="loading-spinner">
-      <i class="bi bi-arrow-clockwise"></i> Loading applications...
-    </div>
-  </ng-template>
   <!-- <div class="applications-container">
 </div> -->
 </div>

@@ -9,11 +9,11 @@ import {
   Validators
 } from "@angular/forms";
 import {RouterOutlet, Router} from "@angular/router";
-import {Brand} from '../../../../shared/components/brand/brand';
-import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
-import {getFormErrors, markAllFieldsAsTouched} from '../../../../core/models/errors';
-import {SignupFormData} from '../../../../core/models/auth';
-import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
+import {Brand} from '@shared/components/brand/brand';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
+import {getFormErrors, markAllFieldsAsTouched} from '@core/models/errors';
+import {SignupFormData} from '@core/models/auth';
+import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
 
 @Component({
   selector: 'app-reset-password',

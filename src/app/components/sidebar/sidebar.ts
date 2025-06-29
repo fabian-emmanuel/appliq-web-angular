@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {PageTitle} from '../../shared/services/page-title/page-title';
+import {PageTitle} from '@shared/services/page-title/page-title';
+import {User} from '@core/models/user';
+import {UserService} from '@app/services/user-service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,7 +11,10 @@ import {PageTitle} from '../../shared/services/page-title/page-title';
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
-  constructor(private pageTitle: PageTitle) {}
+  userInfo: User | null = null;
+  constructor(private pageTitle: PageTitle, private userService: UserService) {
+    this.userInfo = userService.getCurrentUser();
+  }
 
   setTitle(title: string) {
     this.pageTitle.setTitle(title);

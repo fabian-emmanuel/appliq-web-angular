@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PhoneInput } from './phone-input';
+import { PhoneInput } from '@shared/components/phone-input/phone-input';
 
 describe('PhoneInput', () => {
   let component: PhoneInput;

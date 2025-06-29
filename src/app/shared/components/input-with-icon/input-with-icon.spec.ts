@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {InputWithIcon} from './input-with-icon';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 import {FormControl} from '@angular/forms';

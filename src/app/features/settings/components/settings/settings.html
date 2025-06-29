@@ -63,16 +63,16 @@
           <label for="phone" class="block text-sm font-medium ">Phone Number</label>
 
           @if (isProfileEditing) {
-              <app-phone-input [formControl]="phone"/>
+              <app-phone-input [formControl]="phoneNumber"/>
           } @else {
 
             <input
               type="tel"
               id="phone"
-              [formControl]="phone"
+              [formControl]="phoneNumber"
               [readonly]="!isProfileEditing"
               [class]="'block w-full px-3 py-2 border border-gray-300 rounded-lg cursor-default'"
-              [class.border-red-500]="phone.invalid && phone.touched">
+              [class.border-red-500]="phoneNumber.invalid && phoneNumber.touched">
           }
 
         </div>

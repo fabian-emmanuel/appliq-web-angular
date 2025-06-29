@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HowItWorks } from './how-it-works';
+import { HowItWorks } from '@shared/components/how-it-works/how-it-works';
 
 describe('HowItWorks', () => {
   let component: HowItWorks;

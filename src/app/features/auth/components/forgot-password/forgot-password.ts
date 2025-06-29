@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {RouterLink, RouterOutlet} from "@angular/router";
-import {getFormErrors} from '../../../../core/models/errors';
-import {LoginRequest} from '../../../../core/models/auth';
-import {Brand} from '../../../../shared/components/brand/brand';
-import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
+import {getFormErrors} from '@core/models/errors';
+import {LoginRequest} from '@core/models/auth';
+import {Brand} from '@shared/components/brand/brand';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
 
 @Component({
   selector: 'app-forgot-password',

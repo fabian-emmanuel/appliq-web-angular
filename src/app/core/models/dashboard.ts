@@ -14,3 +14,13 @@ export interface DashboardCount {
   icon: string;
   color: string;
 }
+
+
+export interface Stats {
+  interviews: number;
+  offersAwarded: number;
+  rejected: number;
+  tests: number;
+  totalApplications: number;
+  withdrawn: number;
+}

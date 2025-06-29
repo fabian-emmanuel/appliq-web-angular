@@ -1,17 +1,19 @@
 import {Component} from '@angular/core';
 import {
   AbstractControl,
-  FormBuilder, FormControl,
+  FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {RouterLink, RouterOutlet} from '@angular/router';
-import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
-import {SignupFormData} from '../../../../core/models/auth';
-import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
-import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
+import {SignupFormData} from '@core/models/auth';
+import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
+import {PhoneInput} from '@shared/components/phone-input/phone-input';
+import {AuthService} from '@app/services/auth-service';
 
 @Component({
   selector: 'app-signup',
@@ -21,6 +23,7 @@ import {PhoneInput} from '../../../../shared/components/phone-input/phone-input'
     RouterLink,
     RouterOutlet,
     PhoneInput,
+
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
@@ -28,18 +31,38 @@ import {PhoneInput} from '../../../../shared/components/phone-input/phone-input'
 export class Signup {
   signupForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.signupForm = this.createForm();
   }
 
   // Getter properties for form controls
-  get firstName() { return this.signupForm.get('firstName') as FormControl; }
-  get lastName() { return this.signupForm.get('lastName') as FormControl; }
-  get email() { return this.signupForm.get('email') as FormControl; }
-  get phone() { return this.signupForm.get('phone') as FormControl; }
-  get password() { return this.signupForm.get('password') as FormControl; }
-  get confirmPassword() { return this.signupForm.get('confirmPassword') as FormControl; }
-  get acceptTerms() { return this.signupForm.get('acceptTerms') as FormControl; }
+  get firstName() {
+    return this.signupForm.get('firstName') as FormControl;
+  }
+
+  get lastName() {
+    return this.signupForm.get('lastName') as FormControl;
+  }
+
+  get email() {
+    return this.signupForm.get('email') as FormControl;
+  }
+
+  get phoneNumber() {
+    return this.signupForm.get('phoneNumber') as FormControl;
+  }
+
+  get password() {
+    return this.signupForm.get('password') as FormControl;
+  }
+
+  get confirmPassword() {
+    return this.signupForm.get('confirmPassword') as FormControl;
+  }
+
+  get acceptTerms() {
+    return this.signupForm.get('acceptTerms') as FormControl;
+  }
 
   onSubmit(): void {
     if (!this.signupForm.valid) {
@@ -49,21 +72,17 @@ export class Signup {
     }
 
     const formData = this.signupForm.value as SignupFormData;
-    console.log('Submitting form', formData);
-
-    // TODO: Call your signup service here
-    // this.authService.signup(formData).subscribe(...)
+    this.authService.signup(formData).subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: (err) => console.error('Signup failed', err)
+    });
   }
 
   onCheckboxChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.acceptTerms.setValue(target.checked);
     this.acceptTerms.markAsTouched();
-
-    // Force change detection if needed
-    console.log('Checkbox changed:', target.checked);
   }
-
 
 
   private createForm(): FormGroup {
@@ -80,7 +99,7 @@ export class Signup {
         Validators.maxLength(50),
         this.noWhitespaceValidator
       ]],
-      phone: [''], // Phone input is handled separately, no validators here
+      phoneNumber: ['', [Validators.required, Validators.maxLength(14)]],
       email: ['', [
         Validators.required,
         Validators.email,
@@ -112,7 +131,7 @@ export class Signup {
 
     return password.value === confirmPassword.value
       ? null
-      : { passwordMismatch: true };
+      : {passwordMismatch: true};
   };
 
   private noWhitespaceValidator = (control: AbstractControl): ValidationErrors | null => {
@@ -122,7 +141,7 @@ export class Signup {
       return null;
     }
 
-    return value.trim().length === 0 ? { whitespace: true } : null;
+    return value.trim().length === 0 ? {whitespace: true} : null;
   };
 
   private markAllFieldsAsTouched(): void {

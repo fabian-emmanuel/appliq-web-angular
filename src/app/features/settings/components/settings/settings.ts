@@ -7,8 +7,10 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import {strongPasswordValidator} from '../../../../shared/utils/PasswordUtil';
-import {PhoneInput} from '../../../../shared/components/phone-input/phone-input';
+import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
+import {PhoneInput} from '@shared/components/phone-input/phone-input';
+import {UserService} from '@app/services/user-service';
+import {User} from '@core/models/user';
 
 @Component({
   selector: 'app-settings',
@@ -25,27 +27,53 @@ export class Settings {
 
   isProfileEditing = false;
   isAccountEditing = false;
-  profileImageUrl = 'https://github.com/shadcn.png';
   isLoading = false;
+  userInfo: User | null = null;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.profileForm = this.createProfileForm();
     this.accountForm = this.createAccountForm();
+    this.userInfo = this.userService.getCurrentUser();
     this.loadUserData();
   }
 
   //getters for form controls
-  get firstName() { return this.profileForm.get('firstName') as FormControl; }
-  get lastName() { return this.profileForm.get('lastName') as FormControl; }
-  get bio() { return this.profileForm.get('bio') as FormControl; }
-  get phone() { return this.profileForm.get('phone') as FormControl; }
-  get location() { return this.profileForm.get('location') as FormControl; }
+  get firstName() {
+    return this.profileForm.get('firstName') as FormControl;
+  }
 
-  get email() { return this.accountForm.get('email') as FormControl; }
-  get currentPassword() { return this.accountForm.get('newPassword') as FormControl; }
-  get password() { return this.accountForm.get('newPassword') as FormControl; }
-  get confirmPassword() { return this.accountForm.get('confirmPassword') as FormControl; }
+  get lastName() {
+    return this.profileForm.get('lastName') as FormControl;
+  }
+
+  get bio() {
+    return this.profileForm.get('bio') as FormControl;
+  }
+
+  get phoneNumber() {
+    return this.profileForm.get('phoneNumber') as FormControl;
+  }
+
+  get location() {
+    return this.profileForm.get('location') as FormControl;
+  }
+
+  get email() {
+    return this.accountForm.get('email') as FormControl;
+  }
+
+  get currentPassword() {
+    return this.accountForm.get('newPassword') as FormControl;
+  }
+
+  get password() {
+    return this.accountForm.get('newPassword') as FormControl;
+  }
+
+  get confirmPassword() {
+    return this.accountForm.get('confirmPassword') as FormControl;
+  }
 
 
   private createProfileForm(): FormGroup {
@@ -65,9 +93,9 @@ export class Settings {
       bio: ['', [
         Validators.maxLength(500)
       ]],
-      phone: ['', [
+      phoneNumber: ['', [
         Validators.required,
-        Validators.maxLength(500)
+        Validators.maxLength(14)
       ]],
       location: ['', [
         Validators.required,
@@ -115,22 +143,21 @@ export class Settings {
       return null;
     }
 
-    return value.trim().length === 0 ? { whitespace: true } : null;
+    return value.trim().length === 0 ? {whitespace: true} : null;
   };
 
 
   loadUserData(): void {
     this.profileForm.patchValue({
-      firstName: 'John',
-      lastName: 'Doe',
-      username: 'johndoe',
+      firstName: this.userInfo?.firstName,
+      lastName: this.userInfo?.lastName,
       bio: 'Software developer passionate about creating amazing user experiences.',
-      phone: '+2348066504447', // If available, use IntlTelPhoneNumber structure
+      phone: this.userInfo?.phoneNumber, // If available, use IntlTelPhoneNumber structure
       location: 'San Francisco, CA'
     });
 
     this.accountForm.patchValue({
-      email: 'john.doe@example.com',
+      email: this.userInfo?.email,
       currentPassword: '',
       newPassword: '',
       confirmPassword: ''
@@ -142,24 +169,8 @@ export class Settings {
     const confirmPassword = form.get('confirmPassword')?.value;
 
     return newPassword && confirmPassword && newPassword !== confirmPassword
-      ? { passwordMismatch: true }
+      ? {passwordMismatch: true}
       : null;
-  }
-
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.profileImageUrl = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  triggerFileInput(): void {
-    const fileInput = document.getElementById('profileImage') as HTMLInputElement;
-    fileInput.click();
   }
 
   toggleProfileEdit(): void {

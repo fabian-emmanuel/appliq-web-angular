@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {MessageService} from 'primeng/api';
-import {Toast as Primetoast} from 'primeng/toast';
+import { Toast as Primetoast} from 'primeng/toast';
 import {Button} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {RouterOutlet} from '@angular/router';

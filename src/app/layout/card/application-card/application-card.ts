@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Application } from '../../../core/models/application';
+import {Application} from '@core/models/application';
 
 @Component({
   selector: 'app-application-card',
@@ -73,7 +73,7 @@ openStatusModal(status: string) {
 
   // Add your utility functions here or import them if needed
   getInitials(company: string): string {
-    return company.replace(/\s+/g, '').substring(0, 2).toUpperCase(); 
+    return company.replace(/\s+/g, '').substring(0, 2).toUpperCase();
  }
 
 //  get latest status history

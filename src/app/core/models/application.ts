@@ -43,8 +43,17 @@ export interface Application {
     createdBy: number;
 }
 
-export interface PaginatedApplications {
-    items: any;
+
+export interface ApplicationFilter {
+  search?: string;
+  status?: Status;
+  from?: Date;
+  to?: Date;
+  page?: number;
+  size?: number;
+}
+
+export interface Applications {
     applications: Application[];
     pagination: Pagination;
 }

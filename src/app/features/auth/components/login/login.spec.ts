@@ -5,7 +5,7 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular
 import {ActivatedRoute, RouterModule} from '@angular/router';
 import {By} from '@angular/platform-browser';
 import {of} from 'rxjs';
-import {InputWithIcon} from '../../../../shared/components/input-with-icon/input-with-icon';
+import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
 
 describe('Login', () => {
   let component: Login;
