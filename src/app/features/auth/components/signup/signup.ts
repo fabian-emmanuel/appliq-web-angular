@@ -14,6 +14,9 @@ import {SignupFormData} from '@core/models/auth';
 import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
 import {PhoneInput} from '@shared/components/phone-input/phone-input';
 import {AuthService} from '@app/services/auth-service';
+import { MessageService } from 'primeng/api';
+import {Toast} from 'primeng/toast';
+
 
 @Component({
   selector: 'app-signup',
@@ -23,7 +26,7 @@ import {AuthService} from '@app/services/auth-service';
     RouterLink,
     RouterOutlet,
     PhoneInput,
-
+    Toast,
   ],
   templateUrl: './signup.html',
   styleUrl: './signup.css'
@@ -31,7 +34,12 @@ import {AuthService} from '@app/services/auth-service';
 export class Signup {
   signupForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService
+  ) {
     this.signupForm = this.createForm();
   }
 
@@ -73,10 +81,18 @@ export class Signup {
 
     const formData = this.signupForm.value as SignupFormData;
     this.authService.signup(formData).subscribe({
-next: () => {
-      console.log('Signup successful with data:', formData);
-      this.router.navigate(['/login']);
-    },      error: (err) => console.error('Signup failed', err)
+      next: () => {
+        console.log('Signup successful with data:', formData);
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Signup Failed',
+          detail: err.error?.message || 'An unexpected error occurred.'
+        });
+        console.error('Signup failed', err);
+      }
     });
   }
 
