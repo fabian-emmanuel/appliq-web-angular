@@ -3,7 +3,7 @@ import {environment} from '@environment/environment';
 import {HttpClient} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 import {ApiResponse, LoginRequest, LoginResponse, SignupFormData} from '@core/models/auth';
-import {Observable, tap} from 'rxjs';
+import {last, Observable, tap} from 'rxjs';
 import {User} from '@core/models/user';
 
 @Injectable({
@@ -29,9 +29,16 @@ export class AuthService {
   }
 
   signup(signupFormData: SignupFormData): Observable<ApiResponse<User>> {
-   console.log('Signing up user with info:', signupFormData);
-   //implementation of signup logic
-    return new Observable<ApiResponse<User>>(observer => {});
+    const body = {
+      email: signupFormData.email,
+      firstName: signupFormData.firstName,
+      lastName: signupFormData.lastName,
+      password: signupFormData.password,
+      phoneNumber: signupFormData.phoneNumber,
+    };
+    console.log('Signing up user with info:', signupFormData);
+    return this.http.post<ApiResponse<User>>(`${this.apiUrl}/user/register`, body);
+    // return new Observable<ApiResponse<User>>(observer => {});
   }
 
   logout(): void {
