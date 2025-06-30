@@ -9,7 +9,6 @@ export interface SignupFormData {
 }
 
 
-
 export interface LoginRequest {
   email: string;
   password: string;

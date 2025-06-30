@@ -73,8 +73,10 @@ export class Signup {
 
     const formData = this.signupForm.value as SignupFormData;
     this.authService.signup(formData).subscribe({
-      next: () => this.router.navigate(['/login']),
-      error: (err) => console.error('Signup failed', err)
+next: () => {
+      console.log('Signup successful with data:', formData);
+      this.router.navigate(['/login']);
+    },      error: (err) => console.error('Signup failed', err)
     });
   }
 
