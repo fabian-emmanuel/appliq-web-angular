@@ -90,28 +90,14 @@
               name="position"
               required
             />
-            <!-- <p>Status</p>
-            <input
-              type="text"
-              placeholder="Status"
-              [(ngModel)]="newApp.status"
-              name="status"
-
-            /> -->
-            <!-- <p>Applied Via</p>
-            <select name="applied" id="" [(ngModel)]="newApp.appliedVia"
-              name="appliedVia"
-              required>
-              <option value="Website">Website</option>
-              <option value="Email">Email</option>
-            </select> -->
 
             <div class="modal-actions">
               <button
                 class="btn btn-primary"
                 type="submit"
-                [disabled]="!addAppForm.form.valid"
+                [disabled]="!addAppForm.form.valid || showAddLoading"
               >
+                <span *ngIf="showAddLoading" class="spinner-border spinner-border-sm me-2"></span>
                 Add Application
               </button>
               <button

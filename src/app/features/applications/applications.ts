@@ -62,6 +62,8 @@ export class Applications implements OnInit, OnDestroy {
 
   dateRange: { begin: Date | null, end: Date | null } = { begin: null, end: null };
 
+  showAddLoading = false; 
+
   constructor(private applicationService: ApplicationService, private messageService: MessageService) {
     // Setup search debouncing
     this.searchSubject.pipe(
@@ -173,36 +175,30 @@ export class Applications implements OnInit, OnDestroy {
 
   // Add application modal
   addApplication() {
-    const now = new Date();
-    const newApplication = {
-      id: Date.now(),
+    this.showAddLoading = true; //loading state
+    this.applicationService.addApplication({
       company: this.newApp.company,
-      website: this.newApp.website,
       position: this.newApp.position,
-      status: 'Applied' as Status,
-      statusHistory: [
-        {
-          id: Date.now(),
-          applicationId: Date.now(),
-          createdBy: 1,
-          status: 'Applied' as Status,
-          createdAt: now,
-          notes: 'Application submitted'
-        }
-      ],
-      createdAt: now,
-      createdBy: 1
-    };
-
-    // You might want to call an API to create the application
-    // For now, just refresh the list
-    this.showAddModal = false;
-    this.newApp = { company: '', website: '', position: '' };
-    this.loadApplications(); // Refresh the list
+      website: this.newApp.website,
+      applicationType: null
+    }).pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => {
+        this.showAddModal = false;
+        this.newApp = { company: '', website: '', position: '' };
+        this.loadApplications();
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application added successfully' });
+        this.showAddLoading = false; 
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add application' });
+        console.error('Add application error:', error);
+        this.showAddLoading = false; 
+      }
+    });
   }
 
   get displayedApplications() {
-    return this.applications; // Applications are already paginated from the server
+    return this.applications;
   }
 
   // Pagination methods

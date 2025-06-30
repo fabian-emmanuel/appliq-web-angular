@@ -6,7 +6,7 @@ import {
   Inject,
   ChangeDetectorRef,
 } from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {RouterOutlet, Router} from '@angular/router';
 import {Application, Status, statusDetailsMap, statuses} from '@core/models/application';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {applicationList} from '@core/models/store';
@@ -55,7 +55,13 @@ export class Dashboard implements OnInit {
 
   private dummyApplications: Application[] = applicationList;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private userService: UserService, private dashboardService: DashboardService, private cdr: ChangeDetectorRef) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private userService: UserService,
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef,
+    private router: Router // Inject Router
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.userInfo = userService.getCurrentUser();
   }
@@ -74,6 +80,7 @@ export class Dashboard implements OnInit {
     thirtyDaysAgo.setDate(today.getDate() - 30);
     this.startDate = thirtyDaysAgo;
   }
+
 
   onFilterChange(): void {
     this.updateChartData();
@@ -321,5 +328,13 @@ export class Dashboard implements OnInit {
       default:
         return 'rgba(59, 130, 246, 0.3)';
     }
+  }
+
+  // openAddApplicationModal() {
+  //   this.router.navigate(['/applications'], { queryParams: { add: 'true' } });
+  // }
+
+  goToApplications() {
+    this.router.navigate(['/applications']);
   }
 }

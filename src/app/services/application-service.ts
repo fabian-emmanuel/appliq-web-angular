@@ -47,4 +47,14 @@ export class ApplicationService {
     );
   }
 
+  addApplication(application: { company: string; position: string; website: string; applicationType?: string | null }) {
+    const body = {
+      applicationType: application.applicationType ?? null,
+      company: application.company,
+      position: application.position,
+      website: application.website
+    };
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/application`, body);
+  }
+
 }
