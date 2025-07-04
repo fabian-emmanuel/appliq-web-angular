@@ -6,7 +6,7 @@ import {
   Inject,
   ChangeDetectorRef,
 } from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import {RouterModule, RouterOutlet} from '@angular/router';
 import {Application, Status, statusDetailsMap, statuses} from '@core/models/application';
 import {MatFormField, MatLabel} from '@angular/material/input';
 import {applicationList} from '@core/models/store';
@@ -26,11 +26,12 @@ import {User} from '@core/models/user';
 import {UserService} from '@app/services/user-service';
 import {ChartModule} from 'primeng/chart';
 import {DashboardService} from '@app/services/dashboard-service';
+import { Router } from 'express';
 
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, MatFormField, MatDatepickerToggle, MatSelect, DatePipe, FormsModule, MatSelect, MatSelect, MatOption, MatSelect, MatSelect, MatOption, MatLabel, MatDateRangeInput, MatFormFieldModule, MatSelectTrigger, MatDatepickerModule, ChartModule, NgClass, NgStyle],
+  imports: [RouterOutlet, RouterModule, MatFormField, MatDatepickerToggle, MatSelect, DatePipe, FormsModule, MatSelect, MatSelect, MatOption, MatSelect, MatSelect, MatOption, MatLabel, MatDateRangeInput, MatFormFieldModule, MatSelectTrigger, MatDatepickerModule, ChartModule, NgClass, NgStyle],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
   providers: [provideNativeDateAdapter()],
@@ -55,7 +56,12 @@ export class Dashboard implements OnInit {
 
   private dummyApplications: Application[] = applicationList;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private userService: UserService, private dashboardService: DashboardService, private cdr: ChangeDetectorRef) {
+  constructor(@Inject(PLATFORM_ID) 
+    private platformId: Object, 
+    private userService: UserService, 
+    private dashboardService: DashboardService, 
+    private cdr: ChangeDetectorRef, 
+    private router: Router ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.userInfo = userService.getCurrentUser();
   }
