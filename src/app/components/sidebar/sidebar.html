@@ -28,8 +28,10 @@
       <div class="email"> {{userInfo?.email}} </div>
     </div>
     <div class="logout">
-      <button class="logout-btn">
+      <button class="logout-btn tooltip-container"
+          (click)="logout()">
         <i class="bi bi-box-arrow-right"></i>
+        <span class="custom-tooltip">Logout ?</span>
       </button>
     </div>
   </div>
