@@ -21,7 +21,7 @@
     "@angular/material-moment-adapter": "^20.0.3",
     "@angular/platform-browser": "^20.0.4",
     "@angular/platform-server": "^20.0.4",
-    "@angular/router": "^20.0.4",
+    "@angular/router": "^20.0.6",
     "@angular/ssr": "^20.0.3",
     "@ngrx/effects": "^19.2.1",
     "@ngrx/router-store": "^19.2.1",
