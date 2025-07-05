@@ -65,6 +65,14 @@ export interface Pagination {
     size: number;
 }
 
+export interface ApplicationStatusChangeRequest {
+  applicationId: number;
+  status: string;
+  notes: string;
+  interviewType?: string | null;
+  testType?: string | null;
+}
+
 export const statusDetailsMap: Record<Status, StatusDetails> = {
   Applied: {
     colorClass: 'bg-blue-500',
