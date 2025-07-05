@@ -31,19 +31,21 @@
       >
         Change Status <i class="bi bi-chevron-down"></i>
       </button>
-      <ul class="dropdown-menu-list" *ngIf="showStatusMenu">
-        @for (statusOption of statuses; track statusOption) {
-          <li
-            (click)="openStatusModal(statusOption)"
-            [ngClass]="statusDetailsMap[statusOption]?.textClass"
-          >
-            @if (application.status === statusOption) {
-              <span>✓</span>
-            }
-            {{ statusOption }}
-          </li>
+      @if (showStatusMenu) {
+  <ul class="dropdown-menu-list">
+    @for (statusOption of statuses; track statusOption) {
+      <li
+        (click)="openStatusModal(statusOption)"
+        [ngClass]="statusDetailsMap[statusOption]?.textClass"
+      >
+        @if (application.status === statusOption) {
+          <span>✓</span>
         }
-      </ul>
+        {{ statusOption }}
+      </li>
+    }
+  </ul>
+}
     </div>
     <button (click)="onEdit()" title="Edit">
       <i class="bi bi-pencil text-gray"></i>

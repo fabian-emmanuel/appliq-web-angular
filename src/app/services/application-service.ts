@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from '@environment/environment';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
-import {ApplicationFilter, Applications} from '@core/models/application';
+import {ApplicationFilter, ApplicationRequest, Applications} from '@core/models/application';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from '@core/models/auth';
 
@@ -47,14 +47,8 @@ export class ApplicationService {
     );
   }
 
-  addApplication(application: { company: string; position: string; website: string; applicationType?: string | null }) {
-    const body = {
-      applicationType: application.applicationType ?? null,
-      company: application.company,
-      position: application.position,
-      website: application.website
-    };
-    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/application`, body);
-  }
-
+  addApplication(application: ApplicationRequest) {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/application`, application);
+  };
 }
+

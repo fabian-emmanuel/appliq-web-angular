@@ -97,8 +97,9 @@
                 type="submit"
                 [disabled]="!addAppForm.form.valid || showAddLoading"
               >
-                <span *ngIf="showAddLoading" class="spinner-border spinner-border-sm me-2"></span>
-                Add Application
+@if (showAddLoading) {
+  <span class="spinner-border spinner-border-sm me-2"></span>
+}                Add Application
               </button>
               <button
                 class="btn btn-secondary"

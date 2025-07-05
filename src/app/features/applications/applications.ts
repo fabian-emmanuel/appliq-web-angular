@@ -11,7 +11,8 @@ import {
   Status,
   statusDetailsMap,
   statuses,
-  ApplicationFilter
+  ApplicationFilter,
+  ApplicationRequest
 } from '@core/models/application';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -175,26 +176,31 @@ export class Applications implements OnInit, OnDestroy {
 
   // Add application modal
   addApplication() {
-    this.showAddLoading = true; //loading state
-    this.applicationService.addApplication({
+    this.showAddLoading = true;
+
+    const applicationData: ApplicationRequest = {
       company: this.newApp.company,
       position: this.newApp.position,
       website: this.newApp.website,
       applicationType: null
-    }).pipe(takeUntil(this.destroy$)).subscribe({
-      next: () => {
-        this.showAddModal = false;
-        this.newApp = { company: '', website: '', position: '' };
-        this.loadApplications();
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application added successfully' });
-        this.showAddLoading = false; 
-      },
-      error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add application' });
-        console.error('Add application error:', error);
-        this.showAddLoading = false; 
-      }
-    });
+    };
+
+    this.applicationService.addApplication(applicationData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.showAddModal = false;
+          this.newApp = { company: '', website: '', position: '' };
+          this.loadApplications();
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application added successfully' });
+          this.showAddLoading = false;
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add application' });
+          console.error('Add application error:', error);
+          this.showAddLoading = false;
+        }
+      });
   }
 
   get displayedApplications() {
@@ -298,3 +304,5 @@ export class Applications implements OnInit, OnDestroy {
     this.applications = this.applications.filter((a: any) => a.id !== appId);
   }
 }
+
+
