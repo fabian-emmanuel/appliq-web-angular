@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from '@environment/environment';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
-import {ApplicationFilter, Applications} from '@core/models/application';
+import {ApplicationFilter, Applications, ApplicationStatusChangeRequest} from '@core/models/application';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from '@core/models/auth';
 
@@ -47,4 +47,10 @@ export class ApplicationService {
     );
   }
 
+  changeApplicationStatus(resp: ApplicationStatusChangeRequest) {
+    return this.http.post<ApiResponse<any>>(
+      `${this.apiUrl}/application/status`,
+      resp
+    );
+  }
 }

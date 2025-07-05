@@ -11,7 +11,8 @@ import {
   Status,
   statusDetailsMap,
   statuses,
-  ApplicationFilter
+  ApplicationFilter,
+  ApplicationStatusChangeRequest
 } from '@core/models/application';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -268,22 +269,38 @@ export class Applications implements OnInit, OnDestroy {
   }
 
   confirmStatusChange() {
-    if (this.selectedAppForModal && this.selectedStatusForModal) {
-      this.selectedAppForModal.status = this.selectedStatusForModal as Status;
-      this.selectedAppForModal.statusHistory.push({
-        id: Date.now(),
-        applicationId: this.selectedAppForModal.id,
-        createdBy: 1,
-        status: this.selectedStatusForModal as Status,
-        createdAt: new Date(),
-        notes: this.statusChangeReason
-      });
-      this.showStatusModal = false;
+  if (this.selectedAppForModal && this.selectedStatusForModal) {
+    const statusData: ApplicationStatusChangeRequest = {
+      applicationId: this.selectedAppForModal.id,
+      status: this.selectedStatusForModal,
+      notes: this.statusChangeReason,
+      interviewType: null,
+      testType: null
+    };
 
-      // You might want to call an API to update the application status
-      // this.applicationService.updateApplicationStatus(this.selectedAppForModal.id, this.selectedStatusForModal, this.statusChangeReason)
-    }
+    this.applicationService.changeApplicationStatus(statusData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.showStatusModal = false;
+          this.loadApplications();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Status updated successfully'
+          });
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to update status'
+          });
+          console.error('Status update error:', error);
+        }
+      });
   }
+}
 
   // Edit and delete application
   editApplication(appId: number) {
