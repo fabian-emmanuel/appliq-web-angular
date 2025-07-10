@@ -12,7 +12,7 @@ import {
   statusDetailsMap,
   statuses,
   ApplicationFilter,
-  ApplicationRequest
+  ApplicationRequest, ApplicationType
 } from '@core/models/application';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,17 +30,24 @@ import {MessageService} from 'primeng/api';
   providers: [provideNativeDateAdapter()],
 })
 
+
 export class Applications implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private searchSubject = new Subject<string>();
 
   viewMode: 'grid' | 'list' = 'grid';
   showAddModal = false;
+
   newApp = {
     company: '',
     website: '',
     position: '',
+    applicationType: ApplicationType.WEBSITE // or null
   };
+
+  applicationTypes = Object.values(ApplicationType); // for select option
+ApplicationType = ApplicationType; // use enum in template
+
 
   selectedStatuses: Status[] = statuses; // Default to all statuses selected
   searchTerm: string = '';
@@ -182,7 +189,7 @@ export class Applications implements OnInit, OnDestroy {
       company: this.newApp.company,
       position: this.newApp.position,
       website: this.newApp.website,
-      applicationType: null
+      applicationType: this.newApp.applicationType
     };
 
     this.applicationService.addApplication(applicationData)
@@ -190,7 +197,7 @@ export class Applications implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.showAddModal = false;
-          this.newApp = { company: '', website: '', position: '' };
+          this.newApp = { company: '', website: '', position: '', applicationType: ApplicationType.EMAIL }; // Reset form
           this.loadApplications();
           this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application added successfully' });
           this.showAddLoading = false;
@@ -242,25 +249,6 @@ export class Applications implements OnInit, OnDestroy {
   }
 
   // Status change methods
-  handleStatusChange(event: { appId: number, newStatus: string, reason: string }) {
-    // Find the application and update its status locally
-    const app = this.applications.find((a: any) => a.id === event.appId);
-    if (app) {
-      app.status = event.newStatus as Status;
-      app.statusHistory.push({
-        id: Date.now(),
-        applicationId: app.id,
-        createdBy: 1,
-        status: event.newStatus as Status,
-        createdAt: new Date(),
-        notes: event.reason
-      });
-
-      // You might want to call an API to update the application status
-      // this.applicationService.updateApplicationStatus(event.appId, event.newStatus, event.reason)
-    }
-  }
-
   openStatusModal(event: { appId: number; newStatus: string; reason?: string }) {
     console.log('Modal event:', event);
     this.selectedStatusForModal = event.newStatus;
@@ -269,24 +257,44 @@ export class Applications implements OnInit, OnDestroy {
     this.showStatusModal = true;
   }
 
+  
   confirmStatusChange() {
-    if (this.selectedAppForModal && this.selectedStatusForModal) {
-      this.selectedAppForModal.status = this.selectedStatusForModal as Status;
-      this.selectedAppForModal.statusHistory.push({
-        id: Date.now(),
-        applicationId: this.selectedAppForModal.id,
-        createdBy: 1,
-        status: this.selectedStatusForModal as Status,
-        createdAt: new Date(),
-        notes: this.statusChangeReason
+  if (this.selectedAppForModal && this.selectedStatusForModal) {
+    const payload = {
+      applicationId: this.selectedAppForModal.id,
+      status: this.selectedStatusForModal as Status,
+      notes: this.statusChangeReason,
+      testType: null,
+      interviewType: null,
+    };
+
+    this.applicationService.updateApplicationStatus(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          const updated = response.data;
+          this.selectedAppForModal!.status = updated.status;
+          this.selectedAppForModal!.statusHistory.push({
+            id: updated.id,
+            applicationId: updated.applicationId,
+            createdAt: new Date(updated.createdAt),
+            createdBy: updated.createdBy,
+            status: updated.status,
+            notes: updated.notes,
+            testType: updated.testType,
+            interviewType: updated.interviewType
+          });
+          this.messageService.add({ severity: 'success', summary: 'Status Updated', detail: 'Application status updated successfully' });
+          this.showStatusModal = false;
+        },
+        error: (error) => {
+          console.error('Status update failed:', error);
+          this.messageService.add({ severity: 'error', summary: 'Update Failed', detail: 'Could not update status' });
+        }
       });
-      this.showStatusModal = false;
-
-      // You might want to call an API to update the application status
-      // this.applicationService.updateApplicationStatus(this.selectedAppForModal.id, this.selectedStatusForModal, this.statusChangeReason)
-    }
   }
-
+}
+  
   // Edit and delete application
   editApplication(appId: number) {
     console.log('Edit application', appId);

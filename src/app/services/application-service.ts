@@ -1,9 +1,28 @@
 import { Injectable } from '@angular/core';
 import {environment} from '@environment/environment';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
-import {ApplicationFilter, ApplicationRequest, Applications} from '@core/models/application';
+import {ApplicationFilter, ApplicationRequest, Applications, Application, InterviewType, TestType, Status} from '@core/models/application';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from '@core/models/auth';
+
+interface UpdateStatusRequest {
+  applicationId: number;
+  status: Status;
+  notes?: string;
+  testType?: TestType | null;
+  interviewType?: InterviewType | null;
+}
+
+interface UpdateStatusResponse {
+  applicationId: number;
+  createdAt: string;
+  createdBy: number;
+  id: number;
+  interviewType: InterviewType | null;
+  notes: string;
+  status: Status;
+  testType: TestType | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -47,8 +66,14 @@ export class ApplicationService {
     );
   }
 
-  addApplication(application: ApplicationRequest) {
-    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/application`, application);
-  };
+  addApplication(application: ApplicationRequest): Observable<ApiResponse<Application>> {
+  return this.http.post<ApiResponse<Application>>(`${this.apiUrl}/application`, application);
 }
+
+// this is a POST request
+ updateApplicationStatus(statusUpdate: UpdateStatusRequest): Observable<ApiResponse<UpdateStatusResponse>> {
+    return this.http.post<ApiResponse<UpdateStatusResponse>>(`${this.apiUrl}/application/status`, statusUpdate);
+  }
+}
+
 
