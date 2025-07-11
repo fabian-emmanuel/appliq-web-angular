@@ -1,7 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from '@environment/environment';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
-import {ApplicationFilter, ApplicationRequest, Applications, Application, InterviewType, TestType, Status} from '@core/models/application';
+import {
+  ApplicationFilter,
+  ApplicationRequest,
+  Applications,
+  Application,
+  InterviewType,
+  TestType,
+  Status,
+  ApplicationStatusChangeRequest
+} from '@core/models/application';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ApiResponse} from '@core/models/auth';
 
@@ -31,7 +40,8 @@ export class ApplicationService {
   private apiUrl = environment.apiUrl;
   private applications: BehaviorSubject<Applications | null> = new BehaviorSubject<Applications | null>(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
 
   fetchApplications(filter: ApplicationFilter): Observable<ApiResponse<Applications>> {
@@ -57,7 +67,7 @@ export class ApplicationService {
       params = params.set('size', filter.size.toString());
     }
 
-    return this.http.get<ApiResponse<Applications>>(`${this.apiUrl}/application`, { params }).pipe(
+    return this.http.get<ApiResponse<Applications>>(`${this.apiUrl}/application`, {params}).pipe(
       tap(response => {
         if (response && response.data) {
           this.applications.next(response.data);
@@ -66,12 +76,19 @@ export class ApplicationService {
     );
   }
 
+  changeApplicationStatus(resp: ApplicationStatusChangeRequest) {
+    return this.http.post<ApiResponse<any>>(
+      `${this.apiUrl}/application/status`,
+      resp
+    );
+  }
+
   addApplication(application: ApplicationRequest): Observable<ApiResponse<Application>> {
-  return this.http.post<ApiResponse<Application>>(`${this.apiUrl}/application`, application);
-}
+    return this.http.post<ApiResponse<Application>>(`${this.apiUrl}/application`, application);
+  }
 
 // this is a POST request
- updateApplicationStatus(statusUpdate: UpdateStatusRequest): Observable<ApiResponse<UpdateStatusResponse>> {
+  updateApplicationStatus(statusUpdate: UpdateStatusRequest): Observable<ApiResponse<UpdateStatusResponse>> {
     return this.http.post<ApiResponse<UpdateStatusResponse>>(`${this.apiUrl}/application/status`, statusUpdate);
   }
 }

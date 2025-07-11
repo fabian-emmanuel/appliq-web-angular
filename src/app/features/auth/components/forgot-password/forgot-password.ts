@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {getFormErrors} from '@core/models/errors';
 import {LoginRequest} from '@core/models/auth';
 import {Brand} from '@shared/components/brand/brand';
 import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
+import { AuthService } from '@app/services/auth-service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-forgot-password',
@@ -21,8 +23,14 @@ import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon'
 })
 export class ForgotPassword {
   forgotPasswordForm!: FormGroup;
+  isLoading = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService,
+    private router: Router
+  ) {
     this.forgotPasswordForm = this.createForm();
   }
 
@@ -37,11 +45,29 @@ export class ForgotPassword {
       return;
     }
 
-    const formData = this.forgotPasswordForm.value as LoginRequest;
-    console.log('Submitting form', formData);
+    this.isLoading = true;
+    const { email } = this.forgotPasswordForm.value;
 
-    // TODO: Call your signup service here
-    // this.authService.signup(formData).subscribe(...)
+    this.authService.forgotPassword(email).subscribe({
+      next: () => {
+        this.isLoading = false;
+        localStorage.setItem('resetEmail', email);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Password reset link sent! Please check your email.'
+        });
+        this.router.navigate(['/check-inbox']);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message || 'Failed to send password reset link.'
+        });
+      }
+    });
   }
 
   markAllFieldsAsTouched(): void {
@@ -62,4 +88,7 @@ export class ForgotPassword {
     });
   }
 
+
+  
 }
+

@@ -78,3 +78,35 @@
 .user-info .email {
   font-size: 0.75rem;
 }
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  width: max-content;
+  background: #fff;
+  color: #111;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 12px;
+  position: absolute;
+  z-index: 10;
+  bottom: 120%; /* Show above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.tooltip-container:hover .custom-tooltip,
+.tooltip-container:focus-within .custom-tooltip {
+  visibility: visible;
+  opacity: 1;
+}

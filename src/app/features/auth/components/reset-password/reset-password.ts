@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,12 +8,13 @@ import {
   ValidationErrors,
   Validators
 } from "@angular/forms";
-import {RouterOutlet, Router} from "@angular/router";
+import {RouterOutlet, Router, ActivatedRoute} from "@angular/router";
 import {Brand} from '@shared/components/brand/brand';
 import {InputWithIcon} from '@shared/components/input-with-icon/input-with-icon';
 import {getFormErrors, markAllFieldsAsTouched} from '@core/models/errors';
-import {SignupFormData} from '@core/models/auth';
 import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
+import { AuthService } from '@app/services/auth-service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-reset-password',
@@ -27,18 +28,28 @@ import {strongPasswordValidator} from '@shared/utils/PasswordUtil';
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.css'
 })
-export class ResetPassword {
+export class ResetPassword implements OnInit {
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   resetPasswordForm!: FormGroup;
+  token: string = '';
+  isLoading = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {
     this.resetPasswordForm = this.createForm();
+  }
+
+  ngOnInit() {
+    this.token = this.route.snapshot.queryParamMap.get('token') || '';
   }
 
   get password() { return this.resetPasswordForm.get('password') as FormControl; }
   get confirmPassword() { return this.resetPasswordForm.get('confirmPassword') as FormControl; }
-
 
   onSubmit(): void {
     if (!this.resetPasswordForm.valid) {
@@ -46,15 +57,38 @@ export class ResetPassword {
       console.log('Form is not valid', getFormErrors(this.resetPasswordForm));
       return;
     }
+    if (!this.token) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Invalid or missing reset token.'
+      });
+      return;
+    }
 
-    const formData = this.resetPasswordForm.value as SignupFormData;
-    console.log('Submitting form', formData);
+    this.isLoading = true;
+    const { password, confirmPassword } = this.resetPasswordForm.value;
 
-    // TODO: Call your signup service here
-    // this.authService.signup(formData).subscribe(...)
-    this.router.navigateByUrl('/check-inbox').then();
+    this.authService.resetPassword(this.token, password, confirmPassword).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Password reset successful! Please log in.'
+        });
+        this.router.navigateByUrl('/login');
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message || 'Failed to reset password.'
+        });
+      }
+    });
   }
-
 
   private createForm(): FormGroup {
     return this.fb.group({
@@ -85,5 +119,5 @@ export class ResetPassword {
       ? null
       : { passwordMismatch: true };
   };
-
 }
+

@@ -11,14 +11,15 @@
 
   <div class="list-col position">{{ application.position }}</div>
   <div class="list-col status">
-    <span
-      class="badge"
-      [ngClass]="currentStatusDetails.colorClass"
-      [title]="getCurrentStatusNote()"
-    >
-      <i [ngClass]="currentStatusDetails.iconClass"></i>
-      {{ application.status }}
+    <span class="badge tooltip-container" [ngClass]="currentStatusDetails.colorClass">
+  <i [ngClass]="currentStatusDetails.iconClass"></i>
+  {{ application.status }}
+  @if (getCurrentStatusNote()) {
+    <span class="custom-tooltip">
+      {{ getCurrentStatusNote() }}
     </span>
+  }
+</span>
   </div>                                                                                  
   <div class="list-col date">
     {{ application.createdAt | date:'shortDate' }}

@@ -41,6 +41,10 @@ export class AuthService {
     // return new Observable<ApiResponse<User>>(observer => {});
   }
 
+  logoutApi(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/logout`, {});
+  }
+
   logout(): void {
     if (this.isBrowser) {
       localStorage.removeItem(this.TOKEN_KEY);
@@ -53,6 +57,14 @@ export class AuthService {
     }
     return null;
   }
+
+  forgotPassword(email: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/auth/forgot-password`, { email });
+}
+
+resetPassword(token: string, password: string, confirmPassword: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/auth/reset-password`, { token, password, confirmPassword });
+}
 
   isAuthenticated(): boolean {
     return !!this.getToken();

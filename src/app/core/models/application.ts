@@ -79,6 +79,14 @@ export interface ApplicationRequest {
   applicationType: ApplicationType | null;
 }
 
+export interface ApplicationStatusChangeRequest {
+  applicationId: number;
+  status: string;
+  notes: string;
+  interviewType?: string | null;
+  testType?: string | null;
+}
+
 export const statusDetailsMap: Record<Status, StatusDetails> = {
   Applied: {
     colorClass: 'bg-blue-500',

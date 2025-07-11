@@ -12,7 +12,7 @@ import {
   statusDetailsMap,
   statuses,
   ApplicationFilter,
-  ApplicationRequest, ApplicationType
+  ApplicationRequest, ApplicationType, ApplicationStatusChangeRequest
 } from '@core/models/application';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -70,7 +70,7 @@ ApplicationType = ApplicationType; // use enum in template
 
   dateRange: { begin: Date | null, end: Date | null } = { begin: null, end: null };
 
-  showAddLoading = false; 
+  showAddLoading = false;
 
   constructor(private applicationService: ApplicationService, private messageService: MessageService) {
     // Setup search debouncing
@@ -257,44 +257,42 @@ ApplicationType = ApplicationType; // use enum in template
     this.showStatusModal = true;
   }
 
-  
+
   confirmStatusChange() {
   if (this.selectedAppForModal && this.selectedStatusForModal) {
-    const payload = {
+    const statusData: ApplicationStatusChangeRequest = {
       applicationId: this.selectedAppForModal.id,
-      status: this.selectedStatusForModal as Status,
+      status: this.selectedStatusForModal,
       notes: this.statusChangeReason,
-      testType: null,
       interviewType: null,
+      testType: null
     };
 
-    this.applicationService.updateApplicationStatus(payload)
+    this.applicationService.changeApplicationStatus(statusData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (response) => {
-          const updated = response.data;
-          this.selectedAppForModal!.status = updated.status;
-          this.selectedAppForModal!.statusHistory.push({
-            id: updated.id,
-            applicationId: updated.applicationId,
-            createdAt: new Date(updated.createdAt),
-            createdBy: updated.createdBy,
-            status: updated.status,
-            notes: updated.notes,
-            testType: updated.testType,
-            interviewType: updated.interviewType
-          });
-          this.messageService.add({ severity: 'success', summary: 'Status Updated', detail: 'Application status updated successfully' });
+        next: () => {
           this.showStatusModal = false;
+          this.loadApplications();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Status updated successfully'
+          });
         },
         error: (error) => {
-          console.error('Status update failed:', error);
-          this.messageService.add({ severity: 'error', summary: 'Update Failed', detail: 'Could not update status' });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to update status'
+          });
+          console.error('Status update error:', error);
         }
       });
   }
 }
-  
+
+
   // Edit and delete application
   editApplication(appId: number) {
     console.log('Edit application', appId);
