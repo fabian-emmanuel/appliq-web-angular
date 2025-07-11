@@ -46,7 +46,7 @@ export class Applications implements OnInit, OnDestroy {
   };
 
   applicationTypes = Object.values(ApplicationType); // for select option
-ApplicationType = ApplicationType; // use enum in template
+  ApplicationType = ApplicationType; // use enum in template
 
 
   selectedStatuses: Status[] = statuses; // Default to all statuses selected
@@ -68,7 +68,7 @@ ApplicationType = ApplicationType; // use enum in template
   totalItems = 0;
   totalPages = 0;
 
-  dateRange: { begin: Date | null, end: Date | null } = { begin: null, end: null };
+  dateRange: { begin: Date | null, end: Date | null } = {begin: null, end: null};
 
   showAddLoading = false;
 
@@ -139,7 +139,7 @@ ApplicationType = ApplicationType; // use enum in template
           this.currentPage = response.data.pagination.page;
           this.loading = false;
         }
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Applications loaded successfully' });
+        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Applications loaded successfully'});
       },
       error: (error) => {
         console.error('Error loading applications:', error);
@@ -197,13 +197,13 @@ ApplicationType = ApplicationType; // use enum in template
       .subscribe({
         next: () => {
           this.showAddModal = false;
-          this.newApp = { company: '', website: '', position: '', applicationType: ApplicationType.EMAIL }; // Reset form
+          this.newApp = {company: '', website: '', position: '', applicationType: ApplicationType.EMAIL}; // Reset form
           this.loadApplications();
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application added successfully' });
+          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Application added successfully'});
           this.showAddLoading = false;
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add application' });
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Failed to add application'});
           console.error('Add application error:', error);
           this.showAddLoading = false;
         }
@@ -224,7 +224,7 @@ ApplicationType = ApplicationType; // use enum in template
       start = Math.max(1, end - maxPages + 1);
     }
 
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    return Array.from({length: end - start + 1}, (_, i) => start + i);
   }
 
   goToPage(page: number) {
@@ -259,38 +259,38 @@ ApplicationType = ApplicationType; // use enum in template
 
 
   confirmStatusChange() {
-  if (this.selectedAppForModal && this.selectedStatusForModal) {
-    const statusData: ApplicationStatusChangeRequest = {
-      applicationId: this.selectedAppForModal.id,
-      status: this.selectedStatusForModal,
-      notes: this.statusChangeReason,
-      interviewType: null,
-      testType: null
-    };
+    if (this.selectedAppForModal && this.selectedStatusForModal) {
+      const statusData: ApplicationStatusChangeRequest = {
+        applicationId: this.selectedAppForModal.id,
+        status: this.selectedStatusForModal,
+        notes: this.statusChangeReason,
+        interviewType: null,
+        testType: null
+      };
 
-    this.applicationService.changeApplicationStatus(statusData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.showStatusModal = false;
-          this.loadApplications();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Status updated successfully'
-          });
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to update status'
-          });
-          console.error('Status update error:', error);
-        }
-      });
+      this.applicationService.changeApplicationStatus(statusData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.showStatusModal = false;
+            this.loadApplications();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Status updated successfully'
+            });
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to update status'
+            });
+            console.error('Status update error:', error);
+          }
+        });
+    }
   }
-}
 
 
   // Edit and delete application
