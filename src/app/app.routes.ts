@@ -12,11 +12,21 @@ import {ForgotPassword} from '@features/auth/components/forgot-password/forgot-p
 import {Settings} from '@features/settings/components/settings/settings';
 import {Toast} from '@shared/components/toast/toast';
 import {authGuard} from '@app/guards/auth-guard';
+import { TermsOfService } from '@features/legal/terms-of-service/terms-of-service';
+import { PrivacyPolicy } from '@features/legal/privacy-policy/privacy-policy';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomePage
+  },
+  {
+    path: 'terms-of-service',
+    component: TermsOfService
+  },
+  {
+    path: 'privacy-policy',
+    component: PrivacyPolicy
   },
   {
     path: '',
