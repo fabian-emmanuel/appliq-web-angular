@@ -1,5 +1,6 @@
 export type Status = 'Applied' | 'Test' | 'Interview' | 'OfferAwarded' | 'Rejected' | 'Withdrawn';
 export const statuses: Status[] = ['Applied', 'Test', 'Interview', 'OfferAwarded', 'Rejected', 'Withdrawn'];
+
 export enum InterviewType {
   Hr,
   Behavioural,
@@ -27,8 +28,8 @@ export interface StatusHistory {
     status: Status;
     createdAt: Date;
     notes?: string;
-    testType?: TestType;
-    interviewType?: InterviewType;
+    testType?: TestType | null;
+    interviewType?: InterviewType | null;
 }
 
 export interface Application {
@@ -63,6 +64,19 @@ export interface Pagination {
     totalPages: number;
     page: number;
     size: number;
+}
+
+export enum ApplicationType {
+  EMAIL = 'Email',
+  WEBSITE = 'Website'
+}
+
+
+export interface ApplicationRequest {
+  company: string;
+  position: string;
+  website: string;
+  applicationType: ApplicationType | null;
 }
 
 export interface ApplicationStatusChangeRequest {

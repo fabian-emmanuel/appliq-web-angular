@@ -82,7 +82,7 @@
               name="website"
               required
             />
-            <p>Position/Role</p>
+            <p>Position/Roles</p>
             <input
               type="text"
               placeholder="Position"
@@ -90,29 +90,27 @@
               name="position"
               required
             />
-            <!-- <p>Status</p>
-            <input
-              type="text"
-              placeholder="Status"
-              [(ngModel)]="newApp.status"
-              name="status"
-
-            /> -->
-            <!-- <p>Applied Via</p>
-            <select name="applied" id="" [(ngModel)]="newApp.appliedVia"
-              name="appliedVia"
-              required>
-              <option value="Website">Website</option>
-              <option value="Email">Email</option>
-            </select> -->
+            <p>Application Type</p>
+            <select
+              [(ngModel)]="newApp.applicationType"
+              name="applicationType"
+              required
+              class="w-full p-2 rounded-md border border-slate-700 bg-[#0F172A] text-slate-300"
+            >
+              <option *ngFor="let type of applicationTypes" [value]="type">
+                {{ type }}
+              </option>
+            </select>
 
             <div class="modal-actions">
               <button
                 class="btn btn-primary"
                 type="submit"
-                [disabled]="!addAppForm.form.valid"
+                [disabled]="!addAppForm.form.valid || showAddLoading"
               >
-                Add Application
+            @if (showAddLoading) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+            }  Add Application
               </button>
               <button
                 class="btn btn-secondary"
@@ -174,53 +172,9 @@
     <p>No applications yet</p>
   </div>
   }
-  <!-- <div class="applications-container">
-</div> -->
 </div>
 <router-outlet />
-<!-- @if (showStatusModal) {
-  <div class="modal-backdrop"></div>
-  <div class="modal-popup">
-    <h3>Change Status to {{ selectedStatusForModal }}</h3>
-    <button (click)="confirmStatusChange()">Confirm</button>
-    <button (click)="showStatusModal = false">Cancel</button>
-  </div>
-} -->
 
-
-<!-- @if (showStatusModal) {
-<div class="modal-backdrop"></div>
-<div class="modal-popup">
-  <h4>Update Status to "{{selectedStatus}}"</h4>
-  <p style="color:gray">Add a note for the status change for {{application.position}} at {{application.company}}</p>
-  <h5>Note (Optional)</h5>
-  <textarea
-    [(ngModel)]="statusChangeReason"
-    placeholder="Enter details about the {{selectedStatus}} stage..."
-    rows="3"
-    style="
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid #343650;
-      padding: 0.8rem;
-      background: #0F172A;
-      color: rgb(104, 102, 102);
-    "
-  ></textarea>
-  <div class="modal-actions">
-    <button class="btn btn-secondary" (click)="closeStatusModal()">
-      Cancel
-    </button>
-    <button
-      class="btn btn-primary"
-      (click)="confirmStatusChange()"
-      [disabled]="!statusChangeReason.trim()"
-    >
-      Save Status Update
-    </button>
-  </div>
-</div>
-}  -->
 
 @if (showStatusModal) {
   <div class="modal-backdrop"></div>

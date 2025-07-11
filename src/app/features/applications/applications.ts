@@ -12,7 +12,7 @@ import {
   statusDetailsMap,
   statuses,
   ApplicationFilter,
-  ApplicationStatusChangeRequest
+  ApplicationRequest, ApplicationType, ApplicationStatusChangeRequest
 } from '@core/models/application';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,17 +30,24 @@ import {MessageService} from 'primeng/api';
   providers: [provideNativeDateAdapter()],
 })
 
+
 export class Applications implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private searchSubject = new Subject<string>();
 
   viewMode: 'grid' | 'list' = 'grid';
   showAddModal = false;
+
   newApp = {
     company: '',
     website: '',
     position: '',
+    applicationType: ApplicationType.WEBSITE // or null
   };
+
+  applicationTypes = Object.values(ApplicationType); // for select option
+  ApplicationType = ApplicationType; // use enum in template
+
 
   selectedStatuses: Status[] = statuses; // Default to all statuses selected
   searchTerm: string = '';
@@ -61,7 +68,9 @@ export class Applications implements OnInit, OnDestroy {
   totalItems = 0;
   totalPages = 0;
 
-  dateRange: { begin: Date | null, end: Date | null } = { begin: null, end: null };
+  dateRange: { begin: Date | null, end: Date | null } = {begin: null, end: null};
+
+  showAddLoading = false;
 
   constructor(private applicationService: ApplicationService, private messageService: MessageService) {
     // Setup search debouncing
@@ -130,7 +139,7 @@ export class Applications implements OnInit, OnDestroy {
           this.currentPage = response.data.pagination.page;
           this.loading = false;
         }
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Applications loaded successfully' });
+        this.messageService.add({severity: 'success', summary: 'Success', detail: 'Applications loaded successfully'});
       },
       error: (error) => {
         console.error('Error loading applications:', error);
@@ -174,36 +183,35 @@ export class Applications implements OnInit, OnDestroy {
 
   // Add application modal
   addApplication() {
-    const now = new Date();
-    const newApplication = {
-      id: Date.now(),
+    this.showAddLoading = true;
+
+    const applicationData: ApplicationRequest = {
       company: this.newApp.company,
-      website: this.newApp.website,
       position: this.newApp.position,
-      status: 'Applied' as Status,
-      statusHistory: [
-        {
-          id: Date.now(),
-          applicationId: Date.now(),
-          createdBy: 1,
-          status: 'Applied' as Status,
-          createdAt: now,
-          notes: 'Application submitted'
-        }
-      ],
-      createdAt: now,
-      createdBy: 1
+      website: this.newApp.website,
+      applicationType: this.newApp.applicationType
     };
 
-    // You might want to call an API to create the application
-    // For now, just refresh the list
-    this.showAddModal = false;
-    this.newApp = { company: '', website: '', position: '' };
-    this.loadApplications(); // Refresh the list
+    this.applicationService.addApplication(applicationData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.showAddModal = false;
+          this.newApp = {company: '', website: '', position: '', applicationType: ApplicationType.EMAIL}; // Reset form
+          this.loadApplications();
+          this.messageService.add({severity: 'success', summary: 'Success', detail: 'Application added successfully'});
+          this.showAddLoading = false;
+        },
+        error: (error) => {
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Failed to add application'});
+          console.error('Add application error:', error);
+          this.showAddLoading = false;
+        }
+      });
   }
 
   get displayedApplications() {
-    return this.applications; // Applications are already paginated from the server
+    return this.applications;
   }
 
   // Pagination methods
@@ -216,7 +224,7 @@ export class Applications implements OnInit, OnDestroy {
       start = Math.max(1, end - maxPages + 1);
     }
 
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    return Array.from({length: end - start + 1}, (_, i) => start + i);
   }
 
   goToPage(page: number) {
@@ -241,25 +249,6 @@ export class Applications implements OnInit, OnDestroy {
   }
 
   // Status change methods
-  handleStatusChange(event: { appId: number, newStatus: string, reason: string }) {
-    // Find the application and update its status locally
-    const app = this.applications.find((a: any) => a.id === event.appId);
-    if (app) {
-      app.status = event.newStatus as Status;
-      app.statusHistory.push({
-        id: Date.now(),
-        applicationId: app.id,
-        createdBy: 1,
-        status: event.newStatus as Status,
-        createdAt: new Date(),
-        notes: event.reason
-      });
-
-      // You might want to call an API to update the application status
-      // this.applicationService.updateApplicationStatus(event.appId, event.newStatus, event.reason)
-    }
-  }
-
   openStatusModal(event: { appId: number; newStatus: string; reason?: string }) {
     console.log('Modal event:', event);
     this.selectedStatusForModal = event.newStatus;
@@ -268,39 +257,41 @@ export class Applications implements OnInit, OnDestroy {
     this.showStatusModal = true;
   }
 
-  confirmStatusChange() {
-  if (this.selectedAppForModal && this.selectedStatusForModal) {
-    const statusData: ApplicationStatusChangeRequest = {
-      applicationId: this.selectedAppForModal.id,
-      status: this.selectedStatusForModal,
-      notes: this.statusChangeReason,
-      interviewType: null,
-      testType: null
-    };
 
-    this.applicationService.changeApplicationStatus(statusData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.showStatusModal = false;
-          this.loadApplications();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Status updated successfully'
-          });
-        },
-        error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to update status'
-          });
-          console.error('Status update error:', error);
-        }
-      });
+  confirmStatusChange() {
+    if (this.selectedAppForModal && this.selectedStatusForModal) {
+      const statusData: ApplicationStatusChangeRequest = {
+        applicationId: this.selectedAppForModal.id,
+        status: this.selectedStatusForModal,
+        notes: this.statusChangeReason,
+        interviewType: null,
+        testType: null
+      };
+
+      this.applicationService.changeApplicationStatus(statusData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.showStatusModal = false;
+            this.loadApplications();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Status updated successfully'
+            });
+          },
+          error: (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to update status'
+            });
+            console.error('Status update error:', error);
+          }
+        });
+    }
   }
-}
+
 
   // Edit and delete application
   editApplication(appId: number) {
@@ -319,3 +310,5 @@ export class Applications implements OnInit, OnDestroy {
     this.applications = this.applications.filter((a: any) => a.id !== appId);
   }
 }
+
+
