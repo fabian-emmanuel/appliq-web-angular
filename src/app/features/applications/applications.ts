@@ -72,6 +72,10 @@ export class Applications implements OnInit, OnDestroy {
 
   showAddLoading = false;
 
+  showDeleteModal = false;
+selectedAppForDelete: Application | null = null;
+
+
   constructor(private applicationService: ApplicationService, private messageService: MessageService) {
     // Setup search debouncing
     this.searchSubject.pipe(
@@ -299,16 +303,56 @@ export class Applications implements OnInit, OnDestroy {
     // Implement logic to edit application
   }
 
-  deleteApplication(appId: number) {
-    // You might want to call an API to delete the application
-    // For now, just refresh the list
-    // this.applicationService.deleteApplication(appId).subscribe(() => {
-    //   this.loadApplications();
-    // });
 
-    // Temporary local deletion
-    this.applications = this.applications.filter((a: any) => a.id !== appId);
+//   deleteApplication(appId: number) {
+//     this.applicationService.deleteApplication(appId)
+//       .pipe(takeUntil(this.destroy$))
+//       .subscribe({
+//         next: () => {
+//           this.loadApplications();
+//           this.messageService.add({
+//             severity: 'success',
+//             summary: 'Deleted',
+//             detail: 'Application deleted successfully'
+//           });
+//         },
+//         error: (error) => {
+//           console.error('Delete error:', error);
+//           this.messageService.add({
+//             severity: 'error',
+//             summary: 'Failed',
+//             detail: 'Failed to delete application'
+//           });
+//         }
+//       });
+// }
+
+  deleteApplication(appId: number) {
+    this.selectedAppForDelete = this.applications.find(app => app.id === appId) || null;
+  this.showDeleteModal = true;
+}
+
+confirmDeleteApplication() {
+  if (this.selectedAppForDelete) {
+    const id = this.selectedAppForDelete.id;
+    this.applicationService.deleteApplication(id).subscribe({
+      next: () => {
+        this.showDeleteModal = false;
+        this.selectedAppForDelete = null;
+        this.loadApplications(); // reload updated list
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application deleted successfully' });
+      },
+      error: (error) => {
+        console.error('Delete error:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete application' });
+        this.showDeleteModal = false;
+        this.selectedAppForDelete = null;
+      }
+    });
   }
+}
+
+
 }
 
 
