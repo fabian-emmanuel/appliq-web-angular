@@ -72,6 +72,10 @@ export class Applications implements OnInit, OnDestroy {
 
   showAddLoading = false;
 
+  editMode = false;
+applicationToEdit: Application | null = null;
+
+
   constructor(private applicationService: ApplicationService, private messageService: MessageService) {
     // Setup search debouncing
     this.searchSubject.pipe(
@@ -292,12 +296,63 @@ export class Applications implements OnInit, OnDestroy {
     }
   }
 
+    // Edit and delete application
+cancelAddOrEdit() {
+  this.showAddModal = false;
+  this.editMode = false;
+  this.applicationToEdit = null;
+  this.newApp = { company: '', website: '', position: '', applicationType: ApplicationType.EMAIL };
+}
 
-  // Edit and delete application
-  editApplication(appId: number) {
-    console.log('Edit application', appId);
-    // Implement logic to edit application
+
+editApplication(appId: number) {
+  console.log('Editing application with ID:', appId);
+  const app = this.applications.find(a => a.id === appId);
+  if (app) {
+    this.applicationToEdit = app;
+    this.editMode = true;
+    this.showAddModal = true;
+
+    this.newApp = {
+      company: app.company ?? '',
+      website: app.website ?? '',
+      position: app.position ?? '',
+      applicationType: app.applicationType ?? ApplicationType.WEBSITE // Default to EMAIL if null
+    };
   }
+}
+
+
+updateApplication() {
+  if (!this.applicationToEdit) return;
+
+  this.showAddLoading = true;
+
+  const updatedData: ApplicationRequest = {
+    company: this.newApp.company,
+    website: this.newApp.website,
+    position: this.newApp.position,
+    applicationType: this.newApp.applicationType
+  };
+
+  this.applicationService.updateApplication(this.applicationToEdit.id, updatedData)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: () => {
+        this.showAddLoading = false;
+        this.cancelAddOrEdit();
+        this.loadApplications();
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application updated successfully' });
+      },
+      error: (err) => {
+        this.showAddLoading = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update application' });
+        console.error('Update failed:', err);
+      }
+    });
+}
+
+
 
   deleteApplication(appId: number) {
     // You might want to call an API to delete the application

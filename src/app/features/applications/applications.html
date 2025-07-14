@@ -61,68 +61,42 @@
         <button class="add-application-btn" (click)="showAddModal = true">
           <i class="bi bi-plus me-2"></i> Add Applications
         </button>
-        @if (showAddModal) {
-        <div class="modal-backdrop"></div>
-        <div class="modal-popup">
-          <h3 class="margin-bottom: 1rem">Add New Application</h3>
-          <form (ngSubmit)="addApplication()" #addAppForm="ngForm">
-            <p>Company Name</p>
-            <input
-              type="text"
-              placeholder="Company"
-              [(ngModel)]="newApp.company"
-              name="company"
-              required
-            />
-            <p>Company Website</p>
-            <input
-              type="text"
-              placeholder="website"
-              [(ngModel)]="newApp.website"
-              name="website"
-              required
-            />
-            <p>Position/Roles</p>
-            <input
-              type="text"
-              placeholder="Position"
-              [(ngModel)]="newApp.position"
-              name="position"
-              required
-            />
-            <p>Application Type</p>
-            <select
-              [(ngModel)]="newApp.applicationType"
-              name="applicationType"
-              required
-              class="w-full p-2 rounded-md border border-slate-700 bg-[#0F172A] text-slate-300"
-            >
-              <option *ngFor="let type of applicationTypes" [value]="type">
-                {{ type }}
-              </option>
-            </select>
 
-            <div class="modal-actions">
-              <button
-                class="btn btn-primary"
-                type="submit"
-                [disabled]="!addAppForm.form.valid || showAddLoading"
-              >
-            @if (showAddLoading) {
-              <span class="spinner-border spinner-border-sm me-2"></span>
-            }  Add Application
-              </button>
-              <button
-                class="btn btn-secondary"
-                type="button"
-                (click)="showAddModal = false"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-        }
+  @if (showAddModal) {
+  <div class="modal-backdrop"></div>
+  <div class="modal-popup">
+    <h3 class="margin-bottom: 1rem">
+      {{ editMode ? 'Edit Application' : 'Add New Application' }}
+    </h3>
+
+    <form (ngSubmit)="editMode ? updateApplication() : addApplication()" #addAppForm="ngForm">
+
+      <p>Company Name</p>
+      <input type="text" [(ngModel)]="newApp.company" name="company" required />
+
+      <p>Company Website</p>
+      <input type="text" [(ngModel)]="newApp.website" name="website" required />
+
+      <p>Position/Roles</p>
+      <input type="text" [(ngModel)]="newApp.position" name="position" required />
+
+      <p>Application Type</p>
+      <select [(ngModel)]="newApp.applicationType" name="applicationType" required>
+        <option *ngFor="let type of applicationTypes" [value]="type">{{ type }}</option>
+      </select>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" type="button" (click)="cancelAddOrEdit()">Cancel</button>
+        <button class="btn btn-primary" type="submit" [disabled]="!addAppForm.form.valid || showAddLoading">
+          @if (showAddLoading) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          {{ editMode ? 'Edit' : 'Add Application' }}
+        </button>
+      </div>
+    </form>
+  </div>
+}
       </div>
     </div>
   </div>

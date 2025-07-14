@@ -87,10 +87,11 @@ export class ApplicationService {
     return this.http.post<ApiResponse<Application>>(`${this.apiUrl}/application`, application);
   }
 
-// this is a POST request
-  updateApplicationStatus(statusUpdate: UpdateStatusRequest): Observable<ApiResponse<UpdateStatusResponse>> {
-    return this.http.post<ApiResponse<UpdateStatusResponse>>(`${this.apiUrl}/application/status`, statusUpdate);
-  }
+// edit application
+ updateApplication(applicationId: number, updatedData: ApplicationRequest): Observable<ApiResponse<Application>> {
+  return this.http.put<ApiResponse<Application>>(`${this.apiUrl}/application/${applicationId}`, updatedData);
+}
+
 }
 
 

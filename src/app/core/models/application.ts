@@ -39,7 +39,7 @@ export interface Application {
     status: Status;
     statusHistory: StatusHistory[];
     website?: string;
-    applicationType?: string;
+    applicationType: ApplicationType | null;
     createdAt: Date;
     createdBy: number;
 }

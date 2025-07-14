@@ -58,9 +58,15 @@ openStatusModal(status: string) {
     this.statusChangeReason = '';
   }
 
-  onEdit() {
+onEdit() {
+  if (this.application && this.application.id) {
     this.edit.emit(this.application.id);
   }
+}
+
+  // onEdit() {
+  //   this.edit.emit(this.application.id);
+  // }
 
   onDelete() {
     this.delete.emit(this.application.id);
