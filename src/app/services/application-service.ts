@@ -89,7 +89,7 @@ export class ApplicationService {
 
 // edit application
  updateApplication(applicationId: number, updatedData: ApplicationRequest): Observable<ApiResponse<Application>> {
-  return this.http.put<ApiResponse<Application>>(`${this.apiUrl}/application/${applicationId}`, updatedData);
+  return this.http.patch<ApiResponse<Application>>(`${this.apiUrl}/application/${applicationId}`, updatedData);
 }
 
 }

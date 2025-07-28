@@ -305,36 +305,6 @@ cancelAddOrEdit() {
 }
 
 
-// editApplication(appId: number) {
-//   console.log('Editing application with ID:', appId);
-//   console.log('Looking for appId in editApplication:', appId);
-// console.log('All loaded applications:', this.applications);
-// console.log('Current appId:', appId, typeof appId);
-// console.log('Available app IDs:', this.applications.map(a => [a.id, typeof a.id]));
-// console.log('All loaded applications:', this.applications);
-//   const app = this.applications.find(a => a.id == appId);
-//   console.log('Available app IDs:', this.applications.map(a => [a.id, typeof a.id]));
-//   console.log('Current appId:', appId, typeof appId);
-//   console.log(app);
-//   if (app) {
-//     this.applicationToEdit = app;
-//     this.editMode = true;
-//     this.showAddModal = true;
-
-//     this.newApp = {
-//       company: app.company ?? '',
-//       website: app.website ?? '',
-//       position: app.position ?? '',
-//       applicationType: app.applicationType ?? ApplicationType.WEBSITE
-//     }; 
-//     console.log('Edit mode modal open:', this.newApp);
-//     console.log('Applications loaded?', this.applications.length > 0);
-// if (!this.applications.length) {
-//   console.warn('Applications not loaded before edit triggered.');
-//     }
-//   }
-// }
-
 editApplication(appId: number) {
   console.log('Edit application', appId);
   console.log('All loaded applications:', this.applications);
