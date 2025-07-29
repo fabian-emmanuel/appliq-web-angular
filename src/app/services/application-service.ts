@@ -76,6 +76,7 @@ export class ApplicationService {
     );
   }
 
+  // this is a POST request
   changeApplicationStatus(resp: ApplicationStatusChangeRequest) {
     return this.http.post<ApiResponse<any>>(
       `${this.apiUrl}/application/status`,
@@ -86,6 +87,14 @@ export class ApplicationService {
   addApplication(application: ApplicationRequest): Observable<ApiResponse<Application>> {
     return this.http.post<ApiResponse<Application>>(`${this.apiUrl}/application`, application);
   }
+
+  // updateApplicationStatus(statusUpdate: UpdateStatusRequest): Observable<ApiResponse<UpdateStatusResponse>> {
+  //   return this.http.post<ApiResponse<UpdateStatusResponse>>(`${this.apiUrl}/application/status`, statusUpdate);
+  // }
+
+  deleteApplication(appId: number): Observable<ApiResponse<any>> {
+  return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/application/${appId}`);
+}
 
 // edit application
  updateApplication(applicationId: number, updatedData: ApplicationRequest): Observable<ApiResponse<Application>> {

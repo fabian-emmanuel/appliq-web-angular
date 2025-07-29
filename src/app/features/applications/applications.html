@@ -96,7 +96,7 @@
       </div>
     </form>
   </div>
-} 
+}
 
 
 
@@ -170,6 +170,22 @@
     <div class="modal-actions">
       <button class="btn btn-secondary" (click)="showStatusModal = false">Cancel</button>
       <button class="btn btn-primary" (click)="confirmStatusChange()" [disabled]="!statusChangeReason.trim()">Save Status Update</button>
+    </div>
+  </div>
+}
+
+@if (showDeleteModal) {
+  <div class="modal-backdrop"></div>
+  <div class="modal-popup delete-modal">
+    <h3 class="modal-title">Delete Application?</h3>
+    <p class="modal-message" style="color:gray">
+      Are you sure you want to delete the application for
+      <strong>{{ selectedAppForDelete?.position }}</strong> at
+      <strong>{{ selectedAppForDelete?.company }}</strong>?
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="showDeleteModal = false">Cancel</button>
+      <button class="btn btn-danger" (click)="confirmDeleteApplication()">Yes, Delete!</button>
     </div>
   </div>
 }
