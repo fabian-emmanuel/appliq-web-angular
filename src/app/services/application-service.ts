@@ -96,6 +96,11 @@ export class ApplicationService {
   return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/application/${appId}`);
 }
 
+// edit application
+ updateApplication(applicationId: number, updatedData: ApplicationRequest): Observable<ApiResponse<Application>> {
+  return this.http.patch<ApiResponse<Application>>(`${this.apiUrl}/application/${applicationId}`, updatedData);
+}
+
 }
 
 

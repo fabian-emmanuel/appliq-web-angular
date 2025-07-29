@@ -73,7 +73,11 @@ export class Applications implements OnInit, OnDestroy {
   showAddLoading = false;
 
   showDeleteModal = false;
-selectedAppForDelete: Application | null = null;
+  selectedAppForDelete: Application | null = null;
+
+
+  editMode = false;
+  applicationToEdit: Application | null = null;
 
 
   constructor(private applicationService: ApplicationService, private messageService: MessageService) {
@@ -296,12 +300,70 @@ selectedAppForDelete: Application | null = null;
     }
   }
 
+    // Edit and delete application
+cancelAddOrEdit() {
+  this.showAddModal = false;
+  // this.editMode = false;
+  this.applicationToEdit = null;
+  this.newApp = { company: '', website: '', position: '', applicationType: ApplicationType.EMAIL };
+}
 
-  // Edit and delete application
-  editApplication(appId: number) {
-    console.log('Edit application', appId);
-    // Implement logic to edit application
+
+editApplication(appId: number) {
+  console.log('Edit application', appId);
+  console.log('All loaded applications:', this.applications);
+  console.log('Current appId:', appId, typeof appId);
+  console.log('Available app IDs:', this.applications.map(a => [a.id, typeof a.id]));
+
+  const app = this.applications.find(a => String(a.id) === String(appId));
+  if (app) {
+    this.applicationToEdit = app;
+    this.editMode = true;
+    this.showAddModal = true;
+
+    this.newApp = {
+      company: app.company ?? '',
+      website: app.website ?? '',
+      position: app.position ?? '',
+      applicationType: app.applicationType ?? ApplicationType.WEBSITE
+    };
+    console.log('Edit mode modal open:', this.newApp);
+  } else {
+    console.warn('App not found with id:', appId);
   }
+}
+
+
+updateApplication() {
+  if (!this.applicationToEdit) return;
+
+  this.showAddLoading = true;
+
+  const updatedData: ApplicationRequest = {
+    company: this.newApp.company,
+    website: this.newApp.website,
+    position: this.newApp.position,
+    applicationType: this.newApp.applicationType
+  };
+
+  this.applicationService.updateApplication(this.applicationToEdit.id, updatedData)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: () => {
+        this.showAddLoading = false;
+        this.cancelAddOrEdit();
+        this.loadApplications();
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Application updated successfully' });
+      },
+      error: (err) => {
+        this.showAddLoading = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update application' });
+        console.error('Update failed:', err);
+      }
+    });
+}
+
+
 
 
 //   deleteApplication(appId: number) {
