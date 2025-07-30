@@ -26,6 +26,7 @@ import {User} from '@core/models/user';
 import {UserService} from '@app/services/user-service';
 import {ChartModule} from 'primeng/chart';
 import {DashboardService} from '@app/services/dashboard-service';
+import { ApplicationService } from '@/app/services/application-service';
 
 
 @Component({
@@ -52,6 +53,8 @@ export class Dashboard implements OnInit {
   chartData: any;
   chartOptions: any;
   userInfo: User | null = null;
+    successRate: number = 0;
+
 
   private dummyApplications: Application[] = applicationList;
 
@@ -59,6 +62,7 @@ export class Dashboard implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private userService: UserService,
     private dashboardService: DashboardService,
+    private applicationService: ApplicationService,
     private cdr: ChangeDetectorRef,
     private router: Router // Inject Router
   ) {
@@ -67,11 +71,19 @@ export class Dashboard implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initializeDashboardItems();
-    this.initializeFilters();
-    this.getRecentActivities();
-    this.updateChartData(); // Initial chart data load
-  }
+  this.initializeDashboardItems();
+  this.initializeFilters();
+  this.getRecentActivities();
+  this.updateChartData();
+
+  this.applicationService.fetchApplications({}).subscribe(response => {
+    const apps = response?.data?.applications ?? [];
+    this.calculateSuccessRate(apps);
+    this.cdr.markForCheck();
+  });
+}
+
+
 
   private initializeFilters(): void {
     const today = new Date();
@@ -337,4 +349,27 @@ export class Dashboard implements OnInit {
   goToApplications() {
     this.router.navigate(['/applications']);
   }
+
+  // Dashboard success rate
+
+calculateSuccessRate(applications: Application[]) {
+  if (!applications || applications.length === 0) {
+    this.successRate = 0;
+    return;
+  }
+
+  // Sort applications by createdAt (newest first)
+  const sortedApps = [...applications].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
+  // Get only the last 30 applications
+  const recent30 = sortedApps.slice(0, 30);
+
+  const successful = recent30.filter(app => app.status === 'OfferAwarded').length;
+  const total = recent30.length;
+
+  this.successRate = total > 0 ? Math.round((successful / total) * 100) : 0;
+}
+
 }

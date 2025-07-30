@@ -363,32 +363,6 @@ updateApplication() {
     });
 }
 
-
-
-
-//   deleteApplication(appId: number) {
-//     this.applicationService.deleteApplication(appId)
-//       .pipe(takeUntil(this.destroy$))
-//       .subscribe({
-//         next: () => {
-//           this.loadApplications();
-//           this.messageService.add({
-//             severity: 'success',
-//             summary: 'Deleted',
-//             detail: 'Application deleted successfully'
-//           });
-//         },
-//         error: (error) => {
-//           console.error('Delete error:', error);
-//           this.messageService.add({
-//             severity: 'error',
-//             summary: 'Failed',
-//             detail: 'Failed to delete application'
-//           });
-//         }
-//       });
-// }
-
   deleteApplication(appId: number) {
     this.selectedAppForDelete = this.applications.find(app => app.id === appId) || null;
   this.showDeleteModal = true;
