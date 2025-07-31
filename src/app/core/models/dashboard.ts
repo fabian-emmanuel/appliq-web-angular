@@ -15,6 +15,10 @@ export interface DashboardCount {
   color: string;
 }
 
+export interface DashboardSuccessRate {
+  message: string;
+  percentage: string;
+}
 
 export interface Stats {
   interviews: number;

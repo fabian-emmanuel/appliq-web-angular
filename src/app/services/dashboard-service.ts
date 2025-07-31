@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {ApiResponse} from '@core/models/auth';
-import {Stats} from '@core/models/dashboard';
+import {DashboardSuccessRate, Stats} from '@core/models/dashboard';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '@environment/environment';
 
@@ -11,6 +11,8 @@ import {environment} from '@environment/environment';
 export class DashboardService {
   private apiUrl = environment.apiUrl;
   private dashboardStats: BehaviorSubject<Stats | null> = new BehaviorSubject<Stats | null>(null);
+  private dashboardSuccessRate = new BehaviorSubject<DashboardSuccessRate | null>(null);
+successRate$ = this.dashboardSuccessRate.asObservable();
 
   constructor(private http: HttpClient) {
   }
@@ -26,5 +28,15 @@ export class DashboardService {
       )
     )
   }
+
+getSuccessRate(): Observable<ApiResponse<DashboardSuccessRate>> {
+  return this.http.get<ApiResponse<DashboardSuccessRate>>(`${this.apiUrl}/dashboard/success-rate`).pipe(
+    tap(response => {
+      if (response && response.data) {
+        this.dashboardSuccessRate.next(response.data);
+      }
+    })
+  );
+}
 
 }

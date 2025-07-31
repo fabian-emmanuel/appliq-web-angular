@@ -53,7 +53,8 @@ export class Dashboard implements OnInit {
   chartData: any;
   chartOptions: any;
   userInfo: User | null = null;
-    successRate: number = 0;
+successRate: string = '0';
+successRateMessage: string = '';
 
 
   private dummyApplications: Application[] = applicationList;
@@ -76,13 +77,22 @@ export class Dashboard implements OnInit {
   this.getRecentActivities();
   this.updateChartData();
 
-  this.applicationService.fetchApplications({}).subscribe(response => {
-    const apps = response?.data?.applications ?? [];
-    this.calculateSuccessRate(apps);
-    this.cdr.markForCheck();
+  this.dashboardService.getSuccessRate().subscribe(response => {
+    if (response?.data) {
+      this.successRate = response.data.percentage;
+      this.successRateMessage = response.data.message;
+      this.cdr.markForCheck();
+    }
   });
 }
 
+
+
+//  this.applicationService.fetchApplications({}).subscribe(response => {
+//     const apps = response?.data?.applications ?? [];
+//     this.calculateSuccessRate(apps);
+//     this.cdr.markForCheck();
+//   });
 
 
   private initializeFilters(): void {
@@ -349,27 +359,5 @@ export class Dashboard implements OnInit {
   goToApplications() {
     this.router.navigate(['/applications']);
   }
-
-  // Dashboard success rate
-
-calculateSuccessRate(applications: Application[]) {
-  if (!applications || applications.length === 0) {
-    this.successRate = 0;
-    return;
-  }
-
-  // Sort applications by createdAt (newest first)
-  const sortedApps = [...applications].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
-  // Get only the last 30 applications
-  const recent30 = sortedApps.slice(0, 30);
-
-  const successful = recent30.filter(app => app.status === 'OfferAwarded').length;
-  const total = recent30.length;
-
-  this.successRate = total > 0 ? Math.round((successful / total) * 100) : 0;
-}
 
 }
