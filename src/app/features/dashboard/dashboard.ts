@@ -26,6 +26,7 @@ import {User} from '@core/models/user';
 import {UserService} from '@app/services/user-service';
 import {ChartModule} from 'primeng/chart';
 import {DashboardService} from '@app/services/dashboard-service';
+import { ApplicationService } from '@/app/services/application-service';
 
 
 @Component({
@@ -52,6 +53,9 @@ export class Dashboard implements OnInit {
   chartData: any;
   chartOptions: any;
   userInfo: User | null = null;
+successRate: string = '0';
+successRateMessage: string = '';
+
 
   private dummyApplications: Application[] = applicationList;
 
@@ -59,6 +63,7 @@ export class Dashboard implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private userService: UserService,
     private dashboardService: DashboardService,
+    private applicationService: ApplicationService,
     private cdr: ChangeDetectorRef,
     private router: Router // Inject Router
   ) {
@@ -67,11 +72,28 @@ export class Dashboard implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initializeDashboardItems();
-    this.initializeFilters();
-    this.getRecentActivities();
-    this.updateChartData(); // Initial chart data load
-  }
+  this.initializeDashboardItems();
+  this.initializeFilters();
+  this.getRecentActivities();
+  this.updateChartData();
+
+  this.dashboardService.getSuccessRate().subscribe(response => {
+    if (response?.data) {
+      this.successRate = response.data.percentage;
+      this.successRateMessage = response.data.message;
+      this.cdr.markForCheck();
+    }
+  });
+}
+
+
+
+//  this.applicationService.fetchApplications({}).subscribe(response => {
+//     const apps = response?.data?.applications ?? [];
+//     this.calculateSuccessRate(apps);
+//     this.cdr.markForCheck();
+//   });
+
 
   private initializeFilters(): void {
     const today = new Date();
@@ -337,4 +359,5 @@ export class Dashboard implements OnInit {
   goToApplications() {
     this.router.navigate(['/applications']);
   }
+
 }
