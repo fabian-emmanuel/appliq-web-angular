@@ -39,4 +39,14 @@ getSuccessRate(): Observable<ApiResponse<DashboardSuccessRate>> {
   );
 }
 
+getRecentActivities(): Observable<ApiResponse<{ activities: any[] }>> {
+  return this.http.get<ApiResponse<{ activities: any[] }>>(`${this.apiUrl}/dashboard/recent-activities`);
+}
+
+getAverageResponseTime(): Observable<ApiResponse<{ average: string; comparedToMessage: string; fasterMessage: string }>> {
+  return this.http.get<ApiResponse<{ average: string; comparedToMessage: string; fasterMessage: string }>>(
+    `${this.apiUrl}/dashboard/average-response-time`
+  );
+}
+
 }

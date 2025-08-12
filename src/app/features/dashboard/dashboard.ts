@@ -56,6 +56,10 @@ export class Dashboard implements OnInit {
 successRate: string = '0';
 successRateMessage: string = '';
 
+averageResponseTime: string = '';
+comparedToMessage: string = '';
+fasterMessage: string = '';
+
 
   private dummyApplications: Application[] = applicationList;
 
@@ -76,6 +80,7 @@ successRateMessage: string = '';
   this.initializeFilters();
   this.getRecentActivities();
   this.updateChartData();
+  this.getAverageResponseTime();
 
   this.dashboardService.getSuccessRate().subscribe(response => {
     if (response?.data) {
@@ -175,23 +180,35 @@ successRateMessage: string = '';
     })
   }
 
-  private getRecentActivities(): void {
-    this.recentActivities = this.dummyApplications
-      .flatMap(app =>
-        app.statusHistory.map((history, index) => ({
-          company: app.company,
-          position: app.position,
-          date: new Date(history.createdAt),
-          oldStatus: index > 0 ? app.statusHistory[index - 1].status : 'Applied',
-          newStatus: history.status,
-          notes: history.notes,
-          testType: history.testType,
-          interviewType: history.interviewType
-        }))
-      )
+private getRecentActivities(): void {
+  this.dashboardService.getRecentActivities().subscribe(response => {
+    if (response?.data?.activities) {
+      this.recentActivities = response.data.activities.map(activity => ({
+        company: activity.company,
+        position: activity.position,
+        date: new Date(activity.lastUpdated),
+        oldStatus: activity.previousStatus ?? 'Applied',
+        newStatus: activity.currentStatus,
+        // Add other fields if needed
+      }))
       .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .slice(0, 6); // Get the 6 most recent updates overall
-  }
+      .slice(0, 6); // Show 6 most recent
+      this.cdr.markForCheck();
+      console.log('Recent Activities:', this.recentActivities);
+    }
+  });
+}
+
+private getAverageResponseTime(): void {
+  this.dashboardService.getAverageResponseTime().subscribe(response => {
+    if (response?.data) {
+      this.averageResponseTime = response.data.average;
+      this.comparedToMessage = response.data.comparedToMessage;
+      this.fasterMessage = response.data.fasterMessage;
+      this.cdr.markForCheck?.();
+    }
+  });
+}
 
   private updateChartData(): void {
     const documentStyle = getComputedStyle(document.documentElement);
