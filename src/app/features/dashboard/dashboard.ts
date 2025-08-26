@@ -79,7 +79,7 @@ fasterMessage: string = '';
   this.initializeDashboardItems();
   this.initializeFilters();
   this.getRecentActivities();
-  this.updateChartData();
+  this.getChartData();
   this.getAverageResponseTime();
 
   this.dashboardService.getSuccessRate().subscribe(response => {
@@ -91,15 +91,6 @@ fasterMessage: string = '';
   });
 }
 
-
-
-//  this.applicationService.fetchApplications({}).subscribe(response => {
-//     const apps = response?.data?.applications ?? [];
-//     this.calculateSuccessRate(apps);
-//     this.cdr.markForCheck();
-//   });
-
-
   private initializeFilters(): void {
     const today = new Date();
     this.endDate = today;
@@ -109,8 +100,26 @@ fasterMessage: string = '';
   }
 
 
+  private getChartData(): void {
+    const from = this.startDate ? this.startDate.toISOString() : undefined;
+    const to = this.endDate ? this.endDate.toISOString() : undefined;
+    const statuses = this.selectedStatuses.map(s => s.toString());
+
+    this.dashboardService.getChartData(statuses, from, to)
+      .subscribe(response => {
+        if (response?.data) {
+          // console.log('barData:', response.data.bar_data);
+          this.chartData = {
+            bar: this.mapBarChartData(response.data.bar_data),
+            line: this.mapLineChartData(response.data.line_data)
+          };
+          this.cdr.markForCheck();
+        }
+      });
+  }
+
   onFilterChange(): void {
-    this.updateChartData();
+    this.getChartData();
   }
 
   get StatusDisplayText(): string {
@@ -210,90 +219,8 @@ private getAverageResponseTime(): void {
   });
 }
 
-  private updateChartData(): void {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--appliq-text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--appliq-text-secondary-color');
-    const surfaceBorder = documentStyle.getPropertyValue('--appliq-border-color');
-
-    let filteredApplications = this.dummyApplications.filter(app => {
-      const appDate = new Date(app.createdAt);
-      return (!this.startDate || appDate >= this.startDate) &&
-        (!this.endDate || appDate <= this.endDate);
-    });
-
-    filteredApplications = filteredApplications.filter(app =>
-      this.selectedStatuses.includes(app.status as Status)
-    );
-
-    const labels = this.selectedStatuses;
-    const data = labels.map(status => filteredApplications.filter(app => app.status === status).length);
-
-    this.chartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Application Status',
-          data: data,
-          backgroundColor: [
-            '#3B82F6',
-            '#8B5CF6',
-            '#22C55E',
-            '#EF4444',
-            '#EAB308',
-            '#6B7280',
-          ],
-          borderColor: [
-            '#3B82F6',
-            '#8B5CF6',
-            '#22C55E',
-            '#EF4444',
-            '#EAB308',
-            '#6B7280',
-          ],
-          borderWidth: 1
-        }
-      ]
-    };
-
-    this.chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            color: textColor
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false
-          }
-        },
-        x: {
-          ticks: {
-            color: textColorSecondary
-          },
-          grid: {
-            color: surfaceBorder,
-            drawBorder: false
-          }
-        }
-      }
-    };
-  }
-
   onSelect(event: any): void {
     console.log('Chart item selected:', event);
-    // You can add navigation or more detail display here
   }
 
   getGradientFromColor(color: string): string {
@@ -377,4 +304,43 @@ private getAverageResponseTime(): void {
     this.router.navigate(['/applications']);
   }
 
+  onDateRangeChange(event: any): void {
+    this.startDate = event.value?.start || null;
+    this.endDate = event.value?.end || null;
+    this.onFilterChange();
+  }
+
+ private mapBarChartData(barData: any[]): any {
+  // Map each status to its color
+  const statusColorMap: Record<string, string> = {
+    Applied: '#3B82F6',
+    Interview: '#8B5CF6',
+    Test: '#22C55E',
+    OfferAwarded: '#EAB308',
+    Withdrawn: '#6B7280',
+    Rejected: '#EF4444'
+  };
+
+  return {
+    labels: barData.map(item => item.status),
+    datasets: [{
+      label: 'Applications',
+      data: barData.map(item => item.count),
+      backgroundColor: barData.map(item => statusColorMap[item.status] || '#3B82F6')
+    }]
+  };
+}
+
+  private mapLineChartData(lineData: any[]): any {
+    return {
+      labels: lineData.map(item => new Date(item.date).toLocaleDateString()),
+      datasets: [{
+        label: 'Applications Over Time',
+        data: lineData.map(item => item.count),
+        borderColor: '#3B82F6',
+        fill: false,
+        tension: 0.4
+      }]
+    };
+  }
 }

@@ -70,9 +70,9 @@
               <mat-form-field appearance="fill" class="w-full custom-form-field">
                 <mat-label class="text-slate-400">Filter by Date</mat-label>
                 <i matPrefix class="bi bi-calendar-range text-slate-400 mr-3"></i>
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate placeholder="Start date">
-                  <input matEndDate placeholder="End date">
+                <mat-date-range-input [rangePicker]="picker" (dateChange)="onDateRangeChange($event)">
+                  <input matStartDate [(ngModel)]="startDate" placeholder="Start date">
+                  <input matEndDate [(ngModel)]="endDate" placeholder="End date">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matIconSuffix [for]="picker" class="text-slate-300"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
@@ -112,7 +112,7 @@
         <!-- Chart Container -->
         <div class="flex flex-col justify-end bg-slate-900/50 rounded-xl p-3 md:p-4 h-64 md:h-80 lg:h-96"
              style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.4) 100%);">
-          @if (!chartData) {
+          @if (!chartData || !chartData[chartType] || chartData[chartType].length === 0) {
             <div class="flex flex-col items-center justify-center h-full text-center">
               <div class="w-12 h-12 md:w-16 md:h-16 bg-slate-700/50 rounded-full flex items-center justify-center mb-4"
                    style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);">
@@ -123,8 +123,8 @@
             </div>
           }
 
-          @if (isBrowser) {
-            <p-chart [type]="chartType" [data]="chartData" [options]="chartOptions"></p-chart>
+          @if (isBrowser && chartData && chartData[chartType]) {
+            <p-chart [type]="chartType" [data]="chartData ? chartData[chartType] : null" [options]="chartOptions"></p-chart>
           }
         </div>
       </div>
