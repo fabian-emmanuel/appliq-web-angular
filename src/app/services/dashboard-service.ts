@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {HttpParams} from '@angular/common/http';
 import {ApiResponse} from '@core/models/auth';
 import {DashboardSuccessRate, Stats} from '@core/models/dashboard';
 import {HttpClient} from '@angular/common/http';
@@ -48,5 +49,39 @@ getAverageResponseTime(): Observable<ApiResponse<{ average: string; comparedToMe
     `${this.apiUrl}/dashboard/average-response-time`
   );
 }
+
+getChartData(statuses: string[], from?: string, to?: string): Observable<ApiResponse<{ bar_data: any[]; line_data: any[] }>> {
+  let params = new HttpParams();
+  if (statuses && statuses.length) {
+    params = params.set('statuses', statuses.join(','));
+  }
+  if (from) {
+    params = params.set('from', from);
+  }
+  if (to) {
+    params = params.set('to', to);
+  }
+  return this.http.get<ApiResponse<{ bar_data: any[]; line_data: any[] }>>(
+    `${this.apiUrl}/dashboard/chart-data`, { params }
+  );
+}
+
+// getChartData(statuses: string[], from?: string, to?: string): Observable<ApiResponse<{ bar_data: any[]; line_data: any[] }>> {
+//   let params = new HttpParams();
+//   if (statuses && statuses.length) {
+//     statuses.forEach(status => {
+//       params = params.append('statuses', status);
+//     });
+//   }
+//   if (from) {
+//     params = params.set('from', from);
+//   }
+//   if (to) {
+//     params = params.set('to', to);
+//   }
+//   return this.http.get<ApiResponse<{ bar_data: any[]; line_data: any[] }>>(
+//     `${this.apiUrl}/dashboard/chart-data`, { params }
+//   );
+// }
 
 }
